@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import moment from 'moment'
 import App from './App.vue'
 import {
   NavBar,
@@ -20,6 +21,7 @@ import './plugins/element.js'
 
 Vue.config.productionTip = false
 
+Vue.prototype.$moment = moment
 Vue.use(NavBar)
   .use(Col)
   .use(Row)

@@ -1,0 +1,73 @@
+<template>
+  <div class="talk-list-item">
+    <div class="head-image">
+      <img :src="src" alt="name" />
+    </div>
+    <div class="content">
+      <div class="content-header">
+        <p class="name">{{ name }}</p>
+        <p class="date">{{ formatedDate }}</p>
+      </div>
+      <p class="msg van-ellipsis">{{ msg }}</p>
+    </div>
+  </div>
+</template>
+
+<script>
+/**
+ * 对话列表的子组件，作为一个用户/群存在
+ */
+export default {
+  name: 'TalkListItem',
+  props: {
+    msg: String, // 对话内容
+    src: String, // 头像src
+    name: String, // 对话目标名
+    date: Number, // 对话时间
+    type: Number, // 对话目标类型 （todo: 用户、群等）
+  },
+  computed: {
+    formatedDate() {
+      return this.$moment(this.date).format('YY/MM/DD')
+    },
+  },
+  mounted() {
+    // console.log()
+  },
+  data() {
+    return {}
+  },
+}
+</script>
+
+<style lang="less" scoped>
+.talk-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .head-image {
+    img {
+      width: 48px;
+    }
+  }
+
+  .content {
+    flex: 1;
+    margin-left: 12px;
+    p {
+      margin: 0;
+    }
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      .date {
+        font-weight: lighter;
+      }
+    }
+    .msg {
+      font-weight: lighter;
+    }
+  }
+}
+</style>
