@@ -1,7 +1,7 @@
 <template>
   <div class="msg-item" @click="goTalkDetail" :class="isMine && 'mine-msg'">
     <div class="head-image">
-      <img :src="src" alt="name" />
+      <img :src="imgSrc" alt="name" />
     </div>
     <div class="content">
       <div class="content-header">
@@ -23,16 +23,22 @@ export default {
     name: String, // 对话目标名
     date: Number, // 对话时间
     type: Number, // 对话目标类型 （todo: 用户、群等）
-    isMine: Boolean, // 是否是自己的发言
   },
   computed: {
+    isMine() {
+      // 是否是自己的发言
+      return this.id === window.loggedInUser.id
+    },
     formatedDate() {
       return this.$moment(this.date).format('YY/MM/DD')
     },
+    imgSrc() {
+      return this.src
+        ? require('@assets/head/' + this.src)
+        : require('@assets/head/head.jpg')
+    },
   },
-  mounted() {
-    // console.log()
-  },
+  mounted() {},
   data() {
     return {}
   },

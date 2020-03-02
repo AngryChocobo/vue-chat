@@ -5,11 +5,10 @@
         <msg-item
           :id="msg.id"
           :src="msg.src"
-          :name="msg.name"
+          :name="msg.username"
           :date="msg.date"
-          :msg="msg.msg"
+          :msg="msg.message"
           :type="msg.type"
-          :isMine="msg.isMine"
         />
       </van-cell>
     </van-list>
@@ -18,6 +17,7 @@
 
 <script>
 import MsgItem from '@components/msg-item.vue'
+import {getTalkViewDetail} from '@const/api'
 export default {
   name: 'TalkView',
   components: {
@@ -25,40 +25,19 @@ export default {
   },
   data() {
     return {
-      msgList: [
-        {
-          id: 1,
-          src: require('@assets/head/head-3.jpg'),
-          name: '赵丽颖',
-          date: 1582861517672,
-          msg:
-            '晚上玩Switch吗晚上玩Switch吗晚上玩Switch吗晚上玩Switch吗晚上玩Switch吗晚上玩Switch吗',
-          type: 1,
-          isMine: true,
-        },
-        {
-          id: 2,
-          src: require('@assets/head/head-1.jpg'),
-          name: '高明震',
-          date: 1582861517672,
-          msg:
-            '行，回去说吧😊😊😊😊😊😊😊😊😊😊😊😊😊😊😊😊😊😊😊😊😊😊😊😊😊😊😊😊',
-          type: 1,
-          isMine: false,
-        },
-        {
-          id: 3,
-          src: require('@assets/head/head-1.jpg'),
-          name: '高明震',
-          date: 1582861517672,
-          msg: 'Bye',
-          type: 1,
-          isMine: false,
-        },
-      ],
+      msgList: [],
     }
   },
-  methods: {},
+  mounted() {
+    this.getTalkViewDetail()
+  },
+  methods: {
+    getTalkViewDetail() {
+      this.axios.get(getTalkViewDetail(1, 2)).then(res => {
+        this.msgList = res.data || []
+      })
+    },
+  },
 }
 </script>
 
