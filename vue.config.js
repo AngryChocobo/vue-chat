@@ -10,7 +10,7 @@ module.exports = {
       .set('@assets', resolve('src/assets'))
       .set('@components', resolve('src/components'))
       .set('@views', resolve('src/views'))
-      .set('@pages', resolve('src/pages'))
+      .set('@const', resolve('src/const'))
       .set('static', resolve('src/static'))
   },
 }
