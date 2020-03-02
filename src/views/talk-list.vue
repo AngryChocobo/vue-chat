@@ -8,6 +8,7 @@
     >
       <van-cell v-for="talk in talkList" :key="talk.id">
         <talk-list-item
+          :id="talk.id"
           :src="talk.src"
           :name="talk.name"
           :date="talk.date"

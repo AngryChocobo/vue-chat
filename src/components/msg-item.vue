@@ -1,24 +1,21 @@
 <template>
-  <div class="talk-list-item" @click="goTalkDetail">
+  <div class="msg-item" @click="goTalkDetail" :class="isMine && 'mine-msg'">
     <div class="head-image">
       <img :src="src" alt="name" />
     </div>
     <div class="content">
       <div class="content-header">
-        <p class="name">{{ name }}</p>
+        <p v-if="!isMine" class="name">{{ name }}</p>
         <p class="date">{{ formatedDate }}</p>
       </div>
-      <p class="msg van-ellipsis">{{ msg }}</p>
+      <p class="msg">{{ msg }}</p>
     </div>
   </div>
 </template>
 
 <script>
-/**
- * 对话列表的子组件，作为一个用户/群存在
- */
 export default {
-  name: 'TalkListItem',
+  name: 'MsgItem',
   props: {
     id: Number, // 对话目标id
     msg: String, // 对话内容
@@ -26,6 +23,7 @@ export default {
     name: String, // 对话目标名
     date: Number, // 对话时间
     type: Number, // 对话目标类型 （todo: 用户、群等）
+    isMine: Boolean, // 是否是自己的发言
   },
   computed: {
     formatedDate() {
@@ -40,22 +38,26 @@ export default {
   },
   methods: {
     goTalkDetail() {
-      this.$router.push({
-        path: 'talk-view',
-        query: {
-          targetId: this.id,
-        },
-      })
+      // this.$router.push({
+      //   path: 'talk-view',
+      //   query: {
+      //     targetId: this.id,
+      //   },
+      // })
     },
   },
 }
 </script>
 
 <style lang="less" scoped>
-.talk-list-item {
+.msg-item {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  &.mine-msg {
+    flex-direction: row-reverse;
+  }
 
   .head-image {
     img {
@@ -64,8 +66,9 @@ export default {
   }
 
   .content {
-    flex: 1;
-    margin-left: 12px;
+    max-width: 70%;
+    margin: 0 12px;
+    border: 1px dashed orange;
     p {
       margin: 0;
     }
@@ -74,6 +77,7 @@ export default {
       justify-content: space-between;
       .date {
         font-weight: lighter;
+        justify-self: flex-start;
       }
     }
     .msg {
