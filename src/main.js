@@ -1,39 +1,21 @@
 import Vue from 'vue'
 import moment from 'moment'
 import App from './App.vue'
-import {
-  NavBar,
-  Tabbar,
-  TabbarItem,
-  Button,
-  Col,
-  Row,
-  Form,
-  Field,
-  Toast,
-  Notify,
-  Cell,
-  List,
-} from 'vant'
+
 import router from './router/index'
-import 'vant/lib/index.css'
-import './plugins/element.js'
+import './plugins/vant.js'
+import './plugins/http.js'
 
 Vue.config.productionTip = false
 
 Vue.prototype.$moment = moment
-Vue.use(NavBar)
-  .use(Col)
-  .use(Row)
-  .use(Tabbar)
-  .use(TabbarItem)
-  .use(Button)
-  .use(Form)
-  .use(Field)
-  .use(Toast)
-  .use(Notify)
-  .use(Cell)
-  .use(List)
+
+window.loggedInUser = {
+  id: 1,
+
+  username: '高明震',
+  src: 'head-1.jpg',
+}
 
 new Vue({
   render: h => h(App),
