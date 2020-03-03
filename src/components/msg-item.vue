@@ -1,12 +1,12 @@
 <template>
-  <div class="msg-item" @click="goTalkDetail" :class="isMine && 'mine-msg'">
+  <div class="msg-item" :class="isMine && 'mine-msg'">
     <div class="head-image">
-      <img :src="imgSrc" alt="name" />
+      <img :src="imgSrc" :alt="name" @click="goUserInfo" />
     </div>
     <div class="content">
       <div class="content-header">
         <p v-if="!isMine" class="name">{{ name }}</p>
-        <p class="date">{{ formatedDate }}</p>
+        <p class="send-date">{{ formatedSendDate }}</p>
       </div>
       <p class="msg">{{ msg }}</p>
     </div>
@@ -21,7 +21,7 @@ export default {
     msg: String, // 对话内容
     src: String, // 头像src
     name: String, // 对话目标名
-    date: Number, // 对话时间
+    sendDate: Number, // 对话时间
     type: Number, // 对话目标类型 （todo: 用户、群等）
   },
   computed: {
@@ -29,8 +29,8 @@ export default {
       // 是否是自己的发言
       return this.id === window.loggedInUser.id
     },
-    formatedDate() {
-      return this.$moment(this.date).format('YY/MM/DD')
+    formatedSendDate() {
+      return this.$moment(this.sendDate).format('MM/DD HH:mm')
     },
     imgSrc() {
       return this.src
@@ -43,7 +43,7 @@ export default {
     return {}
   },
   methods: {
-    goTalkDetail() {
+    goUserInfo() {
       // this.$router.push({
       //   path: 'talk-view',
       //   query: {
@@ -81,7 +81,7 @@ export default {
     .content-header {
       display: flex;
       justify-content: space-between;
-      .date {
+      .send-date {
         font-weight: lighter;
         justify-self: flex-start;
       }

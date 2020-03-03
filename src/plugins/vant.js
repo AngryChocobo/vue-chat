@@ -14,6 +14,10 @@ import {
   List,
   Icon,
   CellGroup,
+  IndexBar,
+  IndexAnchor,
+  Collapse,
+  CollapseItem,
 } from 'vant'
 import 'vant/lib/index.css'
 
@@ -32,3 +36,7 @@ Vue.use(NavBar)
   .use(Icon)
   .use(Cell)
   .use(CellGroup)
+  .use(IndexBar)
+  .use(IndexAnchor)
+  .use(Collapse)
+  .use(CollapseItem)

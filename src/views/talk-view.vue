@@ -6,7 +6,7 @@
           :id="msg.id"
           :src="msg.src"
           :name="msg.username"
-          :date="msg.date"
+          :send-date="msg.sendDate"
           :msg="msg.message"
           :type="msg.type"
         />
@@ -48,7 +48,6 @@ export default {
       dom.$el.scrollIntoView()
     },
     sendMessage(message) {
-      console.log(message)
       this.axios
         .post(sendNewMessage, {
           fromUserId: 1,

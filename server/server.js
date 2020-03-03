@@ -37,7 +37,7 @@ app.get('/getTalkViewDetail', function(req, res) {
 
   connection.connect()
   connection.query(
-    `select u.*, m.message from message m left JOIN user u ON m.fromUserId=u.id LEFT JOIN user u2 ON m.toUserId=u2.id where (m.fromUserId=${fromUserId} and m.toUserId=${toUserId} ) or (m.fromUserId=${toUserId} and m.toUserId=${fromUserId} )`,
+    `select u.*, m.message, m.sendDate from message m left JOIN user u ON m.fromUserId=u.id LEFT JOIN user u2 ON m.toUserId=u2.id where (m.fromUserId=${fromUserId} and m.toUserId=${toUserId} ) or (m.fromUserId=${toUserId} and m.toUserId=${fromUserId} ) order by m.sendDate`,
     function(error, results, fields) {
       if (error) throw error
       res.send(results)
@@ -60,6 +60,21 @@ app.post('/sendNewMessage', function(req, res) {
   )
 })
 
+app.get('/getUserFriendList', function(req, res) {
+  const {userId} = req.query
+  const connection = mysql.createConnection(mysqlConfig)
+
+  connection.connect()
+  connection.query(
+    `select friend.id, friendId, friend.create_at, username, src from friend,user where friend.userId=user.id and friend.isRequest=0 and friend.friendId=${userId}`,
+    function(error, results, fields) {
+      if (error) throw error
+      res.send(results)
+      //   connection.end()
+    },
+  )
+})
+// select friend.id, friendId, friend.create_at, username, src from friend,user where friend.userId=user.id and friend.isRequest=0
 app.listen(8888, function() {
   console.log('server is running at 8888')
 })

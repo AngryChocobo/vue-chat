@@ -10,7 +10,7 @@
         <talk-list-item
           :id="talk.id"
           :src="talk.src"
-          :name="talk.name"
+          :username="talk.username"
           :date="talk.date"
           :msg="talk.msg"
           :type="talk.type"
@@ -33,7 +33,7 @@ export default {
         {
           id: 1,
           src: require('@assets/head/head-1.jpg'),
-          name: '高明震',
+          username: '高明震',
           date: 1582861517672,
           msg: '行，回去说吧😊',
           type: 1,
@@ -41,7 +41,7 @@ export default {
         {
           id: 2,
           src: require('@assets/head/head-2.jpg'),
-          name: '李积龙',
+          username: '李积龙',
           date: 1582811517672,
           msg: '中午吃啥',
           type: 1,

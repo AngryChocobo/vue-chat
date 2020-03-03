@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/login.vue'
 import TalkList from '../views/talk-list.vue'
 import TalkView from '../views/talk-view.vue'
+import FriendList from '../views/friend-list.vue'
 
 Vue.use(VueRouter)
 
@@ -26,6 +27,11 @@ const routes = [
     path: '/talk-view',
     name: 'TalkView',
     component: TalkView,
+  },
+  {
+    path: '/friend-list',
+    name: 'FriendList',
+    component: FriendList,
   },
   {
     path: '/about',
