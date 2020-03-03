@@ -1,6 +1,6 @@
 <template>
-  <div class="talk-view">
-    <van-list>
+  <div class="talk-view" ref="view">
+    <van-list class="talk-list" ref="talkList">
       <van-cell v-for="msg in msgList" :key="msg.id">
         <msg-item
           :id="msg.id"
@@ -12,16 +12,19 @@
         />
       </van-cell>
     </van-list>
+    <talk-input :on-send="sendMessage" />
   </div>
 </template>
 
 <script>
 import MsgItem from '@components/msg-item.vue'
-import {getTalkViewDetail} from '@const/api'
+import TalkInput from '@components/talk-input.vue'
+import {getTalkViewDetail, sendNewMessage} from '@const/api'
 export default {
   name: 'TalkView',
   components: {
     MsgItem,
+    TalkInput,
   },
   data() {
     return {
@@ -35,7 +38,26 @@ export default {
     getTalkViewDetail() {
       this.axios.get(getTalkViewDetail(1, 2)).then(res => {
         this.msgList = res.data || []
+        this.$nextTick(() => {
+          this.scrollToBottom()
+        })
       })
+    },
+    scrollToBottom() {
+      const dom = this.$refs.talkList
+      dom.$el.scrollIntoView()
+    },
+    sendMessage(message) {
+      console.log(message)
+      this.axios
+        .post(sendNewMessage, {
+          fromUserId: 1,
+          toUserId: 2,
+          message,
+        })
+        .then(res => {
+          this.getTalkViewDetail()
+        })
     },
   },
 }
@@ -43,9 +65,8 @@ export default {
 
 <style lang="less" scoped>
 .talk-view {
-  .list {
-    .talk {
-    }
+  .talk-list {
+    margin-bottom: 60px;
   }
 }
 </style>
