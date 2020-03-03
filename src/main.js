@@ -6,13 +6,13 @@ import router from './router/index'
 import './plugins/vant.js'
 import './plugins/http.js'
 import './plugins/icon.js'
+import './plugins/socketio.js'
 Vue.config.productionTip = false
 
 Vue.prototype.$moment = moment
 
 window.loggedInUser = {
   id: 1,
-
   username: '高明震',
   src: 'head-1.jpg',
 }

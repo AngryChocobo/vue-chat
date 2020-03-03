@@ -1,33 +1,33 @@
 <template>
-  <div class="msg-item" :class="isMine && 'mine-msg'">
+  <div class="message-item" :class="isMine && 'mine-message'">
     <div class="head-image">
-      <img :src="imgSrc" :alt="name" @click="goUserInfo" />
+      <img :src="imgSrc" :alt="username" @click="goUserInfo" />
     </div>
     <div class="content">
       <div class="content-header">
-        <p v-if="!isMine" class="name">{{ name }}</p>
+        <p v-if="!isMine" class="username">{{ username }}</p>
         <p class="send-date">{{ formatedSendDate }}</p>
       </div>
-      <p class="msg">{{ msg }}</p>
+      <p class="message">{{ message }}</p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'MsgItem',
+  name: 'MessageItem',
   props: {
-    id: Number, // 对话目标id
-    msg: String, // 对话内容
+    fromUserId: Number, // 对话目标id
+    message: String, // 对话内容
     src: String, // 头像src
-    name: String, // 对话目标名
+    username: String, // 对话目标名
     sendDate: Number, // 对话时间
     type: Number, // 对话目标类型 （todo: 用户、群等）
   },
   computed: {
     isMine() {
       // 是否是自己的发言
-      return this.id === window.loggedInUser.id
+      return this.fromUserId === window.loggedInUser.id
     },
     formatedSendDate() {
       return this.$moment(this.sendDate).format('MM/DD HH:mm')
@@ -56,12 +56,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.msg-item {
+.message-item {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
 
-  &.mine-msg {
+  &.mine-message {
     flex-direction: row-reverse;
   }
 
@@ -86,7 +86,7 @@ export default {
         justify-self: flex-start;
       }
     }
-    .msg {
+    .message {
       font-weight: lighter;
     }
   }
