@@ -12,6 +12,8 @@ import {
   Notify,
   Cell,
   List,
+  Icon,
+  CellGroup,
 } from 'vant'
 import 'vant/lib/index.css'
 
@@ -27,3 +29,6 @@ Vue.use(NavBar)
   .use(Notify)
   .use(Cell)
   .use(List)
+  .use(Icon)
+  .use(Cell)
+  .use(CellGroup)

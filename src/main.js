@@ -5,7 +5,7 @@ import App from './App.vue'
 import router from './router/index'
 import './plugins/vant.js'
 import './plugins/http.js'
-
+import './plugins/icon.js'
 Vue.config.productionTip = false
 
 Vue.prototype.$moment = moment

@@ -1,0 +1,28 @@
+@font-face {
+  font-family: 'iconfont';
+  src: url('iconfont.eot?t=1583191126896'); /* IE9 */
+  src: url('iconfont.eot?t=1583191126896#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */
+      url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAOwAAsAAAAAB9gAAANjAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDBgqDPIMUATYCJAMMCwgABCAFhG0HORvdBsiuMG7hiUQgoeuKlXI3aJuXQ3vUSFjwfK69f26S3eYRqgKQIlBVQCgMogJ2rq5TIcl+AiH7k3/64moVrgAnAGt4P/Dlqg3UBmjY0o1cO7UbGyDAzPzUzQaOSdnYmFj6o7IS7LFhcRf4wLgLJFxggXVhyWXM/ORQcmhLMcJQn0VPIMgn7p02xecDymWsTWMu+hdgHFCge2AbOJACKUFugZ1D+J2A4xDAS7pgrI6MvDKwwKCME0DWlHIxWIQ8GIwUtwhuylKDXIKDVedsM8CF/Xn5TWQWFI5Gmdq1dBkkHR9i9/4rxkwSiNqzA9Iq0EApwIBMpDqHcNxIKQ7ej5Kbn+5iEFRb/v/BFn7lrvqHBwoBcVFy/QAUUlTBtyxd6KtyUbzWv9QAuEAYcAK8tFAHPhy/3yh38Ptjmn/zvPDZyb3ZNeTy9I7stOTQnMMLEwdsssSnbQiM+vbLSSvxqxqOQj7yUIbxHlm/N2M/b9dvBQ6Ty52248XeeX/fsTRpv13tXzYNs/u2a3S7mW5uon5y3rpzsW4BsXvXTqbhvKr6TMOQ+kWBm8NT7vcByk5FPkp5lCgkwgihWDjw6eh7RST/CuQOvaUCF1ctFsM/Dqw1zyrP5BtNflLdzHn/wqJsmfko5Zch32FrroHxSV7tFp7644lrXOyeU1w95mTbcxyINX7CdDPH7xmVLVEkaMAmcLFfAvko8a4GBIDPSV/qgVv4HfzB/x+F1PBanwHgvXG3wl7yWRnQewAWBaVFN0xUkmC+EsWkzVuoC/9xTSfr02HA+1VxmwoBoh7ruxPAtwtWFiEUKaRBY8klG3opHHzUwsXSDC8lMlf7iCE4iPEAxZoBQtg6FEGeoAk7Ixv6AxySPuASTsPLQLEtfeS3bNVOsJhiGZLUIqVUr2M0C7Vy8kuwvFIjJkGJzajAxKT0o4jyymg8E+swaWOGqUoeSSmDGKLXogw4DWs0emQgehWW0lAFpYbEsIqFtCeFSvVasKIdgYlRmAwiUQtRktLTYczulFXs/SUwuUoaYiSn7Ye7AkaYKPtHIoQKL0HOVOpKtR3LOSZV5CJRFANhEHpaSAbYMY0a0UMM6YNUMCkqlKJGyCBRGHViyipD+1drj28P4EWZokWJFkPKilKsM2hlvPXKWqUOAAA=')
+      format('woff2'),
+    url('iconfont.woff?t=1583191126896') format('woff'),
+    url('iconfont.ttf?t=1583191126896') format('truetype'),
+    /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+      url('iconfont.svg?t=1583191126896#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-jianpan:before {
+  content: '\e64b';
+}
+
+.icon-yuyin:before {
+  content: '\e648';
+}
