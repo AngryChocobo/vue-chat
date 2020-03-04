@@ -2,7 +2,7 @@
   <div class="talk-input">
     <van-icon class-prefix="my-icon" name="keyboard" size="28" />
     <!-- <van-icon name="icon-font icon-yuyin" /> -->
-    <van-field class="msg-input" v-model="value" placeholder="请输入骚话" />
+    <van-field class="message-input" v-model="value" placeholder="请输入骚话" />
     <div class="right-btns">
       <van-icon name="smile-o" size="28" />
       <van-icon v-show="!value" name="add-o" size="28" />
@@ -58,7 +58,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  .msg-input {
+  .message-input {
     flex: 1;
     margin: 0 8px;
     padding: 4px 8px;

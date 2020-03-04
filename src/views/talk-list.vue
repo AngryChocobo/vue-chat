@@ -12,7 +12,7 @@
           :src="talk.src"
           :username="talk.username"
           :date="talk.date"
-          :msg="talk.msg"
+          :message="talk.message"
           :type="talk.type"
         />
       </van-cell>
@@ -35,7 +35,7 @@ export default {
           src: require('@assets/head/head-1.jpg'),
           username: '高明震',
           date: 1582861517672,
-          msg: '行，回去说吧😊',
+          message: '行，回去说吧😊',
           type: 1,
         },
         {
@@ -43,7 +43,7 @@ export default {
           src: require('@assets/head/head-2.jpg'),
           username: '李积龙',
           date: 1582811517672,
-          msg: '中午吃啥',
+          message: '中午吃啥',
           type: 1,
         },
       ],

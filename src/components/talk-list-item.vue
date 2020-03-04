@@ -8,7 +8,7 @@
         <p class="name">{{ name }}</p>
         <p class="date">{{ formatedDate }}</p>
       </div>
-      <p class="msg van-ellipsis">{{ msg }}</p>
+      <p class="message van-ellipsis">{{ message }}</p>
     </div>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
   name: 'TalkListItem',
   props: {
     id: Number, // 对话目标id
-    msg: String, // 对话内容
+    message: String, // 对话内容
     src: String, // 头像src
     name: String, // 对话目标名
     date: Number, // 对话时间
@@ -76,7 +76,7 @@ export default {
         font-weight: lighter;
       }
     }
-    .msg {
+    .message {
       font-weight: lighter;
     }
   }

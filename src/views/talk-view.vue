@@ -1,14 +1,14 @@
 <template>
   <div class="talk-view" ref="view">
     <van-list class="talk-list" ref="talkList">
-      <van-cell v-for="msg in messageList" :key="msg.id">
-        <msg-item
-          :from-user-id="msg.fromUserId"
-          :src="msg.src"
-          :username="msg.username"
-          :send-date="msg.sendDate"
-          :message="msg.message"
-          :type="msg.type"
+      <van-cell v-for="message in messageList" :key="message.id">
+        <message-item
+          :from-user-id="message.fromUserId"
+          :src="message.src"
+          :username="message.username"
+          :send-date="message.sendDate"
+          :message="message.message"
+          :type="message.type"
         />
       </van-cell>
     </van-list>
@@ -17,13 +17,13 @@
 </template>
 
 <script>
-import MsgItem from '@components/msg-item.vue'
+import MessageItem from '@components/message-item.vue'
 import TalkInput from '@components/talk-input.vue'
 
 export default {
   name: 'TalkView',
   components: {
-    MsgItem,
+    MessageItem,
     TalkInput,
   },
   data() {
