@@ -17,10 +17,7 @@ export default {
       return this.$store.state.count
     },
   },
-  mounted() {
-    // this.$store.commit('increment')
-    console.log(this.$store.state.count)
-  },
+  mounted() {},
 }
 </script>
 

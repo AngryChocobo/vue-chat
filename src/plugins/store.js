@@ -64,7 +64,6 @@ const store = new Vuex.Store({
     },
     connectSocketIO(context) {
       const {loggedInUser} = context.state
-      console.log('connectSocketIO ', context.state)
       const socket = io.connect('http://localhost:8888')
       context.commit('setSocket', {socket})
       socket.on('receiveMessage', data => {

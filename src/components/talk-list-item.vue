@@ -32,19 +32,15 @@ export default {
       return this.$moment(this.date).format('YY/MM/DD')
     },
   },
-  mounted() {
-    // console.log()
-  },
+  mounted() {},
   data() {
     return {}
   },
   methods: {
     goTalkDetail() {
       this.$router.push({
-        path: 'talk-view',
-        query: {
-          targetId: this.id,
-        },
+        name: 'TalkView',
+        params: {id: this.id},
       })
     },
   },

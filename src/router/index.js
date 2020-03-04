@@ -24,7 +24,7 @@ const routes = [
     component: TalkList,
   },
   {
-    path: '/talk-view',
+    path: '/talk-view/:id',
     name: 'TalkView',
     component: TalkView,
   },

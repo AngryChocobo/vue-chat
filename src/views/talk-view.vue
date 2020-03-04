@@ -35,21 +35,24 @@ export default {
     messageList() {
       return this.$store.state.messageList
     },
+    targetId() {
+      return this.$route.params.id
+    },
   },
   mounted() {
-    this.$store.dispatch('setTimeOutCountIncrement')
-    this.getTalkTargetInfo()
+    // this.$store.dispatch('setTimeOutCountIncrement')
+    this.getTalkTargetInfo(this.targetId)
     this.getMessageList()
   },
   methods: {
-    getTalkTargetInfo() {
-      this.$http.get(getTalkTargetInfo(2)).then(res => {
+    getTalkTargetInfo(targetId) {
+      this.$http.get(getTalkTargetInfo(targetId)).then(res => {
         this.targetInfo = res.data
       })
     },
     getMessageList() {
       this.$store.commit('getMessageList', {
-        toUserId: 2,
+        toUserId: this.targetId,
       })
     },
     scrollToBottom() {
@@ -58,7 +61,7 @@ export default {
     },
     sendMessage(message) {
       this.$store.commit('sendMessage', {
-        toUserId: 2,
+        toUserId: this.targetId,
         message,
       })
     },
