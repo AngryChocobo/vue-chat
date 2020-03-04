@@ -1,8 +1,7 @@
 <template>
   <div id="app">
-    <!-- <img src="./assets/logo.png" /> -->
     <div>
-      <router-link to="/talk-list">talk-list {{ count }}</router-link>
+      <!-- <router-link to="/talk-list">talk-list {{ count }}</router-link> -->
     </div>
     <router-view></router-view>
   </div>

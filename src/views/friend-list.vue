@@ -20,14 +20,19 @@
       <van-collapse-item title="标题2" name="2">内容</van-collapse-item>
       <van-collapse-item title="标题3" name="3">内容</van-collapse-item>
     </van-collapse>
+    <my-tab-bar />
   </div>
 </template>
 
 <script>
+import MyTabBar from '@components/my-tab-bar.vue'
+
 import {getUserFriendList} from '@const/api'
 export default {
   name: 'TalkList',
-  components: {},
+  components: {
+    MyTabBar,
+  },
   data() {
     return {
       friendList: [],

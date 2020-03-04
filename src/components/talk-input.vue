@@ -66,8 +66,6 @@ export default {
   .right-btns {
     display: flex;
     align-items: center;
-    .send-btn {
-    }
   }
 }
 </style>

@@ -17,15 +17,18 @@
         />
       </van-cell>
     </van-list>
+    <my-tab-bar />
   </div>
 </template>
 
 <script>
+import MyTabBar from '@components/my-tab-bar.vue'
 import TalkListItem from '@components/talk-list-item.vue'
 export default {
   name: 'TalkList',
   components: {
     TalkListItem,
+    MyTabBar,
   },
   data() {
     return {
