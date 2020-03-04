@@ -2,7 +2,7 @@
   <div id="app">
     <!-- <img src="./assets/logo.png" /> -->
     <div>
-      <router-link to="/talk-list">talk-list</router-link>
+      <router-link to="/talk-list">talk-list {{ count }}</router-link>
     </div>
     <router-view></router-view>
   </div>
@@ -12,6 +12,15 @@
 export default {
   name: 'app',
   components: {},
+  computed: {
+    count() {
+      return this.$store.state.count
+    },
+  },
+  mounted() {
+    // this.$store.commit('increment')
+    console.log(this.$store.state.count)
+  },
 }
 </script>
 

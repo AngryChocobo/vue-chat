@@ -7,6 +7,7 @@ import './plugins/vant.js'
 import './plugins/http.js'
 import './plugins/icon.js'
 import './plugins/socketio.js'
+import store from './plugins/store'
 Vue.config.productionTip = false
 
 Vue.prototype.$moment = moment
@@ -17,7 +18,10 @@ window.loggedInUser = {
   src: 'head-1.jpg',
 }
 
+store.dispatch('login')
+
 new Vue({
   render: h => h(App),
   router,
+  store,
 }).$mount('#app')

@@ -30,7 +30,7 @@ export default {
       return this.fromUserId === window.loggedInUser.id
     },
     formatedSendDate() {
-      return this.$moment(this.sendDate).format('MM/DD HH:mm')
+      return this.$moment(this.sendDate).format('MM/DD HH:mm:ss')
     },
     imgSrc() {
       return this.src

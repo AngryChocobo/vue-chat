@@ -27,14 +27,15 @@ const talkRelationMap = []
 io.on('connection', function(socket) {
   console.log(socket.id + ' user connected')
   // 每个用户都加入到私聊关系表中
-  socket.on('login', function(userId) {
+  socket.on('connectSocketIO', function(userId) {
     talkRelationMap.push({
       socketId: socket.id,
       userId,
     })
+    // socket.emit('receiveMessage', {fuck: 'yes'})
   })
   socket.on('sendMessage', function(data) {
-    console.log('server receive sendNewMessage: ', data)
+    console.log('server receive sendNewMessage')
     const {fromUserId, toUserId, message} = data
     const connection = mysql.createConnection(mysqlConfig)
     const sendDate = Date.now()
@@ -43,36 +44,55 @@ io.on('connection', function(socket) {
       `INSERT INTO message (fromUserId, toUserId, message, sendDate) VALUES (${fromUserId}, ${toUserId}, '${message}', ${sendDate})`,
       function(error, result, fields) {
         if (error) throw error
-        console.log('服务器已记录本次消息')
-        socket.emit('sendMessageSuccess', {id: result.insertId})
+        socket.emit('sendMessageSuccess', {id: result.insertId, sendDate})
         // 判断当前消息的接收方在不在线，在线则推送
+        console.log('准备推送', talkRelationMap)
         const toUser = talkRelationMap.find(talk => talk.userId === toUserId)
         if (toUser) {
           const toUserSocket = io.sockets.sockets[toUser.socketId]
-          toUserSocket.emit('receiveMessage', {
-            id: result.insertId,
-            fromUserId,
-            toUserId,
-            message,
-            sendDate,
-          })
+          if (toUserSocket) {
+            toUserSocket.emit('receiveMessage', {
+              id: result.insertId,
+              fromUserId,
+              toUserId,
+              message,
+              sendDate,
+            })
+          }
         }
       },
     )
   })
   socket.on('disconnect', () => {
-    console.log('a user disconnect')
+    const socketId = socket.id
+    console.log(socketId + ' user disconnect')
+    talkRelationMap.splice(
+      talkRelationMap.findIndex(talk => talk.socketId === socketId),
+      1,
+    )
+  })
+
+  socket.on('reconnect', function(socket) {
+    console.log(socket.id + ' is reconnect')
+  })
+
+  socket.on('reconnect_attempt', function(socket) {
+    console.log(socket.id + ' is reconnect attempt')
+  })
+
+  socket.on('reconnecting', function(socket) {
+    console.log(socket.id + ' is reconnecting')
   })
 })
 
 // 聊天对话页
-app.get('/getTalkViewDetail', function(req, res) {
+app.get('/getMessageList', function(req, res) {
   const {fromUserId, toUserId} = req.query
   const connection = mysql.createConnection(mysqlConfig)
 
   connection.connect()
   connection.query(
-    `select u.*, m.message, m.sendDate, m.fromUserId from message m left JOIN user u ON m.fromUserId=u.id LEFT JOIN user u2 ON m.toUserId=u2.id where (m.fromUserId=${fromUserId} and m.toUserId=${toUserId} ) or (m.fromUserId=${toUserId} and m.toUserId=${fromUserId} ) order by m.sendDate`,
+    `select m.* from message m left JOIN user u ON m.fromUserId=u.id LEFT JOIN user u2 ON m.toUserId=u2.id where (m.fromUserId=${fromUserId} and m.toUserId=${toUserId} ) or (m.fromUserId=${toUserId} and m.toUserId=${fromUserId} ) order by m.sendDate`,
     function(error, results, fields) {
       if (error) throw error
       res.send(results)
