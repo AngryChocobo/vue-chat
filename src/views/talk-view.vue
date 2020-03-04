@@ -1,14 +1,13 @@
 <template>
   <div class="talk-view" ref="view">
-    <van-list class="talk-list" ref="talkList">
+    <van-list class="talk-list" ref="talkList" v-if="targetInfo">
       <van-cell v-for="message in messageList" :key="message.id">
         <message-item
           :from-user-id="message.fromUserId"
-          :src="message.src"
-          :username="message.username"
+          :src="targetInfo.src"
+          :username="targetInfo.username"
           :send-date="message.sendDate"
           :message="message.message"
-          :type="message.type"
         />
       </van-cell>
     </van-list>
@@ -19,6 +18,7 @@
 <script>
 import MessageItem from '@components/message-item.vue'
 import TalkInput from '@components/talk-input.vue'
+import {getTalkTargetInfo} from '@const/api'
 
 export default {
   name: 'TalkView',
@@ -27,7 +27,9 @@ export default {
     TalkInput,
   },
   data() {
-    return {}
+    return {
+      targetInfo: null,
+    }
   },
   computed: {
     messageList() {
@@ -36,9 +38,15 @@ export default {
   },
   mounted() {
     this.$store.dispatch('setTimeOutCountIncrement')
+    this.getTalkTargetInfo()
     this.getMessageList()
   },
   methods: {
+    getTalkTargetInfo() {
+      this.$http.get(getTalkTargetInfo(2)).then(res => {
+        this.targetInfo = res.data
+      })
+    },
     getMessageList() {
       this.$store.commit('getMessageList', {
         toUserId: 2,

@@ -85,7 +85,23 @@ io.on('connection', function(socket) {
   })
 })
 
-// 聊天对话页
+// 会话目标信息
+
+app.get('/getTalkTargetInfo', function(req, res) {
+  const {userId} = req.query
+  const connection = mysql.createConnection(mysqlConfig)
+
+  connection.connect()
+  connection.query(`select * from user WHERE user.id=${userId}`, function(
+    error,
+    results,
+  ) {
+    if (error) throw error
+    res.send(results[0])
+  })
+})
+
+// 会话页
 app.get('/getMessageList', function(req, res) {
   const {fromUserId, toUserId} = req.query
   const connection = mysql.createConnection(mysqlConfig)

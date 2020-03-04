@@ -1,7 +1,7 @@
 <template>
   <div class="message-item" :class="isMine && 'mine-message'">
     <div class="head-image">
-      <img :src="imgSrc" :alt="username" @click="goUserInfo" />
+      <img :src="imgSrc" alt="头像" @click="goUserInfo" />
     </div>
     <div class="content">
       <div class="content-header">
@@ -27,12 +27,15 @@ export default {
   computed: {
     isMine() {
       // 是否是自己的发言
-      return this.fromUserId === window.loggedInUser.id
+      return this.fromUserId === this.$store.state.loggedInUser.id
     },
     formatedSendDate() {
       return this.$moment(this.sendDate).format('MM/DD HH:mm:ss')
     },
     imgSrc() {
+      if (this.isMine) {
+        return require('@assets/head/' + this.$store.state.loggedInUser.src)
+      }
       return this.src
         ? require('@assets/head/' + this.src)
         : require('@assets/head/head.jpg')
