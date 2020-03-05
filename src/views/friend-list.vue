@@ -1,6 +1,10 @@
 <template>
   <div class="friend-list">
-    <my-nav-bar rightText="添加好友" />
+    <my-nav-bar>
+      <template slot="right">
+        <router-link to="/search-user">添加好友</router-link>
+      </template>
+    </my-nav-bar>
     <van-collapse v-model="activeName" accordion>
       <van-collapse-item title="全部好友" name="all">
         <van-list>

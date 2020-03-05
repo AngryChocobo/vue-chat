@@ -8,7 +8,11 @@
       :fixed="!noFixed"
       @click-left="onClickLeft"
       @click-right="onClickRight"
-    />
+    >
+      <template slot="left"> <slot name="left"></slot> </template>
+      <template slot="title"> <slot name="title"></slot></template>
+      <template slot="right"> <slot name="right"></slot></template>
+    </van-nav-bar>
   </div>
 </template>
 
@@ -32,7 +36,7 @@ export default {
     },
     rightText: {
       type: String,
-      default: '设置',
+      default: '',
     },
     leftArrow: {
       type: Boolean,
