@@ -1,12 +1,8 @@
 <template>
   <div class="talk-list">
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-    >
-      <van-cell v-for="talk in talkList" :key="talk.id">
+    <my-nav-bar />
+    <van-list>
+      <van-cell :border="false" v-for="talk in talkList" :key="talk.id">
         <talk-list-item
           :id="talk.id"
           :src="talk.src"
@@ -22,6 +18,7 @@
 </template>
 
 <script>
+import MyNavBar from '@components/my-nav-bar.vue'
 import MyTabBar from '@components/my-tab-bar.vue'
 import TalkListItem from '@components/talk-list-item.vue'
 export default {
@@ -29,6 +26,7 @@ export default {
   components: {
     TalkListItem,
     MyTabBar,
+    MyNavBar,
   },
   data() {
     return {
@@ -50,14 +48,13 @@ export default {
           type: 1,
         },
       ],
-      loading: false,
-      finished: true,
     }
   },
-  methods: {
-    onLoad() {},
-  },
+  methods: {},
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+// .talk-list {
+// }
+</style>

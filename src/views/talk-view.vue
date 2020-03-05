@@ -1,7 +1,12 @@
 <template>
   <div class="talk-view" ref="view">
+    <my-nav-bar :title="navTitle" />
     <van-list class="talk-list" ref="talkList" v-if="targetInfo">
-      <van-cell v-for="message in messageList" :key="message.id">
+      <van-cell
+        :border="false"
+        v-for="message in messageList"
+        :key="message.id"
+      >
         <message-item
           :from-user-id="message.fromUserId"
           :src="targetInfo.src"
@@ -16,6 +21,7 @@
 </template>
 
 <script>
+import MyNavBar from '@components/my-nav-bar.vue'
 import MessageItem from '@components/message-item.vue'
 import TalkInput from '@components/talk-input.vue'
 import {getTalkTargetInfo} from '@const/api'
@@ -23,6 +29,7 @@ import {getTalkTargetInfo} from '@const/api'
 export default {
   name: 'TalkView',
   components: {
+    MyNavBar,
     MessageItem,
     TalkInput,
   },
@@ -32,6 +39,9 @@ export default {
     }
   },
   computed: {
+    navTitle() {
+      return this.targetInfo && this.targetInfo.username
+    },
     messageList() {
       return this.$store.state.messageList
     },

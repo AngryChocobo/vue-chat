@@ -1,0 +1,61 @@
+<template>
+  <div class="my-nav-bar">
+    <van-nav-bar
+      :title="title"
+      :left-text="leftText"
+      :right-text="rightText"
+      :left-arrow="leftArrow"
+      :fixed="!noFixed"
+      @click-left="onClickLeft"
+      @click-right="onClickRight"
+    />
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'MyNavBar',
+  data() {
+    return {}
+  },
+  props: {
+    title: {
+      type: String,
+      default: '',
+    },
+    onSend: {
+      type: Function,
+    },
+    leftText: {
+      type: String,
+      default: '返回',
+    },
+    rightText: {
+      type: String,
+      default: '设置',
+    },
+    leftArrow: {
+      type: Boolean,
+      default: true,
+    },
+    noFixed: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    onClickLeft() {
+      this.$router.back()
+    },
+    onClickRight() {
+      this.$toast('右按钮')
+    },
+  },
+}
+</script>
+
+<style lang="less" scoped>
+.my-nav-bar {
+  margin-bottom: 46px;
+}
+</style>
