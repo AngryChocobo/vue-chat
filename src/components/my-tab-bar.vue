@@ -31,5 +31,6 @@ export default {
 
 <style lang="less" scoped>
 .my-tab-bar {
+  margin-top: 50px;
 }
 </style>
