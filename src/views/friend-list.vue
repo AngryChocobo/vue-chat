@@ -1,5 +1,6 @@
 <template>
   <div class="friend-list">
+    <my-nav-bar rightText="添加好友" />
     <van-collapse v-model="activeName" accordion>
       <van-collapse-item title="全部好友" name="all">
         <van-list>
@@ -26,12 +27,13 @@
 
 <script>
 import MyTabBar from '@components/my-tab-bar.vue'
-
+import MyNavBar from '@components/my-nav-bar.vue'
 import {getUserFriendList} from '@const/api'
 export default {
   name: 'TalkList',
   components: {
     MyTabBar,
+    MyNavBar,
   },
   data() {
     return {

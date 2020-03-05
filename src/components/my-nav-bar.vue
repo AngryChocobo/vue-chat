@@ -28,7 +28,7 @@ export default {
     },
     leftText: {
       type: String,
-      default: '返回',
+      default: '',
     },
     rightText: {
       type: String,
