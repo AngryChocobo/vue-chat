@@ -1,5 +1,6 @@
 <template>
   <div class="talk-list">
+    <!-- todo 配置当前用户的头像作为左侧显示内容 -->
     <my-nav-bar />
     <van-list>
       <van-cell :border="false" v-for="talk in talkList" :key="talk.id">

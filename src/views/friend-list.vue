@@ -34,7 +34,7 @@ import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
 import {getUserFriendList} from '@const/api'
 export default {
-  name: 'TalkList',
+  name: 'FriendList',
   components: {
     MyTabBar,
     MyNavBar,

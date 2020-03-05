@@ -18,6 +18,7 @@ import {
   IndexAnchor,
   Collapse,
   CollapseItem,
+  Search,
 } from 'vant'
 import 'vant/lib/index.css'
 
@@ -40,3 +41,4 @@ Vue.use(NavBar)
   .use(IndexAnchor)
   .use(Collapse)
   .use(CollapseItem)
+  .use(Search)

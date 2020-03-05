@@ -148,6 +148,22 @@ app.get('/getUserFriendList', function(req, res) {
   )
 })
 
+// 搜索用户
+app.get('/searchUsers', function(req, res) {
+  const {fromUserId, keyword} = req.query
+  const connection = mysql.createConnection(mysqlConfig)
+
+  connection.connect()
+  connection.query(
+    `select * from user where user.username like '%${keyword}%' or user.id='${keyword}'`,
+    function(error, results) {
+      if (error) throw error
+      res.send(results)
+      //   connection.end()
+    },
+  )
+})
+
 http.listen(8888, function() {
   console.log('server is running at 8888')
 })
