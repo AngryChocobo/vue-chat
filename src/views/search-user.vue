@@ -1,7 +1,11 @@
 <template>
   <div class="search-user">
     <my-nav-bar> </my-nav-bar>
-    <van-search v-model="keyword" placeholder="请输入搜索关键词" />
+    <van-search
+      v-model="keyword"
+      placeholder="请输入搜索关键词"
+      @input="handleKeyWordInput"
+    />
     <van-list>
       <van-cell
         class="user"
@@ -31,10 +35,18 @@ export default {
       activeName: 'all',
     }
   },
+  watch: {
+    keyword(value) {
+      this.keyword = value.trim()
+    },
+  },
   mounted() {
     this.searchUsers()
   },
   methods: {
+    handleKeyWordInput(value) {
+      console.log(value.length)
+    },
     makeFriend(user) {
       this.$toast('todo添加好友: ' + user.username)
     },

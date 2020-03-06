@@ -12,6 +12,7 @@
             class="friend"
             v-for="friend in friendList"
             :key="friend.id"
+            @click="checkFriendInfo(friend)"
           >
             <img
               :src="getImgSrc(friend.src)"
@@ -33,6 +34,7 @@
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
 import {getUserFriendList} from '@const/api'
+import {getFriendInfo} from '@const/api'
 export default {
   name: 'FriendList',
   components: {
@@ -49,11 +51,21 @@ export default {
     this.getUserFriendList()
   },
   methods: {
-    onLoad() {},
-    getUserFriendList() {
-      this.axios.get(getUserFriendList(window.loggedInUser.id)).then(res => {
-        this.friendList = res.data || []
+    checkFriendInfo(friend) {
+      this.axios.get(
+        getFriendInfo(this.$store.state.loggedInUser.id, friend.id),
+      )
+      this.$router.push({
+        name: 'friend-info',
+        params: {id: friend.id},
       })
+    },
+    getUserFriendList() {
+      this.axios
+        .get(getUserFriendList(this.$store.state.loggedInUser.id))
+        .then(res => {
+          this.friendList = res.data || []
+        })
     },
     getImgSrc(src) {
       return src
