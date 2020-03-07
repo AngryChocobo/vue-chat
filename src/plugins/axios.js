@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import axios from 'axios'
-import store from './store'
+import store from './store.js'
 import {Toast} from 'vant'
 
 axios.interceptors.request.use(config => {
-  console.log('will request', config)
   const token = store.state.token
   if (token) {
     config.headers.authorization = `Bearer ${token}`
@@ -28,6 +27,6 @@ axios.interceptors.response.use(
   },
 )
 
-Vue.prototype.axios = axios
+Vue.prototype.$axios = axios
 
 export default axios

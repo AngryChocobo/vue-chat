@@ -4,7 +4,7 @@ import App from './App.vue'
 
 import router from './router/index'
 import './plugins/vant.js'
-import './plugins/http.js'
+import './plugins/axios.js'
 import './plugins/icon.js'
 import './plugins/socketio.js'
 import store from './plugins/store'

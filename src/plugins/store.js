@@ -9,7 +9,7 @@ import {
   register,
   login,
 } from '@const/api'
-import axios from '../plugins/http.js'
+import axios from './axios.js'
 
 Vue.use(Vuex)
 

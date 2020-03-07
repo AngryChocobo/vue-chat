@@ -50,13 +50,12 @@ export default {
     },
   },
   mounted() {
-    // this.$store.dispatch('setTimeOutCountIncrement')
     this.getTalkTargetInfo(this.targetId)
     this.getMessageList()
   },
   methods: {
     getTalkTargetInfo(targetId) {
-      this.$http.get(getTalkTargetInfo(targetId)).then(res => {
+      this.$axios.get(getTalkTargetInfo(targetId)).then(res => {
         this.targetInfo = res.data
       })
     },

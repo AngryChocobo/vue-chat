@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     checkFriendInfo(friend) {
-      this.axios.get(
+      this.$axios.get(
         getFriendInfo(this.$store.state.loggedInUser.id, friend.id),
       )
       this.$router.push({
@@ -61,7 +61,7 @@ export default {
       })
     },
     getUserFriendList() {
-      this.axios
+      this.$axios
         .get(getUserFriendList(this.$store.state.loggedInUser.id))
         .then(res => {
           this.friendList = res.data || []
