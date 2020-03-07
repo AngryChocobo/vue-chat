@@ -6,6 +6,11 @@ const http = require('http').createServer(app)
 const io = require('socket.io')(http)
 const bodyParser = require('body-parser')
 
+const passwordEncryption = (password) => {
+  const bcrypt = require('bcrypt')
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+}
+
 const mysqlConfig = {
   host: 'localhost',
   user: 'root',
@@ -83,6 +88,10 @@ io.on('connection', function(socket) {
   socket.on('reconnecting', function(socket) {
     console.log(socket.id + ' is reconnecting')
   })
+})
+
+app.get('/', function(req, res) {
+  res.send('server ok')
 })
 
 // 会话目标信息
@@ -184,6 +193,35 @@ app.get('/getTalkList', function(req, res) {
       if (error) throw error
       res.send(results)
       //   connection.end()
+    },
+  )
+})
+
+// 注册
+app.post('/register', function(req, res) {
+  const {username, password} = req.body
+  const connection = mysql.createConnection(mysqlConfig)
+  const hashedPassword = passwordEncryption(password)
+  const now = Date.now()
+  connection.connect()
+  connection.query(
+    `insert into user (username, password, create_at) values 
+    ('${username}', '${hashedPassword}', ${now}) `,
+    function(error, result) {
+      if (error) {
+        console.error(error)
+        res.status(500)
+        switch (error.sqlState) {
+          case '23000': 
+            res.send(error.sqlMessage)
+            break
+            default: 
+              res.send('未知错误')
+              break
+        }
+      } else {
+        res.send(result)
+      }
     },
   )
 })

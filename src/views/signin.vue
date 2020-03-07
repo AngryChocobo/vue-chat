@@ -1,9 +1,9 @@
 <template>
-  <div class="login">
+  <div class="register">
     <van-form @submit="onSubmit">
       <van-field
         v-model="username"
-        name="用户名"
+        name="username"
         label="用户名"
         placeholder="用户名"
         :rules="[{required: true, message: '请填写用户名'}]"
@@ -11,7 +11,7 @@
       <van-field
         v-model="password"
         type="password"
-        name="密码"
+        name="password"
         label="密码"
         placeholder="密码"
         :rules="[{required: true, message: '请填写密码'}]"
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import {register} from '@const/api'
 export default {
   name: 'Login',
   data() {
@@ -37,7 +38,13 @@ export default {
   methods: {
     onSubmit(values) {
       console.log('submit', values)
-      this.$toast('登陆成功')
+      // this.$store.commit('register', values)
+      this.axios.post(register, values).then(res => {
+        if (res.data) {
+            this.$toast('注册成功')
+        }
+      })
+      
     },
   },
 }

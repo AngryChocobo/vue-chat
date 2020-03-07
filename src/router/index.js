@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../views/login.vue'
+import SignIn from '../views/signin.vue'
 import TalkList from '../views/talk-list.vue'
 import TalkView from '../views/talk-view.vue'
 import FriendList from '../views/friend-list.vue'
@@ -15,9 +15,9 @@ const routes = [
     component: null,
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: Login,
+    path: '/signin',
+    name: 'SignIn',
+    component: SignIn,
   },
   {
     path: '/talk-list',

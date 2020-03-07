@@ -18,3 +18,5 @@ export const getFriendInfo = (userId, friendId) =>
   `${apiPath}/getFriendInfo?userId=${userId}&friendId=${friendId}`
 
 export const getTalkList = userId => `${apiPath}/getTalkList?userId=${userId}`
+
+export const register = `${apiPath}/register`
