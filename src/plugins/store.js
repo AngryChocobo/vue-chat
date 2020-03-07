@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import io from 'socket.io-client'
-import {getMessageList} from '@const/api'
+import {getMessageList, getTalkList, SOCKETIO_PATH} from '@const/api'
 import axios from '../plugins/http.js'
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -40,6 +41,12 @@ const store = new Vuex.Store({
     receiveMessage(state, payload) {
       state.messageList.push(payload)
     },
+    getTalkList(state, payload) {
+      store.dispatch('getTalkList', payload)
+    },
+    updateTalkList(state, payload) {
+      state.talkList = payload
+    }
   },
   actions: {
     setTimeOutCountIncrement(context) {
@@ -56,6 +63,12 @@ const store = new Vuex.Store({
       // 链接socket.io
       context.dispatch('connectSocketIO')
     },
+    getTalkList(context) {
+      const {loggedInUser} = context.state
+      axios.get(getTalkList(loggedInUser.id)).then(res => {
+        context.commit('updateTalkList', res.data)
+      })
+    },
     getMessageList(context, payload) {
       const {loggedInUser} = context.state
       axios.get(getMessageList(loggedInUser.id, payload.toUserId)).then(res => {
@@ -64,7 +77,7 @@ const store = new Vuex.Store({
     },
     connectSocketIO(context) {
       const {loggedInUser} = context.state
-      const socket = io.connect('http://localhost:8888')
+      const socket = io.connect(SOCKETIO_PATH)
       context.commit('setSocket', {socket})
       socket.on('receiveMessage', data => {
         console.log('收到了新消息', JSON.stringify(data))

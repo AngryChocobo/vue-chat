@@ -1,14 +1,14 @@
 <template>
   <div class="talk-list-item" @click="goTalkDetail">
     <div class="head-image">
-      <img :src="src" alt="" />
+      <img :src="imgSrc" alt="" />
     </div>
     <div class="content">
       <div class="content-header">
-        <p class="username">{{ username }}</p>
-        <p class="date">{{ formatedDate }}</p>
+        <p class="toUserName">{{ toUserName }}</p>
+        <p class="sendDate">{{ formatedDate }}</p>
       </div>
-      <p class="message van-ellipsis">{{ message }}</p>
+      <p class="message van-ellipsis">{{ `${lastMessageUserName}: ${message}` }}</p>
     </div>
   </div>
 </template>
@@ -20,27 +20,31 @@
 export default {
   name: 'TalkListItem',
   props: {
-    id: Number, // 对话目标id
+    id: Number,
     message: String, // 对话内容
     src: String, // 头像src
-    username: String, // 对话目标名
-    date: Number, // 对话时间
+    toUserName: String, // 对话目标名
+    sendDate: Number, // 对话时间
+    toUserId: Number, // 对话目标id
+    lastMessageUserName: String, // 最后发言用户名
     type: Number, // 对话目标类型 （todo: 用户、群等）
   },
   computed: {
     formatedDate() {
-      return this.$moment(this.date).format('YY/MM/DD')
+      return this.$moment(this.sendDate).format('YY/MM/DD')
+    },
+    imgSrc() {
+      return this.src
+        ? require('@assets/head/' + this.src)
+        : require('@assets/head/head.jpg')
     },
   },
   mounted() {},
-  data() {
-    return {}
-  },
   methods: {
     goTalkDetail() {
       this.$router.push({
         name: 'TalkView',
-        params: {id: this.id},
+        params: {id: this.toUserId},
       })
     },
   },
@@ -68,7 +72,7 @@ export default {
     .content-header {
       display: flex;
       justify-content: space-between;
-      .date {
+      .sendDate {
         font-weight: lighter;
       }
     }

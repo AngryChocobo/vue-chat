@@ -164,6 +164,30 @@ app.get('/searchUsers', function(req, res) {
   )
 })
 
-http.listen(8888, function() {
-  console.log('server is running at 8888')
+// 会话列表页
+app.get('/getTalkList', function(req, res) {
+  const {userId} = req.query
+  const connection = mysql.createConnection(mysqlConfig)
+
+  connection.connect()
+  connection.query(
+    `select talkList.id, toUserId, u1.username as lastMessageUserName, message.message, u2.username as toUserName, u2.src, sendDate 
+    from talkList 
+    left join message on
+    message.id = lastMessageId
+    left join user u1 on 
+    u1.id = lastMessageUserId
+    left join user u2 on
+    u2.id = toUserId
+    where talkList.userId = ${userId}`,
+    function(error, results, fields) {
+      if (error) throw error
+      res.send(results)
+      //   connection.end()
+    },
+  )
+})
+
+http.listen(3000, function() {
+  console.log('server is running at 3000')
 })

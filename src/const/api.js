@@ -1,4 +1,5 @@
-const apiPath = 'http://localhost:8888'
+const apiPath = 'http://localhost:3000'
+export const SOCKETIO_PATH = 'http://localhost:3000'
 
 export const getMessageList = (fromUserId, toUserId) =>
   `${apiPath}/getMessageList?fromUserId=${fromUserId}&toUserId=${toUserId}`
@@ -15,3 +16,5 @@ export const searchUsers = (fromUserId, keyword) =>
 
 export const getFriendInfo = (userId, friendId) =>
   `${apiPath}/getFriendInfo?userId=${userId}&friendId=${friendId}`
+
+export const getTalkList = userId => `${apiPath}/getTalkList?userId=${userId}`

@@ -1,16 +1,17 @@
 <template>
   <div class="talk-list">
     <!-- todo 配置当前用户的头像作为左侧显示内容 -->
-    <my-nav-bar />
+    <my-nav-bar title="聊天" />
     <van-list>
       <van-cell :border="false" v-for="talk in talkList" :key="talk.id">
         <talk-list-item
           :id="talk.id"
           :src="talk.src"
-          :username="talk.username"
-          :date="talk.date"
+          :toUserName="talk.toUserName"
+          :toUserId="talk.toUserId"
+          :sendDate="talk.sendDate"
+          :lastMessageUserName="talk.lastMessageUserName"
           :message="talk.message"
-          :type="talk.type"
         />
       </van-cell>
     </van-list>
@@ -31,27 +32,21 @@ export default {
   },
   data() {
     return {
-      talkList: [
-        {
-          id: 1,
-          src: require('@assets/head/head-1.jpg'),
-          username: '高明震',
-          date: 1582861517672,
-          message: '行，回去说吧😊',
-          type: 1,
-        },
-        {
-          id: 2,
-          src: require('@assets/head/head-2.jpg'),
-          username: '李积龙',
-          date: 1582811517672,
-          message: '中午吃啥',
-          type: 1,
-        },
-      ],
     }
   },
-  methods: {},
+  computed: {
+    talkList() {
+      return this.$store.state.talkList
+    }
+  },
+  mounted() {
+    this.getTalkList()
+  },
+  methods: {
+    getTalkList() {
+      this.$store.commit('getTalkList')
+    },
+  },
 }
 </script>
 
