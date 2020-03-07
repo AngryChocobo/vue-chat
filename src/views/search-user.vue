@@ -1,9 +1,10 @@
 <template>
   <div class="search-user">
-    <my-nav-bar> </my-nav-bar>
+    <my-nav-bar title="搜索用户" />
     <van-search
       v-model="keyword"
       placeholder="请输入搜索关键词"
+      @search="searchUsers"
       @input="handleKeyWordInput"
     />
     <van-list>
@@ -54,7 +55,11 @@ export default {
       this.axios
         .get(searchUsers(this.$store.state.loggedInUser.id, this.keyword))
         .then(res => {
-          this.userList = res.data || []
+          if (res.data.length == 0) {
+            this.$toast('无查询结果')
+            return
+          }
+          this.userList = res.data
         })
     },
     getImgSrc(src) {

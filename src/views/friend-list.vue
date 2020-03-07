@@ -1,6 +1,6 @@
 <template>
   <div class="friend-list">
-    <my-nav-bar>
+    <my-nav-bar title="好友列表">
       <template slot="right">
         <router-link to="/search-user">添加好友</router-link>
       </template>
