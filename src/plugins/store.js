@@ -82,8 +82,6 @@ const store = new Vuex.Store({
       axios.post(login, {username, password}).then(res => {
         Toast('登陆成功！')
         context.commit('updateLoggedInUser', res.data)
-        // 链接socket.io
-        context.dispatch('connectSocketIO')
       })
     },
     register(context, payload) {
@@ -135,5 +133,8 @@ const store = new Vuex.Store({
     },
   },
 })
+
+// 链接socket.io
+store.dispatch('connectSocketIO')
 
 export default store
