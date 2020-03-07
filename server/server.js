@@ -98,7 +98,7 @@ app.get('/', function(req, res) {
 })
 
 // 判断登陆状态 中间件
-const autoMiddleWare = (req, res, next) => {
+const authMiddleWare = (req, res, next) => {
   const token = String(req.headers.authorization)
     .split(' ')
     .pop()
@@ -126,7 +126,7 @@ const autoMiddleWare = (req, res, next) => {
 }
 
 // 会话目标信息
-app.get('/getTalkTargetInfo', function(req, res) {
+app.get('/getTalkTargetInfo', authMiddleWare, function(req, res) {
   const {userId} = req.query
   const connection = mysql.createConnection(mysqlConfig)
 
@@ -141,7 +141,7 @@ app.get('/getTalkTargetInfo', function(req, res) {
 })
 
 // 会话页
-app.get('/getMessageList', function(req, res) {
+app.get('/getMessageList', authMiddleWare, function(req, res) {
   const {fromUserId, toUserId} = req.query
   const connection = mysql.createConnection(mysqlConfig)
 
@@ -157,7 +157,7 @@ app.get('/getMessageList', function(req, res) {
 })
 
 // 发送新消息
-app.post('/sendNewMessage', function(req, res) {
+app.post('/sendNewMessage', authMiddleWare, function(req, res) {
   const {fromUserId, toUserId, message} = req.body
   const connection = mysql.createConnection(mysqlConfig)
   const now = Date.now()
@@ -172,7 +172,7 @@ app.post('/sendNewMessage', function(req, res) {
 })
 
 // 好友列表
-app.get('/getUserFriendList', function(req, res) {
+app.get('/getUserFriendList', authMiddleWare, (req, res) => {
   const {userId} = req.query
   const connection = mysql.createConnection(mysqlConfig)
 
@@ -188,10 +188,9 @@ app.get('/getUserFriendList', function(req, res) {
 })
 
 // 搜索用户
-app.get('/searchUsers', function(req, res) {
+app.get('/searchUsers', authMiddleWare, (req, res) => {
   const {fromUserId, keyword} = req.query
   const connection = mysql.createConnection(mysqlConfig)
-
   connection.connect()
   connection.query(
     `select * from user where user.username like '%${keyword}%' or user.id='${keyword}'`,
@@ -204,15 +203,12 @@ app.get('/searchUsers', function(req, res) {
 })
 
 // 会话列表页
-app.get(
-  '/getTalkList',
-  /* autoMiddleWare, */ function(req, res) {
-    const {userId} = req.query
-    const connection = mysql.createConnection(mysqlConfig)
-
-    connection.connect()
-    connection.query(
-      `select talkList.id, toUserId, u1.username as lastMessageUserName, message.message, u2.username as toUserName, u2.src, sendDate 
+app.get('/getTalkList', authMiddleWare, function(req, res) {
+  const {userId} = req.query
+  const connection = mysql.createConnection(mysqlConfig)
+  connection.connect()
+  connection.query(
+    `select talkList.id, toUserId, u1.username as lastMessageUserName, message.message, u2.username as toUserName, u2.src, sendDate 
     from talkList 
     left join message on
     message.id = lastMessageId
@@ -221,14 +217,13 @@ app.get(
     left join user u2 on
     u2.id = toUserId
     where talkList.userId = ${userId}`,
-      function(error, results, fields) {
-        if (error) throw error
-        res.send(results)
-        //   connection.end()
-      },
-    )
-  },
-)
+    function(error, results, fields) {
+      if (error) throw error
+      res.send(results)
+      //   connection.end()
+    },
+  )
+})
 
 // 注册
 app.post('/register', function(req, res) {
