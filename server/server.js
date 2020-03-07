@@ -5,10 +5,13 @@ const app = express()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
 const bodyParser = require('body-parser')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
-const passwordEncryption = (password) => {
-  const bcrypt = require('bcrypt')
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+const SECRET_KEY = 'awd'
+
+const passwordEncryption = password => {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 }
 
 const mysqlConfig = {
@@ -94,8 +97,35 @@ app.get('/', function(req, res) {
   res.send('server ok')
 })
 
-// 会话目标信息
+// 判断登陆状态 中间件
+const autoMiddleWare = (req, res, next) => {
+  const token = String(req.headers.authorization)
+    .split(' ')
+    .pop()
+  // 解析出用户的id
+  jwt.verify(token, SECRET_KEY, (jwtError, data) => {
+    if (jwtError) {
+      res.status(401).send(jwtError.message)
+    } else {
+      // 判断有没有这个用户
+      const connection = mysql.createConnection(mysqlConfig)
+      connection.connect()
+      connection.query(
+        `select * from user where id = ${data.id}`,
+        (error, result) => {
+          if (error || result.length === 0) {
+            res.status(401).send('登陆失效')
+          } else {
+            req.user = result[0]
+            next()
+          }
+        },
+      )
+    }
+  })
+}
 
+// 会话目标信息
 app.get('/getTalkTargetInfo', function(req, res) {
   const {userId} = req.query
   const connection = mysql.createConnection(mysqlConfig)
@@ -174,13 +204,15 @@ app.get('/searchUsers', function(req, res) {
 })
 
 // 会话列表页
-app.get('/getTalkList', function(req, res) {
-  const {userId} = req.query
-  const connection = mysql.createConnection(mysqlConfig)
+app.get(
+  '/getTalkList',
+  /* autoMiddleWare, */ function(req, res) {
+    const {userId} = req.query
+    const connection = mysql.createConnection(mysqlConfig)
 
-  connection.connect()
-  connection.query(
-    `select talkList.id, toUserId, u1.username as lastMessageUserName, message.message, u2.username as toUserName, u2.src, sendDate 
+    connection.connect()
+    connection.query(
+      `select talkList.id, toUserId, u1.username as lastMessageUserName, message.message, u2.username as toUserName, u2.src, sendDate 
     from talkList 
     left join message on
     message.id = lastMessageId
@@ -189,13 +221,14 @@ app.get('/getTalkList', function(req, res) {
     left join user u2 on
     u2.id = toUserId
     where talkList.userId = ${userId}`,
-    function(error, results, fields) {
-      if (error) throw error
-      res.send(results)
-      //   connection.end()
-    },
-  )
-})
+      function(error, results, fields) {
+        if (error) throw error
+        res.send(results)
+        //   connection.end()
+      },
+    )
+  },
+)
 
 // 注册
 app.post('/register', function(req, res) {
@@ -212,18 +245,81 @@ app.post('/register', function(req, res) {
         console.error(error)
         res.status(500)
         switch (error.sqlState) {
-          case '23000': 
+          case '23000':
             res.send(error.sqlMessage)
             break
-            default: 
-              res.send('未知错误')
-              break
+          default:
+            res.send('未知错误')
+            break
         }
       } else {
         res.send(result)
       }
     },
   )
+})
+
+// 登陆
+app.post('/login', function(req, res) {
+  const {username, password} = req.body
+  const connection = mysql.createConnection(mysqlConfig)
+  connection.connect()
+  connection.query(
+    `select * from user where username = '${username}'`,
+    function(error, result) {
+      if (error) {
+        throw error
+      } else if (result.length == 0) {
+        return res.status(422).send({message: '用户名不存在'})
+      } else {
+        const user = result[0]
+        if (bcrypt.compareSync(password, user.password)) {
+          const userDate = Object.assign({}, user)
+          // 不返回用户的密码
+          delete userDate.password
+          // 生成token
+          const token = require('jsonwebtoken').sign(
+            {
+              id: userDate.id,
+            },
+            SECRET_KEY,
+          )
+          res.send({
+            user: userDate,
+            token,
+          })
+        } else {
+          return res.status(422).send('密码不正确')
+        }
+      }
+    },
+  )
+})
+
+app.get('/profile', (req, res) => {
+  const token = String(req.headers.authorization)
+    .split(' ')
+    .pop()
+  // 解析出用户的id
+  jwt.verify(token, SECRET_KEY, (err, data) => {
+    if (err) {
+      res.status(401).send(err.message)
+    } else {
+      //判断有没有这个用户
+      const connection = mysql.createConnection(mysqlConfig)
+      connection.connect()
+      connection.query(`select * from user where id = ${data.id}`, function(
+        error,
+        result,
+      ) {
+        if (error || result.length === 0) {
+          res.status(401).send('登陆失效')
+        } else {
+          res.send('有')
+        }
+      })
+    }
+  })
 })
 
 http.listen(3000, function() {

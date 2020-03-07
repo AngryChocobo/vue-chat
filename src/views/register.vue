@@ -1,0 +1,52 @@
+<template>
+  <div class="register">
+    <van-form @submit="onSubmit">
+      <van-field
+        v-model="username"
+        name="username"
+        label="用户名"
+        placeholder="用户名"
+        autocomplete="false"
+        :rules="[{required: true, message: '请填写用户名'}]"
+      />
+      <van-field
+        v-model="password"
+        type="password"
+        name="password"
+        label="密码"
+        placeholder="密码"
+        autocomplete="false"
+        :rules="[{required: true, message: '请填写密码'}]"
+      />
+      <div style="margin: 16px;">
+        <van-button round block type="info" native-type="submit">
+          提交
+        </van-button>
+      </div>
+    </van-form>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Register',
+  data() {
+    return {
+      username: '',
+      password: '',
+    }
+  },
+  methods: {
+    onSubmit(values) {
+      const {username, password} = values
+      this.$store.commit('register', {
+        username,
+        password,
+        $router: this.$router,
+      })
+    },
+  },
+}
+</script>
+
+<style lang="less" scoped></style>
