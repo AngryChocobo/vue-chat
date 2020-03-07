@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {Toast} from 'vant'
+import router from '../router/index'
 import io from 'socket.io-client'
 import {
   getMessageList,
@@ -26,6 +27,10 @@ const store = new Vuex.Store({
   mutations: {
     increment(state) {
       state.count++
+    },
+    cleanToken(state) {
+      state.token = null
+      router.replace('/login')
     },
     login(state, payload) {
       store.dispatch('login', payload)

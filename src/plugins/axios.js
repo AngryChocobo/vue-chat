@@ -17,6 +17,10 @@ axios.interceptors.response.use(
   },
   error => {
     switch (error.response.status) {
+      case 401: // token失效
+        Toast(error.response.data)
+        store.commit('cleanToken')
+        break
       case 422: // 用户不存在、密码错误
         Toast(error.response.data)
         break
