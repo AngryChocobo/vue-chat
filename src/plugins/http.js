@@ -1,7 +1,33 @@
 import Vue from 'vue'
 import axios from 'axios'
-import VueAxios from 'vue-axios'
+import store from './store'
+import {Toast} from 'vant'
 
-Vue.use(VueAxios, axios)
+axios.interceptors.request.use(config => {
+  console.log('will request', config)
+  const token = store.state.token
+  if (token) {
+    config.headers.authorization = `Bearer ${token}`
+  }
+  return config
+})
+
+axios.interceptors.response.use(
+  response => {
+    return response
+  },
+  error => {
+    switch (error.response.status) {
+      case 422: // 用户不存在、密码错误
+        Toast(error.response.data)
+        break
+      default:
+        Toast('default error')
+    }
+    return Promise.reject(error)
+  },
+)
+
+Vue.prototype.axios = axios
 
 export default axios
