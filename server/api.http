@@ -1,0 +1,19 @@
+@url=http://localhost:3000
+@json=Content-Type: application/json
+
+###
+GET {{url}} HTTP/1.1
+
+### 会话列表页
+GET {{url}}/getTalkList HTTP/1.1
+    ?userId=1
+
+### 注册
+
+POST {{url}}/register HTTP/1.1
+{{json}}
+
+{
+    "username": "ass1",
+    "password": "bbc"
+}
