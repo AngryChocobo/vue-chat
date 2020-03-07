@@ -52,14 +52,13 @@ export default {
       this.$toast('todo添加好友: ' + user.username)
     },
     searchUsers() {
-      this.axios
+      this.$axios
         .get(searchUsers(this.$store.state.loggedInUser.id, this.keyword))
         .then(res => {
+          this.userList = res.data
           if (res.data.length == 0) {
             this.$toast('无查询结果')
-            return
           }
-          this.userList = res.data
         })
     },
     getImgSrc(src) {
