@@ -18,7 +18,7 @@ const store = new Vuex.Store({
   state: {
     count: 0,
     socket: null,
-    loggedInUser: null,
+    loggedInUser: JSON.parse(window.localStorage.getItem('loggedInUser')),
     token: window.localStorage.getItem('token'),
     talkList: [],
     messageList: [], // 当前会话页的消息记录
@@ -40,6 +40,7 @@ const store = new Vuex.Store({
       state.token = payload.token
       router.replace('/talk-list')
       window.localStorage.setItem('token', payload.token)
+      window.localStorage.setItem('loggedInUser', JSON.stringify(payload.user))
     },
     register(state, payload) {
       store.dispatch('register', payload)
