@@ -38,6 +38,7 @@ const store = new Vuex.Store({
     updateLoggedInUser(state, payload) {
       state.loggedInUser = payload.user
       state.token = payload.token
+      router.replace('/talk-list')
       window.localStorage.setItem('token', payload.token)
     },
     register(state, payload) {
@@ -77,20 +78,17 @@ const store = new Vuex.Store({
     },
     login(context, payload) {
       const {username, password} = payload
-      const {$router} = payload
       axios.post(login, {username, password}).then(res => {
         Toast('登陆成功！')
         context.commit('updateLoggedInUser', res.data)
         // 链接socket.io
         context.dispatch('connectSocketIO')
-        $router.replace('/talk-list')
       })
     },
     register(context, payload) {
       const {username, password} = payload
-      const {$router} = payload
       axios.post(register, {username, password}).then(res => {
-        $router.replace('/login')
+        router.replace('/login')
       })
     },
     getTalkList(context) {
