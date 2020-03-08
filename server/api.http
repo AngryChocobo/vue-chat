@@ -5,8 +5,7 @@
 GET {{url}} HTTP/1.1
 
 ### 会话列表页
-GET {{url}}/getTal
-kList HTTP/1.1
+GET {{url}}/getTalkList HTTP/1.1
     ?userId=1
 
 ### 注册
@@ -25,11 +24,17 @@ POST {{url}}/login HTTP/1.1
 {{json}}
 
 {
-    "username": "ass1",
-    "password": "bbc"
+    "username": "高明震",
+    "password": "2"
 }
 
 ### Auth
 
 GET {{url}}/profile HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTU4MzU3MjQwOH0.mdTcy_Er-U5vssO4A1mHPTFrkkuo4CZGTsNBMCi58iA
+
+### 
+GET {{url}}/getUserInfo HTTP/1.1
+?userId=5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTgzNjM0NTM1fQ.LM7z3-7wE2-s6klonYtlTXrrLxBdxcmDYCeqb-Of-xY
+

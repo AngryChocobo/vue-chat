@@ -22,6 +22,29 @@ app.use(bodyParser.json())
 // 跨域
 app.use(cors())
 
+// 判断登陆状态 中间件
+const authMiddleWare = (req, res, next) => {
+  const token = String(req.headers.authorization)
+    .split(' ')
+    .pop()
+  // 解析出用户的id
+  jwt.verify(token, SECRET_KEY, (jwtError, data) => {
+    if (jwtError) {
+      res.status(401).send(jwtError.message)
+    } else {
+      // 判断有没有这个用户
+      query(`select * from user where id = ${data.id}`, (error, result) => {
+        if (error || result.length === 0) {
+          res.status(401).send('登陆失效')
+        } else {
+          req.user = result[0]
+          next()
+        }
+      })
+    }
+  })
+}
+
 // 私聊关系
 const talkRelationMap = []
 
@@ -75,28 +98,25 @@ app.get('/', function(req, res) {
   res.send('server ok')
 })
 
-// 判断登陆状态 中间件
-const authMiddleWare = (req, res, next) => {
-  const token = String(req.headers.authorization)
-    .split(' ')
-    .pop()
-  // 解析出用户的id
-  jwt.verify(token, SECRET_KEY, (jwtError, data) => {
-    if (jwtError) {
-      res.status(401).send(jwtError.message)
-    } else {
-      // 判断有没有这个用户
-      query(`select * from user where id = ${data.id}`, (error, result) => {
-        if (error || result.length === 0) {
-          res.status(401).send('登陆失效')
-        } else {
-          req.user = result[0]
-          next()
-        }
-      })
-    }
-  })
-}
+// 查看搜索用户详细信息及是否是好友
+app.get('/getUserInfo', authMiddleWare, (req, res) => {
+  const targetId = req.query.userId // 查询目标id
+  const loggedInUserId = req.user.id
+  query(
+    `select friend.id as friendRelationId, friendRemark, friend.create_at as beFriendDate, makeFriendRecord.stats, makeFriendRecord.create_at as recordSendDate,  user.id as userId, username, nickname, src
+  from user 
+  left join friend 
+  on friend.friendId = ${loggedInUserId} and friend.userId = ${targetId}
+  left join makeFriendRecord
+  on makeFriendRecord.fromUserId = ${loggedInUserId} and makeFriendRecord.toUserId = ${targetId}
+  where
+  user.id = ${targetId}`,
+    (error, results) => {
+      if (error) throw error
+      res.send(results[0])
+    },
+  )
+})
 
 // 会话目标信息
 app.get('/getTalkTargetInfo', authMiddleWare, function(req, res) {
@@ -136,7 +156,7 @@ app.post('/sendNewMessage', authMiddleWare, function(req, res) {
 app.get('/getUserFriendList', authMiddleWare, (req, res) => {
   const {userId} = req.query
   query(
-    `select friend.id, friendId, friend.create_at, username, src from friend,user where friend.userId=user.id and friend.isRequest=0 and friend.friendId=${userId}`,
+    `select friend.id, friendId, friend.create_at, username, src from friend,user where friend.userId=user.id and friend.friendId=${userId}`,
     function(error, results, fields) {
       if (error) throw error
       res.send(results)

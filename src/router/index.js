@@ -6,6 +6,7 @@ import TalkList from '../views/talk-list.vue'
 import TalkView from '../views/talk-view.vue'
 import FriendList from '../views/friend-list.vue'
 import SearchUser from '../views/search-user.vue'
+import UserInfo from '../views/user-info.vue'
 import store from '../plugins/store'
 import {Toast} from 'vant'
 Vue.use(VueRouter)
@@ -48,6 +49,12 @@ const routes = [
     path: '/search-user',
     name: 'SearchUser',
     component: SearchUser,
+    meta: {requireAuth: true},
+  },
+  {
+    path: '/user-info/:userId',
+    name: 'UserInfo',
+    component: UserInfo,
     meta: {requireAuth: true},
   },
   {

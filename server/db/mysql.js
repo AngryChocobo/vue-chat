@@ -18,6 +18,7 @@ const query = (sql, callback) => {
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
       if (err) {
+        console.error('连接似乎错误')
         resolve(err)
       } else {
         connection.query(sql, (err, rows) => {

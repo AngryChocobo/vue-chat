@@ -52,7 +52,7 @@ export default {
       this.$router.back()
     },
     onClickRight() {
-      this.$toast('右按钮')
+      // this.$toast('右按钮')
     },
   },
 }

@@ -1,6 +1,5 @@
 <template>
   <div class="login">
-    login
     <van-form @submit="onSubmit">
       <van-field
         v-model="username"
@@ -19,7 +18,7 @@
       />
       <div style="margin: 16px;">
         <van-button round block type="info" native-type="submit">
-          提交
+          登陆
         </van-button>
       </div>
     </van-form>
@@ -41,7 +40,6 @@ export default {
       this.$store.commit('login', {
         username,
         password,
-        $router: this.$router,
       })
     },
   },

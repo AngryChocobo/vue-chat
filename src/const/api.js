@@ -22,3 +22,5 @@ export const getTalkList = userId => `${apiPath}/getTalkList?userId=${userId}`
 export const register = `${apiPath}/register`
 
 export const login = `${apiPath}/login`
+
+export const getUserInfo = userId => `${apiPath}/getUserInfo?userId=${userId}`

@@ -5,14 +5,13 @@
       v-model="keyword"
       placeholder="请输入搜索关键词"
       @search="searchUsers"
-      @input="handleKeyWordInput"
     />
     <van-list>
       <van-cell
         class="user"
         v-for="user in userList"
         :key="user.id"
-        @click="makeFriend(user)"
+        @click="checkUserInfo(user)"
       >
         <img :src="getImgSrc(user.src)" :alt="user.name" @click="goTalkView" />
         <span class="username">{{ user.username }}</span>
@@ -31,7 +30,7 @@ export default {
   },
   data() {
     return {
-      keyword: '高',
+      keyword: '翁',
       userList: [],
       activeName: 'all',
     }
@@ -45,11 +44,15 @@ export default {
     this.searchUsers()
   },
   methods: {
-    handleKeyWordInput(value) {
-      console.log(value.length)
-    },
-    makeFriend(user) {
+    checkUserInfo(user) {
       this.$toast('todo添加好友: ' + user.username)
+      console.log(user)
+      this.$router.push({
+        name: 'UserInfo',
+        params: {
+          userId: user.id,
+        },
+      })
     },
     searchUsers() {
       this.$axios
