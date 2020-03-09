@@ -52,6 +52,8 @@ io.on('connection', function(socket) {
   console.log(socket.id + ' user connected')
   // 每个用户都加入到私聊关系表中
   socket.on('connectSocketIO', function(userId) {
+    // 存储登录用户的id
+    socket.loggedInUserId = userId
     talkRelationMap.push({
       socketId: socket.id,
       userId,
@@ -84,6 +86,27 @@ io.on('connection', function(socket) {
       },
     )
   })
+
+  socket.on('makeFriendRequest', function(data) {
+    console.log(data)
+    console.log(
+      `Receive makeFriendRequest from ${socket.loggedInUserId} to ${data.userId}`,
+    )
+    query(
+      `insert into makeFriendRecord 
+(fromUserId, toUserId, say, create_at) 
+VALUES 
+(${socket.loggedInUserId}, ${data.userId}, '${data.say}', ${Date.now()})`,
+      error => {
+        if (error) {
+          socket.emit('makeFriendRequestResult', '发送失败')
+        } else {
+          socket.emit('makeFriendRequestResult', '发送成功')
+        }
+      },
+    )
+  })
+
   socket.on('disconnect', () => {
     const socketId = socket.id
     console.log(socketId + ' user disconnect')
@@ -103,7 +126,7 @@ app.get('/getUserInfo', authMiddleWare, (req, res) => {
   const targetId = req.query.userId // 查询目标id
   const loggedInUserId = req.user.id
   query(
-    `select friend.id as friendRelationId, friendRemark, friend.create_at as beFriendDate, makeFriendRecord.stats, makeFriendRecord.create_at as recordSendDate,  user.id as userId, username, nickname, src
+    `select friend.id as friendRelationId, friendRemark, friend.create_at as beFriendDate, makeFriendRecord.stats, makeFriendRecord.create_at as recordSendDate,  user.id as userId, username, nickname, src, say
   from user 
   left join friend 
   on friend.friendId = ${loggedInUserId} and friend.userId = ${targetId}

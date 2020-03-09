@@ -28,6 +28,9 @@ const store = new Vuex.Store({
     increment(state) {
       state.count++
     },
+    makeFriendRequest(state, payload) {
+      store.dispatch('makeFriendRequest', payload)
+    },
     cleanToken(state) {
       state.token = null
       router.replace('/login')
@@ -77,6 +80,9 @@ const store = new Vuex.Store({
         context.commit('increment')
       }, 5000)
     },
+    makeFriendRequest(context, payload) {
+      context.state.socket.emit('makeFriendRequest', payload)
+    },
     login(context, payload) {
       const {username, password} = payload
       axios.post(login, {username, password}).then(res => {
@@ -121,6 +127,11 @@ const store = new Vuex.Store({
           message: context.state.sendingMessage,
           sendDate: data.sendDate,
         })
+      })
+      socket.on('makeFriendRequestResult', result => {
+        Toast(result)
+        // todo 思考更好的处理办法
+        router.back()
       })
     },
     sendMessage(context, payload) {
