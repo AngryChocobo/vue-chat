@@ -14,7 +14,7 @@ export const getTalkTargetInfo = userId =>
 export const searchUsers = (fromUserId, keyword) =>
   `${apiPath}/searchUsers?fromUserId=${fromUserId}&keyword=${keyword}`
 
-export const getTalkList = userId => `${apiPath}/getTalkList?userId=${userId}`
+export const getTalkList = `${apiPath}/getTalkList`
 
 export const register = `${apiPath}/register`
 

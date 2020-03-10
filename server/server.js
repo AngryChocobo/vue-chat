@@ -251,18 +251,15 @@ app.get('/searchUsers', authMiddleWare, (req, res) => {
 
 // 会话列表页
 app.get('/getTalkList', authMiddleWare, function(req, res) {
-  const {userId} = req.query
+  const loggedInUserId = req.user.id
   query(
-    `select talkList.id, toUserId, u1.username as lastMessageUserName, message.message, u2.username as toUserName, u2.src, sendDate 
-    from talkList 
-    left join message on
-    message.id = lastMessageId
-    left join user u1 on 
-    u1.id = lastMessageUserId
-    left join user u2 on
-    u2.id = toUserId
-    where talkList.userId = ${userId}`,
-    function(error, results, fields) {
+    `select  talkList.id, lastMessageUserId, targetUser.username as targetUserName, lastMessageUser.username as lastMessageUserName, message.message, targetUser.src, message.sendDate
+    from talkList
+    left join user lastMessageUser on lastMessageUser.id = talkList.lastMessageUserId
+    left join user targetUser on targetUser.id =  talkList.targetId
+    left join message on message.id = talkList.lastMessageId
+    where talkList.userId = ${loggedInUserId}`,
+    function(error, results) {
       if (error) throw error
       res.send(results)
     },
