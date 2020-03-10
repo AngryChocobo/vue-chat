@@ -21,7 +21,7 @@
         <van-cell> 发消息 </van-cell>
         <van-cell> 音视频通话 </van-cell>
       </template>
-      <van-cell-group>
+      <van-cell-group v-if="userInfo.stats !== 1">
         <van-field
           v-model="userInfo.say"
           label="好友申请"
@@ -30,7 +30,9 @@
         />
       </van-cell-group>
       <!-- todo 对自己说话的操作 -->
-      <van-cell v-if="userInfo.userId !== loggedInUserId">
+      <van-cell
+        v-if="userInfo.userId !== loggedInUserId && userInfo.stats !== 1"
+      >
         <van-button
           type="primary"
           size="large"

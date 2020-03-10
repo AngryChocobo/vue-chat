@@ -5,6 +5,7 @@
         <router-link to="/search-user">添加好友</router-link>
       </template>
     </my-nav-bar>
+    <van-field readonly label="新朋友" is-link @click="toFriendRequestList" />
     <van-collapse v-model="activeName" accordion>
       <van-collapse-item title="全部好友" name="all">
         <van-list>
@@ -33,8 +34,7 @@
 <script>
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
-import {getUserFriendList} from '@const/api'
-import {getFriendInfo} from '@const/api'
+import {getUserFriendList, getUserInfo} from '@const/api'
 export default {
   name: 'FriendList',
   components: {
@@ -51,13 +51,15 @@ export default {
     this.getUserFriendList()
   },
   methods: {
-    checkFriendInfo(friend) {
-      this.$axios.get(
-        getFriendInfo(this.$store.state.loggedInUser.id, friend.id),
-      )
+    toFriendRequestList() {
       this.$router.push({
-        name: 'friend-info',
-        params: {id: friend.id},
+        path: 'friend-request',
+      })
+    },
+    checkFriendInfo(friend) {
+      this.$router.push({
+        name: 'UserInfo',
+        params: {userId: friend.userId},
       })
     },
     getUserFriendList() {

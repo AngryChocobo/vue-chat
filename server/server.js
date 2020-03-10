@@ -87,21 +87,38 @@ io.on('connection', function(socket) {
     )
   })
 
+  // 发出好友申请
   socket.on('makeFriendRequest', function(data) {
-    console.log(data)
     console.log(
       `Receive makeFriendRequest from ${socket.loggedInUserId} to ${data.userId}`,
     )
     query(
-      `insert into makeFriendRecord 
-(fromUserId, toUserId, say, create_at) 
-VALUES 
+      `insert into makeFriendRecord (fromUserId, toUserId, say, create_at) VALUES 
 (${socket.loggedInUserId}, ${data.userId}, '${data.say}', ${Date.now()})`,
       error => {
         if (error) {
           socket.emit('makeFriendRequestResult', '发送失败')
         } else {
           socket.emit('makeFriendRequestResult', '发送成功')
+        }
+      },
+    )
+  })
+
+  // 获取好友申请列表
+  socket.on('getFriendRequestList', function() {
+    query(
+      `select makeFriendRecord.id, user.id as userId, user.username, user.nickname, user.src, 
+    makeFriendRecord.say, makeFriendRecord.stats, makeFriendRecord.read, makeFriendRecord.create_at
+    from makeFriendRecord 
+    left join user on user.id = makeFriendRecord.fromUserId
+    where toUserId = ${socket.loggedInUserId}
+    order by makeFriendRecord.read asc, makeFriendRecord.create_at desc`,
+      (error, results) => {
+        if (error) {
+          socket.emit('getFriendRequestResult', '发送失败')
+        } else {
+          socket.emit('getFriendRequestResult', results)
         }
       },
     )
@@ -137,6 +154,39 @@ app.get('/getUserInfo', authMiddleWare, (req, res) => {
     (error, results) => {
       if (error) throw error
       res.send(results[0])
+    },
+  )
+})
+
+// 查看好友请求详细信息
+app.get('/getFriendRequestInfo', authMiddleWare, (req, res) => {
+  const userId = req.query.userId // 查询目标id
+  const loggedInUserId = req.user.id
+  query(
+    `select makeFriendRecord.id, user.id as userId, user.username, user.nickname, user.src, 
+  makeFriendRecord.say, makeFriendRecord.stats, makeFriendRecord.read, makeFriendRecord.create_at
+  from makeFriendRecord 
+  left join user on user.id = makeFriendRecord.fromUserId
+  where toUserId = ${loggedInUserId} and user.id = ${userId}
+  order by makeFriendRecord.read asc, makeFriendRecord.create_at desc`,
+    (error, results) => {
+      if (error) throw error
+      res.send(results[0])
+    },
+  )
+})
+
+app.post('/agreeMakeFriendRequest', authMiddleWare, (req, res) => {
+  const {userId, recordId} = req.body
+  console.log(`${userId} 同意了好友请求id: ${recordId}`)
+  query(
+    `update makeFriendRecord set stats = 1 where id = ${recordId}`,
+    error => {
+      if (error) {
+        res.status(500).send('通过失败')
+      } else {
+        res.send('')
+      }
     },
   )
 })
@@ -179,7 +229,7 @@ app.post('/sendNewMessage', authMiddleWare, function(req, res) {
 app.get('/getUserFriendList', authMiddleWare, (req, res) => {
   const {userId} = req.query
   query(
-    `select friend.id, friendId, friend.create_at, username, src from friend,user where friend.userId=user.id and friend.friendId=${userId}`,
+    `select friend.userId, friend.create_at, username, src from friend,user where friend.userId=user.id and friend.friendId=${userId}`,
     function(error, results, fields) {
       if (error) throw error
       res.send(results)

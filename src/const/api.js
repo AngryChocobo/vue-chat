@@ -14,9 +14,6 @@ export const getTalkTargetInfo = userId =>
 export const searchUsers = (fromUserId, keyword) =>
   `${apiPath}/searchUsers?fromUserId=${fromUserId}&keyword=${keyword}`
 
-export const getFriendInfo = (userId, friendId) =>
-  `${apiPath}/getFriendInfo?userId=${userId}&friendId=${friendId}`
-
 export const getTalkList = userId => `${apiPath}/getTalkList?userId=${userId}`
 
 export const register = `${apiPath}/register`
@@ -24,3 +21,8 @@ export const register = `${apiPath}/register`
 export const login = `${apiPath}/login`
 
 export const getUserInfo = userId => `${apiPath}/getUserInfo?userId=${userId}`
+
+export const getFriendRequestInfo = userId =>
+  `${apiPath}/getFriendRequestInfo?userId=${userId}`
+
+export const agreeMakeFriendRequest = `${apiPath}/agreeMakeFriendRequest`

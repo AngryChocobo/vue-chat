@@ -21,6 +21,7 @@ const store = new Vuex.Store({
     loggedInUser: JSON.parse(window.localStorage.getItem('loggedInUser')),
     token: window.localStorage.getItem('token'),
     talkList: [],
+    friendRequestList: [],
     messageList: [], // 当前会话页的消息记录
     sendingMessage: null, // 当前会话页的正在发送中的消息
   },
@@ -73,12 +74,21 @@ const store = new Vuex.Store({
     updateTalkList(state, payload) {
       state.talkList = payload
     },
+    getFriendRequestList() {
+      store.dispatch('getFriendRequestList')
+    },
+    updateFriendRequestList(state, payload) {
+      state.friendRequestList = payload
+    },
   },
   actions: {
     setTimeOutCountIncrement(context) {
       setTimeout(() => {
         context.commit('increment')
       }, 5000)
+    },
+    getFriendRequestList(context) {
+      context.state.socket.emit('getFriendRequestList')
     },
     makeFriendRequest(context, payload) {
       context.state.socket.emit('makeFriendRequest', payload)
@@ -128,10 +138,13 @@ const store = new Vuex.Store({
           sendDate: data.sendDate,
         })
       })
-      socket.on('makeFriendRequestResult', result => {
-        Toast(result)
+      socket.on('makeFriendRequestResult', data => {
+        Toast(data)
         // todo 思考更好的处理办法
         router.back()
+      })
+      socket.on('getFriendRequestResult', data => {
+        context.commit('updateFriendRequestList', data)
       })
     },
     sendMessage(context, payload) {

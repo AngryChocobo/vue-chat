@@ -19,6 +19,7 @@ import {
   Collapse,
   CollapseItem,
   Search,
+  Tag,
 } from 'vant'
 import 'vant/lib/index.css'
 
@@ -42,3 +43,4 @@ Vue.use(NavBar)
   .use(Collapse)
   .use(CollapseItem)
   .use(Search)
+  .use(Tag)
