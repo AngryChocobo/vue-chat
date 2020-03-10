@@ -7,7 +7,7 @@
         <talk-list-item
           :id="talk.id"
           :src="talk.src"
-          :toUserName="talk.toUserName"
+          :targetUserName="talk.targetUserName"
           :toUserId="talk.toUserId"
           :sendDate="talk.sendDate"
           :lastMessageUserName="talk.lastMessageUserName"
@@ -31,13 +31,12 @@ export default {
     MyNavBar,
   },
   data() {
-    return {
-    }
+    return {}
   },
   computed: {
     talkList() {
       return this.$store.state.talkList
-    }
+    },
   },
   mounted() {
     this.getTalkList()

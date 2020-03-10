@@ -107,8 +107,7 @@ const store = new Vuex.Store({
       })
     },
     getTalkList(context) {
-      const {loggedInUser} = context.state
-      axios.get(getTalkList(loggedInUser.id)).then(res => {
+      axios.get(getTalkList).then(res => {
         context.commit('updateTalkList', res.data)
       })
     },
