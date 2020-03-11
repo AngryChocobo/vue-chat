@@ -176,16 +176,36 @@ app.get('/getFriendRequestInfo', authMiddleWare, (req, res) => {
   )
 })
 
+// 统一好友请求
 app.post('/agreeMakeFriendRequest', authMiddleWare, (req, res) => {
   const {userId, recordId} = req.body
-  console.log(`${userId} 同意了好友请求id: ${recordId}`)
+  const loggedInUserId = req.user.id
+  console.log(`${loggedInUserId} 同意了好友请求id: ${recordId}`)
   query(
     `update makeFriendRecord set stats = 1 where id = ${recordId}`,
     error => {
       if (error) {
         res.status(500).send('通过失败')
       } else {
-        res.send('')
+        query(
+          `insert into friend (userId, friendId) values (${userId}, ${loggedInUserId})`,
+          error => {
+            if (error) {
+              res.status(500).send('添加好友失败')
+            } else {
+              query(
+                `insert into friend (userId, friendId) values (${loggedInUserId}, ${userId})`,
+                error => {
+                  if (error) {
+                    res.status(500).send('添加好友失败')
+                  } else {
+                    res.send('')
+                  }
+                },
+              )
+            }
+          },
+        )
       }
     },
   )
