@@ -119,6 +119,9 @@ const store = new Vuex.Store({
     },
     connectSocketIO(context) {
       const {loggedInUser} = context.state
+      if (!loggedInUser) {
+        return
+      }
       const socket = io.connect(SOCKETIO_PATH)
       context.commit('setSocket', {socket})
       socket.on('receiveMessage', data => {
