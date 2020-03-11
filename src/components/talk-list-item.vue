@@ -2,6 +2,7 @@
   <div class="talk-list-item" @click="goTalkDetail">
     <div class="head-image">
       <img :src="imgSrc" alt="" />
+      <div v-show="unReadCount" class="dot">{{ unReadCount }}</div>
     </div>
     <div class="content">
       <div class="content-header">
@@ -29,6 +30,7 @@ export default {
     sendDate: Number, // 对话时间
     targetUserId: Number, // 对话目标id
     lastMessageUserName: String, // 最后发言用户名
+    unReadCount: Number,
     type: Number, // 对话目标类型 （todo: 用户、群等）
   },
   computed: {
@@ -60,8 +62,27 @@ export default {
   align-items: center;
 
   .head-image {
+    position: relative;
     img {
       width: 48px;
+      border-radius: 50%;
+    }
+    .dot {
+      position: absolute;
+      top: 0;
+      right: 0;
+      box-sizing: border-box;
+      min-width: 16px;
+      padding: 0 3px;
+      color: #fff;
+      font-weight: 500;
+      font-size: 12px;
+      font-family: PingFang SC, Helvetica Neue, Arial, sans-serif;
+      line-height: 14px;
+      text-align: center;
+      background-color: #ee0a24;
+      border: 1px solid #fff;
+      border-radius: 16px;
     }
   }
 

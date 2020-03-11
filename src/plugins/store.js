@@ -25,6 +25,13 @@ const store = new Vuex.Store({
     messageList: [], // 当前会话页的消息记录
     sendingMessage: null, // 当前会话页的正在发送中的消息
   },
+  getters: {
+    totalMessageUnReadCount: state => {
+      return state.talkList
+        .map(v => v.unReadCount || 0)
+        .reduce((a, b) => a + b, 0)
+    },
+  },
   mutations: {
     increment(state) {
       state.count++

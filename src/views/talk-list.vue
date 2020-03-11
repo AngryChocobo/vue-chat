@@ -12,6 +12,7 @@
           :sendDate="talk.sendDate"
           :lastMessageUserName="talk.lastMessageUserName"
           :message="talk.message"
+          :unReadCount="talk.unReadCount"
         />
       </van-cell>
     </van-list>
@@ -38,7 +39,9 @@ export default {
       return this.$store.state.talkList
     },
   },
-  mounted() {},
+  mounted() {
+    // console.log()
+  },
   methods: {},
 }
 </script>

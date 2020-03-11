@@ -1,7 +1,12 @@
 <template>
   <div class="my-tab-bar">
     <van-tabbar route>
-      <van-tabbar-item to="/talk-list" icon="comment-o">聊天</van-tabbar-item>
+      <van-tabbar-item
+        to="/talk-list"
+        icon="comment-o"
+        :info="totalMessageUnReadCount"
+        >聊天</van-tabbar-item
+      >
       <van-tabbar-item to="/friend-list" icon="friends-o">好友</van-tabbar-item>
       <van-tabbar-item to="/home" icon="home-o">我</van-tabbar-item>
     </van-tabbar>
@@ -17,6 +22,11 @@ export default {
   props: {
     onSend: {
       type: Function,
+    },
+  },
+  computed: {
+    totalMessageUnReadCount() {
+      return this.$store.getters.totalMessageUnReadCount
     },
   },
   methods: {

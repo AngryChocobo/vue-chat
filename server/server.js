@@ -47,6 +47,8 @@ const authMiddleWare = (req, res, next) => {
 
 // 私聊关系
 const talkRelationMap = []
+
+// 获取会话列表 （同时查询新消息数量，插入到会话列表的数据结构中）
 const getTalkList = (loggedInUserId, callback) => {
   query(
     `select  talkList.id,targetUser.id as targetUserId, lastMessageUserId, targetUser.username as targetUserName, lastMessageUser.username as lastMessageUserName, message.message, targetUser.src, message.sendDate
@@ -57,7 +59,20 @@ const getTalkList = (loggedInUserId, callback) => {
     where talkList.userId = ${loggedInUserId}`,
     function(error, results) {
       if (error) throw error
-      callback(results)
+      query(
+        `select fromUserId, toUserId, count(fromUserId) as unReadCount from message
+      where message.read = 0  and toUserId = ${loggedInUserId}
+      GROUP BY fromUserId, toUserId`,
+        (error, unReadResults) => {
+          if (error) throw error
+          unReadResults.forEach(data => {
+            const item = results.find(v => v.targetUserId === data.fromUserId)
+            item.unReadCount = data.unReadCount
+          })
+          console.log('after: ', results)
+          callback(results)
+        },
+      )
     },
   )
 }
