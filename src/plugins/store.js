@@ -150,7 +150,8 @@ const store = new Vuex.Store({
         context.commit('updateFriendRequestList', data)
       })
       socket.on('updateTalkList', () => {
-        alert('我收到了新消息，该重新获取对话列表了')
+        console.log('updateTalkList')
+        store.commit('getTalkList')
       })
     },
     sendMessage(context, payload) {

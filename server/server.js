@@ -92,6 +92,7 @@ io.on('connection', function(socket) {
                   const toUserSocket = io.sockets.sockets[toUser.socketId]
                   if (toUserSocket) {
                     toUserSocket.emit('receiveMessage', newMessage)
+                    toUserSocket.emit('updateTalkList')
                   }
                 }
               }
@@ -110,7 +111,7 @@ io.on('connection', function(socket) {
                           if (error) {
                             throw error
                           } else {
-                            socket.emit('updateTalkList')
+                            pushMessageTo()
                           }
                         },
                       )
@@ -122,7 +123,7 @@ io.on('connection', function(socket) {
                           if (error) {
                             throw error
                           } else {
-                            socket.emit('updateTalkList')
+                            pushMessageTo()
                           }
                         },
                       )
@@ -145,7 +146,6 @@ io.on('connection', function(socket) {
                         id: insertId,
                         sendDate,
                       })
-                      pushMessageTo()
                       createTargetNewTalkRecord()
                     }
                   },
@@ -162,7 +162,6 @@ io.on('connection', function(socket) {
                         id: insertId,
                         sendDate,
                       })
-                      pushMessageTo()
                       createTargetNewTalkRecord()
                     }
                   },
