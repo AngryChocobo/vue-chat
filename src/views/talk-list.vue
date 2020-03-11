@@ -38,14 +38,8 @@ export default {
       return this.$store.state.talkList
     },
   },
-  mounted() {
-    this.getTalkList()
-  },
-  methods: {
-    getTalkList() {
-      this.$store.commit('getTalkList')
-    },
-  },
+  mounted() {},
+  methods: {},
 }
 </script>
 

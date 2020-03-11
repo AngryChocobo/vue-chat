@@ -47,7 +47,20 @@ const authMiddleWare = (req, res, next) => {
 
 // 私聊关系
 const talkRelationMap = []
-
+const getTalkList = (loggedInUserId, callback) => {
+  query(
+    `select  talkList.id,targetUser.id as targetUserId, lastMessageUserId, targetUser.username as targetUserName, lastMessageUser.username as lastMessageUserName, message.message, targetUser.src, message.sendDate
+    from talkList
+    left join user lastMessageUser on lastMessageUser.id = talkList.lastMessageUserId
+    left join user targetUser on targetUser.id =  talkList.targetId
+    left join message on message.id = talkList.lastMessageId
+    where talkList.userId = ${loggedInUserId}`,
+    function(error, results) {
+      if (error) throw error
+      callback(results)
+    },
+  )
+}
 io.on('connection', function(socket) {
   console.log(socket.id + ' user connected')
   // 每个用户都加入到私聊关系表中
@@ -59,6 +72,8 @@ io.on('connection', function(socket) {
       userId: String(userId),
     })
   })
+
+  // 发送消息
   socket.on('sendMessage', function(data) {
     console.log('server receive sendNewMessage')
     const {loggedInUserId} = socket
@@ -92,7 +107,9 @@ io.on('connection', function(socket) {
                   const toUserSocket = io.sockets.sockets[toUser.socketId]
                   if (toUserSocket) {
                     toUserSocket.emit('receiveMessage', newMessage)
-                    toUserSocket.emit('updateTalkList')
+                    getTalkList(toUserSocket.loggedInUserId, results => {
+                      toUserSocket.emit('updateTalkList', results)
+                    })
                   }
                 }
               }
@@ -170,17 +187,15 @@ io.on('connection', function(socket) {
             },
           )
         }
-        // query(
-        //   `INSERT INTO message (fromUserId, toUserId, message, sendDate) VALUES (${fromUserId}, ${toUserId}, '${message}', ${sendDate})`,
-        //   function(error, result, fields) {
-        //     if (error) throw error
-        //     socket.emit('sendMessageSuccess', {id: result.insertId, sendDate})
-        //     // 判断当前消息的接收方在不在线，在线则推送
-
-        //   },
-        // )
       },
     )
+  })
+
+  // 获取会话列表
+  socket.on('getTalkList', () => {
+    getTalkList(socket.loggedInUserId, results => {
+      socket.emit('updateTalkList', results)
+    })
   })
 
   // 发出好友申请
@@ -348,23 +363,6 @@ app.get('/searchUsers', authMiddleWare, (req, res) => {
   const {fromUserId, keyword} = req.query
   query(
     `select * from user where user.username like '%${keyword}%' or user.id='${keyword}'`,
-    function(error, results) {
-      if (error) throw error
-      res.send(results)
-    },
-  )
-})
-
-// 会话列表页
-app.get('/getTalkList', authMiddleWare, function(req, res) {
-  const loggedInUserId = req.user.id
-  query(
-    `select  talkList.id,targetUser.id as targetUserId, lastMessageUserId, targetUser.username as targetUserName, lastMessageUser.username as lastMessageUserName, message.message, targetUser.src, message.sendDate
-    from talkList
-    left join user lastMessageUser on lastMessageUser.id = talkList.lastMessageUserId
-    left join user targetUser on targetUser.id =  talkList.targetId
-    left join message on message.id = talkList.lastMessageId
-    where talkList.userId = ${loggedInUserId}`,
     function(error, results) {
       if (error) throw error
       res.send(results)

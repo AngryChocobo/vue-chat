@@ -69,9 +69,6 @@ const store = new Vuex.Store({
       // alert('receiveMessage: ' + payload.message)
       state.messageList.push(payload)
     },
-    getTalkList(state, payload) {
-      store.dispatch('getTalkList', payload)
-    },
     updateTalkList(state, payload) {
       state.talkList = payload
     },
@@ -107,11 +104,6 @@ const store = new Vuex.Store({
         router.replace('/login')
       })
     },
-    getTalkList(context) {
-      axios.get(getTalkList).then(res => {
-        context.commit('updateTalkList', res.data)
-      })
-    },
     getMessageList(context, payload) {
       const {loggedInUser} = context.state
       axios.get(getMessageList(loggedInUser.id, payload.toUserId)).then(res => {
@@ -130,7 +122,7 @@ const store = new Vuex.Store({
         context.commit('receiveMessage', data)
       })
       socket.emit('connectSocketIO', loggedInUser.id)
-
+      socket.emit('getTalkList')
       socket.on('sendMessageSuccess', data => {
         context.commit('sendMessageSuccess', {
           id: data.id,
@@ -149,9 +141,9 @@ const store = new Vuex.Store({
       socket.on('getFriendRequestResult', data => {
         context.commit('updateFriendRequestList', data)
       })
-      socket.on('updateTalkList', () => {
-        console.log('updateTalkList')
-        store.commit('getTalkList')
+      socket.on('updateTalkList', data => {
+        console.log('updateTalkList', data)
+        store.commit('updateTalkList', data)
       })
     },
     sendMessage(context, payload) {
