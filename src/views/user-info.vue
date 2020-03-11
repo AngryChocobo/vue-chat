@@ -18,7 +18,7 @@
         <van-cell> 设置备注和标签 </van-cell>
         <van-cell> 朋友权限 </van-cell>
         <van-cell> 朋友圈 </van-cell>
-        <van-cell> 发消息 </van-cell>
+        <van-cell @click="talkTo"> 发消息 </van-cell>
         <van-cell> 音视频通话 </van-cell>
       </template>
       <div v-if="!userIsFriend && userInfo.stats !== 1">
@@ -81,6 +81,12 @@ export default {
     this.getUserInfo()
   },
   methods: {
+    talkTo() {
+      this.$router.push({
+        name: 'TalkView',
+        params: {id: this.userInfo.userId},
+      })
+    },
     getUserInfo() {
       const {userId} = this.$route.params
       if (!userId) {

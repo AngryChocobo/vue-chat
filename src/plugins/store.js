@@ -66,6 +66,7 @@ const store = new Vuex.Store({
       state.socket = payload.socket
     },
     receiveMessage(state, payload) {
+      // alert('receiveMessage: ' + payload.message)
       state.messageList.push(payload)
     },
     getTalkList(state, payload) {
@@ -148,11 +149,13 @@ const store = new Vuex.Store({
       socket.on('getFriendRequestResult', data => {
         context.commit('updateFriendRequestList', data)
       })
+      socket.on('updateTalkList', () => {
+        alert('我收到了新消息，该重新获取对话列表了')
+      })
     },
     sendMessage(context, payload) {
       context.state.sendingMessage = payload.message
       context.state.socket.emit('sendMessage', {
-        fromUserId: context.state.loggedInUser.id,
         toUserId: payload.toUserId,
         message: payload.message,
       })

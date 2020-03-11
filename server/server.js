@@ -56,33 +56,130 @@ io.on('connection', function(socket) {
     socket.loggedInUserId = userId
     talkRelationMap.push({
       socketId: socket.id,
-      userId,
+      userId: String(userId),
     })
   })
   socket.on('sendMessage', function(data) {
     console.log('server receive sendNewMessage')
-    const {fromUserId, toUserId, message} = data
+    const {loggedInUserId} = socket
+    const {toUserId, message} = data
     const sendDate = Date.now()
     query(
-      `INSERT INTO message (fromUserId, toUserId, message, sendDate) VALUES (${fromUserId}, ${toUserId}, '${message}', ${sendDate})`,
-      function(error, result, fields) {
-        if (error) throw error
-        socket.emit('sendMessageSuccess', {id: result.insertId, sendDate})
-        // 判断当前消息的接收方在不在线，在线则推送
-        console.log('准备推送', talkRelationMap)
-        const toUser = talkRelationMap.find(talk => talk.userId === toUserId)
-        if (toUser) {
-          const toUserSocket = io.sockets.sockets[toUser.socketId]
-          if (toUserSocket) {
-            toUserSocket.emit('receiveMessage', {
-              id: result.insertId,
-              fromUserId,
-              toUserId,
-              message,
-              sendDate,
-            })
-          }
+      `INSERT INTO message (fromUserId, toUserId, message, sendDate) VALUES (${loggedInUserId}, ${toUserId}, '${message}', ${sendDate})`,
+      (error, result) => {
+        if (error) {
+          throw error
+        } else {
+          const {insertId} = result
+          // todo 重构 插入之前先判断，有则更新
+          query(
+            `select * from talkList
+          where userId = ${loggedInUserId} and targetId = ${toUserId}`,
+            (error, results) => {
+              const newMessage = {
+                id: insertId,
+                fromUserId: loggedInUserId,
+                toUserId,
+                message,
+                sendDate,
+              }
+              const pushMessageTo = () => {
+                console.log('准备推送', talkRelationMap)
+                const toUser = talkRelationMap.find(
+                  talk => talk.userId === toUserId,
+                )
+                if (toUser) {
+                  const toUserSocket = io.sockets.sockets[toUser.socketId]
+                  if (toUserSocket) {
+                    toUserSocket.emit('receiveMessage', newMessage)
+                  }
+                }
+              }
+              const createTargetNewTalkRecord = () => {
+                query(
+                  `select * from talkList
+                where userId = ${toUserId} and targetId = ${loggedInUserId}`,
+                  (error, results) => {
+                    if (error) {
+                      throw error
+                    } else if (results.length > 0) {
+                      // 更新该记录
+                      query(
+                        `UPDATE talkList set lastMessageId=${insertId}, lastMessageUserId=${loggedInUserId}, userId=${toUserId}, targetId=${loggedInUserId} where id = ${results[0].id}`,
+                        error => {
+                          if (error) {
+                            throw error
+                          } else {
+                            socket.emit('updateTalkList')
+                          }
+                        },
+                      )
+                    } else {
+                      // 插入新记录
+                      query(
+                        `insert into talkList (lastMessageId, lastMessageUserId, userId, targetId) values (${insertId}, ${loggedInUserId}, ${toUserId}, ${loggedInUserId})`,
+                        error => {
+                          if (error) {
+                            throw error
+                          } else {
+                            socket.emit('updateTalkList')
+                          }
+                        },
+                      )
+                    }
+                  },
+                )
+              }
+
+              if (error) {
+                throw error
+              } else if (results.length > 0) {
+                // 更新该记录
+                query(
+                  `UPDATE talkList set lastMessageId=${insertId}, lastMessageUserId=${loggedInUserId}, userId=${loggedInUserId}, targetId=${toUserId} where id = ${results[0].id}`,
+                  error => {
+                    if (error) {
+                      throw error
+                    } else {
+                      socket.emit('sendMessageSuccess', {
+                        id: insertId,
+                        sendDate,
+                      })
+                      pushMessageTo()
+                      createTargetNewTalkRecord()
+                    }
+                  },
+                )
+              } else {
+                // 插入新记录
+                query(
+                  `insert into talkList (lastMessageId, lastMessageUserId, userId, targetId) values (${insertId}, ${loggedInUserId}, ${loggedInUserId}, ${toUserId})`,
+                  error => {
+                    if (error) {
+                      throw error
+                    } else {
+                      socket.emit('sendMessageSuccess', {
+                        id: insertId,
+                        sendDate,
+                      })
+                      pushMessageTo()
+                      createTargetNewTalkRecord()
+                    }
+                  },
+                )
+              }
+            },
+          )
         }
+        // query(
+        //   `INSERT INTO message (fromUserId, toUserId, message, sendDate) VALUES (${fromUserId}, ${toUserId}, '${message}', ${sendDate})`,
+        //   function(error, result, fields) {
+        //     if (error) throw error
+        //     socket.emit('sendMessageSuccess', {id: result.insertId, sendDate})
+        //     // 判断当前消息的接收方在不在线，在线则推送
+
+        //   },
+        // )
       },
     )
   })
@@ -127,10 +224,12 @@ io.on('connection', function(socket) {
   socket.on('disconnect', () => {
     const socketId = socket.id
     console.log(socketId + ' user disconnect')
-    talkRelationMap.splice(
-      talkRelationMap.findIndex(talk => talk.socketId === socketId),
-      1,
+    const removeIndex = talkRelationMap.findIndex(
+      talk => talk.socketId === socketId,
     )
+    if (removeIndex !== -1) {
+      talkRelationMap.splice(removeIndex, 1)
+    }
   })
 })
 
@@ -176,7 +275,7 @@ app.get('/getFriendRequestInfo', authMiddleWare, (req, res) => {
   )
 })
 
-// 统一好友请求
+// 同意好友请求
 app.post('/agreeMakeFriendRequest', authMiddleWare, (req, res) => {
   const {userId, recordId} = req.body
   const loggedInUserId = req.user.id
@@ -229,19 +328,6 @@ app.get('/getMessageList', authMiddleWare, function(req, res) {
     function(error, results, fields) {
       if (error) throw error
       res.send(results)
-    },
-  )
-})
-
-// 发送新消息
-app.post('/sendNewMessage', authMiddleWare, function(req, res) {
-  const {fromUserId, toUserId, message} = req.body
-  const now = Date.now()
-  query(
-    `INSERT INTO message (fromUserId, toUserId, message, sendDate) VALUES (${fromUserId}, ${toUserId}, '${message}', ${now})`,
-    function(error, result) {
-      if (error) throw error
-      res.send(result)
     },
   )
 })
