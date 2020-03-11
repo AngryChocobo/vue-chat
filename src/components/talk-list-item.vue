@@ -27,7 +27,7 @@ export default {
     src: String, // 头像src
     targetUserName: String, // 对话目标名
     sendDate: Number, // 对话时间
-    toUserId: Number, // 对话目标id
+    targetUserId: Number, // 对话目标id
     lastMessageUserName: String, // 最后发言用户名
     type: Number, // 对话目标类型 （todo: 用户、群等）
   },
@@ -46,7 +46,7 @@ export default {
     goTalkDetail() {
       this.$router.push({
         name: 'TalkView',
-        params: {id: this.toUserId},
+        params: {id: this.targetUserId},
       })
     },
   },

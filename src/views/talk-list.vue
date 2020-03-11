@@ -8,7 +8,7 @@
           :id="talk.id"
           :src="talk.src"
           :targetUserName="talk.targetUserName"
-          :toUserId="talk.toUserId"
+          :targetUserId="talk.targetUserId"
           :sendDate="talk.sendDate"
           :lastMessageUserName="talk.lastMessageUserName"
           :message="talk.message"

@@ -253,7 +253,7 @@ app.get('/searchUsers', authMiddleWare, (req, res) => {
 app.get('/getTalkList', authMiddleWare, function(req, res) {
   const loggedInUserId = req.user.id
   query(
-    `select  talkList.id, lastMessageUserId, targetUser.username as targetUserName, lastMessageUser.username as lastMessageUserName, message.message, targetUser.src, message.sendDate
+    `select  talkList.id,targetUser.id as targetUserId, lastMessageUserId, targetUser.username as targetUserName, lastMessageUser.username as lastMessageUserName, message.message, targetUser.src, message.sendDate
     from talkList
     left join user lastMessageUser on lastMessageUser.id = talkList.lastMessageUserId
     left join user targetUser on targetUser.id =  talkList.targetId
