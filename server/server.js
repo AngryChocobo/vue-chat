@@ -123,6 +123,7 @@ io.on('connection', function(socket) {
                   if (toUserSocket) {
                     toUserSocket.emit('receiveMessage', newMessage)
                     getTalkList(toUserSocket.loggedInUserId, results => {
+                      console.log('will')
                       toUserSocket.emit('updateTalkList', results)
                     })
                   }
