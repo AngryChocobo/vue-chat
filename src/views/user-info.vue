@@ -14,34 +14,33 @@
           <p>地区： todo......</p>
         </div>
       </div>
-      <template v-if="userInfo.stats == 1">
+      <template v-if="userIsFriend">
         <van-cell> 设置备注和标签 </van-cell>
         <van-cell> 朋友权限 </van-cell>
         <van-cell> 朋友圈 </van-cell>
         <van-cell> 发消息 </van-cell>
         <van-cell> 音视频通话 </van-cell>
       </template>
-      <van-cell-group v-if="userInfo.stats !== 1">
-        <van-field
-          v-model="userInfo.say"
-          label="好友申请"
-          placeholder="请输入好友申请信息"
-          :disabled="userInfo.stats === 0"
-        />
-      </van-cell-group>
-      <!-- todo 对自己说话的操作 -->
-      <van-cell
-        v-if="userInfo.userId !== loggedInUserId && userInfo.stats !== 1"
-      >
-        <van-button
-          type="primary"
-          size="large"
-          :disabled="userInfo.stats === 0"
-          @click="makeFriendRequest"
-        >
-          {{ userInfo.stats | statsFilter }}
-        </van-button>
-      </van-cell>
+      <div v-if="!userIsFriend && userInfo.stats !== 1">
+        <van-cell-group>
+          <van-field
+            v-model="userInfo.say"
+            label="好友申请"
+            placeholder="请输入好友申请信息"
+            :disabled="userInfo.stats === 0"
+          />
+        </van-cell-group>
+        <van-cell>
+          <van-button
+            type="primary"
+            size="large"
+            :disabled="userInfo.stats === 0"
+            @click="makeFriendRequest"
+          >
+            {{ userInfo.stats | statsFilter }}
+          </van-button>
+        </van-cell>
+      </div>
     </template>
   </div>
 </template>
