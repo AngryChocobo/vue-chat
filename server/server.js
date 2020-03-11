@@ -187,14 +187,15 @@ app.post('/agreeMakeFriendRequest', authMiddleWare, (req, res) => {
       if (error) {
         res.status(500).send('通过失败')
       } else {
+        const now = Date.now()
         query(
-          `insert into friend (userId, friendId) values (${userId}, ${loggedInUserId})`,
+          `insert into friend (userId, friendId, create_at) values (${userId}, ${loggedInUserId}, ${now})`,
           error => {
             if (error) {
               res.status(500).send('添加好友失败')
             } else {
               query(
-                `insert into friend (userId, friendId) values (${loggedInUserId}, ${userId})`,
+                `insert into friend (userId, friendId, create_at) values (${loggedInUserId}, ${userId}, ${now})`,
                 error => {
                   if (error) {
                     res.status(500).send('添加好友失败')
