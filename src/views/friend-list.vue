@@ -64,7 +64,11 @@ export default {
     },
     getUserFriendList() {
       this.$axios
-        .get(getUserFriendList(this.$store.state.loggedInUser.id))
+        .get(
+          getUserFriendList(
+            this.$store.state.loggedInUserModule.loggedInUser.id.id,
+          ),
+        )
         .then(res => {
           this.friendList = res.data || []
         })

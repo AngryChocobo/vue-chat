@@ -30,14 +30,14 @@ export default {
   name: 'Login',
   data() {
     return {
-      username: '',
-      password: '',
+      username: '高明震',
+      password: '2',
     }
   },
   methods: {
     onSubmit(values) {
       const {username, password} = values
-      this.$store.commit('login', {
+      this.$store.dispatch('login', {
         username,
         password,
       })

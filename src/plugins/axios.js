@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import axios from 'axios'
-import store from './store.js'
+import store from '../store/store.js'
 import {Toast} from 'vant'
 
 axios.interceptors.request.use(config => {
-  const token = store.state.token
+  const token = store.state.loggedInUserModule.token
   if (token) {
     config.headers.authorization = `Bearer ${token}`
   }

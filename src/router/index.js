@@ -9,7 +9,7 @@ import FriendRequest from '../views/friend-request.vue'
 import FriendRequestInfo from '../views/friend-request-info.vue'
 import SearchUser from '../views/search-user.vue'
 import UserInfo from '../views/user-info.vue'
-import store from '../plugins/store'
+import store from '../store/store.js'
 import {Toast} from 'vant'
 Vue.use(VueRouter)
 
@@ -88,7 +88,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
-    if (!store.state.loggedInUser) {
+    if (!store.state.loggedInUserModule.loggedInUser) {
       Toast('登陆失效，请重新登录')
       router.replace('/login')
     }

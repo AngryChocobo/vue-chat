@@ -50,6 +50,7 @@ const talkRelationMap = []
 
 // 获取会话列表 （同时查询新消息数量，插入到会话列表的数据结构中）
 const getTalkList = (loggedInUserId, callback) => {
+  console.log(`${loggedInUserId} 获取会话列表`)
   query(
     `select  talkList.id,targetUser.id as targetUserId, lastMessageUserId, targetUser.username as targetUserName, lastMessageUser.username as lastMessageUserName, message.message, targetUser.src, message.sendDate
     from talkList
@@ -69,7 +70,6 @@ const getTalkList = (loggedInUserId, callback) => {
             const item = results.find(v => v.targetUserId === data.fromUserId)
             item.unReadCount = data.unReadCount
           })
-          console.log('after: ', results)
           callback(results)
         },
       )
@@ -77,10 +77,10 @@ const getTalkList = (loggedInUserId, callback) => {
   )
 }
 io.on('connection', function(socket) {
-  console.log(socket.id + ' user connected')
   // 每个用户都加入到私聊关系表中
   socket.on('connectSocketIO', function(userId) {
     // 存储登录用户的id
+    console.log(`${userId} user connected, socketId： ${socket.id}`)
     socket.loggedInUserId = userId
     talkRelationMap.push({
       socketId: socket.id,

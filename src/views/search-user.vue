@@ -56,7 +56,12 @@ export default {
     },
     searchUsers() {
       this.$axios
-        .get(searchUsers(this.$store.state.loggedInUser.id, this.keyword))
+        .get(
+          searchUsers(
+            this.$store.state.loggedInUserModule.loggedInUser.id.id,
+            this.keyword,
+          ),
+        )
         .then(res => {
           this.userList = res.data
           if (res.data.length == 0) {

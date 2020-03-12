@@ -43,7 +43,7 @@ export default {
       return this.targetInfo && this.targetInfo.username
     },
     messageList() {
-      return this.$store.state.messageList
+      return this.$store.state.talkModule.messageList
     },
     targetId() {
       return this.$route.params.id
@@ -60,7 +60,7 @@ export default {
       })
     },
     getMessageList() {
-      this.$store.commit('getMessageList', {
+      this.$store.dispatch('getMessageList', {
         toUserId: this.targetId,
       })
     },
@@ -69,7 +69,7 @@ export default {
       dom.$el.scrollIntoView()
     },
     sendMessage(message) {
-      this.$store.commit('sendMessage', {
+      this.$store.dispatch('sendMessage', {
         toUserId: this.targetId,
         message,
       })

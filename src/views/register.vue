@@ -39,7 +39,7 @@ export default {
   methods: {
     onSubmit(values) {
       const {username, password} = values
-      this.$store.commit('register', {
+      this.$store.dispatch('register', {
         username,
         password,
       })

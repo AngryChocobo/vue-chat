@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     talkList() {
-      return this.$store.state.talkList
+      return this.$store.state.talkModule.talkList
     },
   },
   mounted() {

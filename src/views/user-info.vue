@@ -74,7 +74,7 @@ export default {
       return this.userInfo && this.userInfo.friendRelationId ? true : false
     },
     loggedInUserId() {
-      return this.$store.state.loggedInUser.id
+      return this.$store.state.loggedInUserModule.loggedInUser.id.id
     },
   },
   mounted() {
