@@ -34,14 +34,17 @@ const authMiddleWare = (req, res, next) => {
       res.status(401).send(jwtError.message)
     } else {
       // 判断有没有这个用户
-      query(`select * from user where id = ${data.id}`, (error, result) => {
-        if (error || result.length === 0) {
-          res.status(401).send('登陆失效')
-        } else {
-          req.user = result[0]
-          next()
-        }
-      })
+      query(
+        `select id, username, nickname, src from user where id = ${data.id}`,
+        (error, result) => {
+          if (error || result.length === 0) {
+            res.status(401).send('登陆失效')
+          } else {
+            req.user = result[0]
+            next()
+          }
+        },
+      )
     }
   })
 }
@@ -127,10 +130,13 @@ app.post('/agreeMakeFriendRequest', authMiddleWare, (req, res) => {
 // 会话目标信息
 app.get('/getTalkTargetInfo', authMiddleWare, function(req, res) {
   const {userId} = req.query
-  query(`select * from user WHERE user.id=${userId}`, function(error, results) {
-    if (error) throw error
-    res.send(results[0])
-  })
+  query(
+    `select id, username, nickname, src from user WHERE user.id=${userId}`,
+    function(error, results) {
+      if (error) throw error
+      res.send(results[0])
+    },
+  )
 })
 
 // 会话页
