@@ -3,13 +3,7 @@ import Vuex from 'vuex'
 import {Toast} from 'vant'
 import router from '../router/index'
 import io from 'socket.io-client'
-import {
-  getMessageList,
-  getTalkList,
-  SOCKETIO_PATH,
-  register,
-  login,
-} from '@const/api'
+import {getMessageList, SOCKETIO_PATH, register, login} from '@const/api'
 import axios from './axios.js'
 
 Vue.use(Vuex)
