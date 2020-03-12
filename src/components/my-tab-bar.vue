@@ -4,7 +4,7 @@
       <van-tabbar-item
         to="/talk-list"
         icon="comment-o"
-        :info="totalMessageUnReadCount"
+        :info="totalMessageUnReadCount || ''"
         >聊天</van-tabbar-item
       >
       <van-tabbar-item to="/friend-list" icon="friends-o">好友</van-tabbar-item>
