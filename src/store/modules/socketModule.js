@@ -1,3 +1,4 @@
+import {Toast} from 'vant'
 import router from '@/router/index'
 import io from 'socket.io-client'
 import {SOCKETIO_PATH} from '@const/api.js'
@@ -5,10 +6,14 @@ import {SOCKETIO_PATH} from '@const/api.js'
 export default {
   state: {
     socket: null,
+    friendRequestList: [],
   },
   mutations: {
     setSocket(state, payload) {
       state.socket = payload
+    },
+    updateFriendRequestList(state, payload) {
+      state.friendRequestList = payload
     },
   },
   actions: {
@@ -17,12 +22,12 @@ export default {
       if (!loggedInUser) {
         return
       }
-      const socket = io.connect(SOCKETIO_PATH)
+      const socket = io.connect(SOCKETIO_PATH, {reconnectionAttempts: 10})
       socket.emit('connectSocketIO', loggedInUser.id)
       context.commit('setSocket', socket)
       socket.on('receiveMessage', data => {
         console.log('收到了新消息', JSON.stringify(data))
-        context.commit('receiveMessage', data)
+        context.commit('receiveMessage', data, {root: true})
       })
       socket.emit('getTalkList')
       socket.on('sendMessageSuccess', data => {
@@ -51,6 +56,12 @@ export default {
     sendMessage(context, payload) {
       context.state.sendingMessage = payload.message
       context.state.socket.emit('sendMessage', payload)
+    },
+    makeFriendRequest(context, payload) {
+      context.state.socket.emit('makeFriendRequest', payload)
+    },
+    getFriendRequestList(context) {
+      context.state.socket.emit('getFriendRequestList')
     },
   },
 }

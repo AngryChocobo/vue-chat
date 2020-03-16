@@ -30,7 +30,7 @@ export default {
   },
   data() {
     return {
-      keyword: '翁',
+      keyword: '',
       userList: [],
       activeName: 'all',
     }
@@ -45,8 +45,6 @@ export default {
   },
   methods: {
     checkUserInfo(user) {
-      this.$toast('todo添加好友: ' + user.username)
-      console.log(user)
       this.$router.push({
         name: 'UserInfo',
         params: {

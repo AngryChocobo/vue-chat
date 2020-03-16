@@ -19,10 +19,13 @@ export default {
       state.talkList = payload
     },
     updateMessageList(state, payload) {
-      console.log('talk模块 准备更新消息列表')
+      console.log('talk模块 准备更新消息列表', payload)
       state.messageList = payload
     },
     sendMessageSuccess(state, payload) {
+      state.messageList.push(payload)
+    },
+    receiveMessage(state, payload) {
       state.messageList.push(payload)
     },
   },

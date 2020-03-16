@@ -1,5 +1,5 @@
 <template>
-  <div class="friend-request">
+  <div class="friend-request-list">
     <my-nav-bar title="新朋友">
       <template slot="right">
         <router-link to="/search-user">添加好友</router-link>
@@ -30,7 +30,7 @@
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
 export default {
-  name: 'FriendList',
+  name: 'FriendRequestList',
   components: {
     MyTabBar,
     MyNavBar,
@@ -42,7 +42,7 @@ export default {
   },
   computed: {
     friendRequestList() {
-      return this.$store.state.friendRequestList
+      return this.$store.state.socketModule.friendRequestList
     },
   },
   mounted() {
@@ -58,7 +58,7 @@ export default {
       })
     },
     getFriendRequestList() {
-      this.$store.commit('getFriendRequestList')
+      this.$store.dispatch('getFriendRequestList')
     },
     getImgSrc(src) {
       return src
@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.friend-request {
+.friend-request-list {
   padding: 0;
   /deep/.friend {
     .van-cell__value {
@@ -84,8 +84,6 @@ export default {
           width: 32px;
           margin-right: 8px;
         }
-      }
-      .stats {
       }
     }
   }

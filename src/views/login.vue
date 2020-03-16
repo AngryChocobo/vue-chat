@@ -30,8 +30,8 @@ export default {
   name: 'Login',
   data() {
     return {
-      username: '高明震',
-      password: '2',
+      username: '',
+      password: '1',
     }
   },
   methods: {

@@ -34,7 +34,7 @@
 <script>
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
-import {getUserFriendList, getUserInfo} from '@const/api'
+import {getUserFriendList} from '@const/api'
 export default {
   name: 'FriendList',
   components: {
@@ -53,7 +53,7 @@ export default {
   methods: {
     toFriendRequestList() {
       this.$router.push({
-        path: 'friend-request',
+        path: 'friend-request-list',
       })
     },
     checkFriendInfo(friend) {

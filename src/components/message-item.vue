@@ -35,10 +35,6 @@ export default {
       return this.$moment(this.sendDate).format('MM/DD HH:mm:ss')
     },
     imgSrc() {
-      if (this.isMine) {
-        return require('@assets/head/' +
-          this.$store.state.loggedInUserModule.loggedInUser.src)
-      }
       return this.src
         ? require('@assets/head/' + this.src)
         : require('@assets/head/head.jpg')

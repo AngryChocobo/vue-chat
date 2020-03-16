@@ -6,7 +6,7 @@ import Login from '../views/login.vue'
 import TalkList from '../views/talk-list.vue'
 import TalkView from '../views/talk-view.vue'
 import FriendList from '../views/friend-list.vue'
-import FriendRequest from '../views/friend-request.vue'
+import FriendRequestList from '../views/friend-request-list.vue'
 import FriendRequestInfo from '../views/friend-request-info.vue'
 import SearchUser from '../views/search-user.vue'
 import UserInfo from '../views/user-info.vue'
@@ -49,13 +49,13 @@ const routes = [
     meta: {requireAuth: true},
   },
   {
-    path: '/friend-request',
-    name: 'FriendRequest',
-    component: FriendRequest,
+    path: '/friend-request-list',
+    name: 'FriendRequestList',
+    component: FriendRequestList,
     meta: {requireAuth: true},
   },
   {
-    path: '/friend-request/:userId',
+    path: '/friend-request-list/:userId',
     name: 'FriendRequestInfo',
     component: FriendRequestInfo,
     meta: {requireAuth: true},

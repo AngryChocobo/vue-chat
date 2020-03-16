@@ -98,7 +98,7 @@ export default {
       })
     },
     makeFriendRequest() {
-      this.$store.commit('makeFriendRequest', {
+      this.$store.dispatch('makeFriendRequest', {
         userId: this.userInfo.userId,
         say: this.userInfo.say,
       })

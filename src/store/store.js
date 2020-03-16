@@ -20,6 +20,6 @@ const store = new Vuex.Store({
 })
 
 store.dispatch('connectSocketIO')
-console.log(store)
+// console.log(store)
 window.store = store
 export default store
