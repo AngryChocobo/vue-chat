@@ -38,3 +38,10 @@ GET {{url}}/getUserInfo HTTP/1.1
 ?userId=5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTgzNjM0NTM1fQ.LM7z3-7wE2-s6klonYtlTXrrLxBdxcmDYCeqb-Of-xY
 
+
+### 清空数据库数据
+GET {{url}}/deleteAllData HTTP/1.1
+
+### 插入测试数据
+
+GET {{url}}/init HTTP/1.1

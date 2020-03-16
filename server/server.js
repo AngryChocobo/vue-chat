@@ -53,6 +53,30 @@ app.get('/', function(req, res) {
   res.send('server ok')
 })
 
+app.get('/init', (req, res) => {
+  query(`insert into test (id) values (1)`)
+  res.send('init success')
+})
+
+app.get('/deleteAllData', (req, res) => {
+  query(`delete from friend`, error => {
+    if (error) throw error
+    query(`delete from user`, error => {
+      if (error) throw error
+      query(`delete from makeFriendRecord`, error => {
+        if (error) throw error
+        query(`delete from message`, error => {
+          if (error) throw error
+          query(`delete from talkList`, error => {
+            if (error) throw error
+            res.send('looks delete success')
+          })
+        })
+      })
+    })
+  })
+})
+
 // 查看搜索用户详细信息及是否是好友
 app.get('/getUserInfo', authMiddleWare, (req, res) => {
   const targetId = req.query.userId // 查询目标id
