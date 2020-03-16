@@ -25,11 +25,12 @@ export default {
       const socket = io.connect(SOCKETIO_PATH, {reconnectionAttempts: 10})
       socket.emit('connectSocketIO', loggedInUser.id)
       context.commit('setSocket', socket)
+      socket.emit('getTalkList')
+      socket.emit('getFriendRequestList')
       socket.on('receiveMessage', data => {
         console.log('收到了新消息', JSON.stringify(data))
         context.commit('receiveMessage', data, {root: true})
       })
-      socket.emit('getTalkList')
       socket.on('sendMessageSuccess', data => {
         context.commit('sendMessageSuccess', {
           id: data.id,

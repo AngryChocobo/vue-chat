@@ -45,9 +45,7 @@ export default {
       return this.$store.state.socketModule.friendRequestList
     },
   },
-  mounted() {
-    this.getFriendRequestList()
-  },
+  mounted() {},
   methods: {
     checkFriendRequestInfo(friend) {
       this.$router.push({
@@ -56,9 +54,6 @@ export default {
           userId: friend.userId,
         },
       })
-    },
-    getFriendRequestList() {
-      this.$store.dispatch('getFriendRequestList')
     },
     getImgSrc(src) {
       return src

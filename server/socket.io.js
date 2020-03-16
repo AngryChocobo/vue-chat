@@ -193,6 +193,7 @@ module.exports = http => {
 
     // 获取好友申请列表
     socket.on('getFriendRequestList', function() {
+      console.log(`${socket.loggedInUserId} 获取好友申请列表`)
       query(
         `select makeFriendRecord.id, user.id as userId, user.username, user.nickname, user.src, 
           makeFriendRecord.say, makeFriendRecord.stats, makeFriendRecord.read, makeFriendRecord.create_at
