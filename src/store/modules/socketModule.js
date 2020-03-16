@@ -8,6 +8,11 @@ export default {
     socket: null,
     friendRequestList: [],
   },
+  getters: {
+    friendRequestUnReadCount(state) {
+      return state.friendRequestList.map(v => v.read === 0).length
+    },
+  },
   mutations: {
     setSocket(state, payload) {
       state.socket = payload

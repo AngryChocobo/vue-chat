@@ -5,7 +5,17 @@
         <router-link to="/search-user">添加好友</router-link>
       </template>
     </my-nav-bar>
-    <van-field readonly label="新朋友" is-link @click="toFriendRequestList" />
+    <van-field
+      class="newFriend"
+      readonly
+      label="新朋友"
+      is-link
+      @click="toFriendRequestList"
+    >
+      <div v-show="friendRequestUnReadCount" class="dot" slot="right-icon">
+        {{ friendRequestUnReadCount }}
+      </div>
+    </van-field>
     <van-collapse v-model="activeName" accordion>
       <van-collapse-item title="全部好友" name="all">
         <van-list>
@@ -47,6 +57,11 @@ export default {
       activeName: 'all',
     }
   },
+  computed: {
+    friendRequestUnReadCount() {
+      return this.$store.getters.friendRequestUnReadCount
+    },
+  },
   mounted() {
     this.getUserFriendList()
   },
@@ -85,6 +100,30 @@ export default {
 
 <style lang="less" scoped>
 .friend-list {
+  .newFriend {
+    /deep/ .van-field__right-icon {
+      position: relative;
+      .dot {
+        position: absolute;
+        top: 0;
+        right: 16px;
+        box-sizing: border-box;
+        transform: translateY(-50%);
+        min-width: 16px;
+        padding: 0 3px;
+        color: #fff;
+        font-weight: 500;
+        font-size: 12px;
+        font-family: PingFang SC, Helvetica Neue, Arial, sans-serif;
+        line-height: 14px;
+        text-align: center;
+        background-color: #ee0a24;
+        border: 1px solid #fff;
+        border-radius: 16px;
+      }
+    }
+  }
+
   /deep/ .van-collapse-item__content {
     padding: 0;
     .friend {

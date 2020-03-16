@@ -7,7 +7,12 @@
         :info="totalMessageUnReadCount || ''"
         >聊天</van-tabbar-item
       >
-      <van-tabbar-item to="/friend-list" icon="friends-o">好友</van-tabbar-item>
+      <van-tabbar-item
+        to="/friend-list"
+        icon="friends-o"
+        :info="friendRequestUnReadCount || ''"
+        >好友</van-tabbar-item
+      >
       <van-tabbar-item to="/home" icon="home-o">我</van-tabbar-item>
     </van-tabbar>
   </div>
@@ -27,6 +32,9 @@ export default {
   computed: {
     totalMessageUnReadCount() {
       return this.$store.getters.totalMessageUnReadCount
+    },
+    friendRequestUnReadCount() {
+      return this.$store.getters.friendRequestUnReadCount
     },
   },
   methods: {
