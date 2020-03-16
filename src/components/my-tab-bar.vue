@@ -4,7 +4,7 @@
       <van-tabbar-item
         to="/talk-list"
         icon="comment-o"
-        :info="totalMessageUnReadCount || ''"
+        :info="totalUnReadMessageCount || ''"
         >聊天</van-tabbar-item
       >
       <van-tabbar-item
@@ -30,8 +30,8 @@ export default {
     },
   },
   computed: {
-    totalMessageUnReadCount() {
-      return this.$store.getters.totalMessageUnReadCount
+    totalUnReadMessageCount() {
+      return this.$store.getters.totalUnReadMessageCount
     },
     friendRequestUnReadCount() {
       return this.$store.getters.friendRequestUnReadCount
