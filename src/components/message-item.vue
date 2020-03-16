@@ -46,12 +46,10 @@ export default {
   },
   methods: {
     goUserInfo() {
-      // this.$router.push({
-      //   path: 'talk-view',
-      //   query: {
-      //     targetId: this.id,
-      //   },
-      // })
+      this.$router.push({
+        name: 'UserInfo',
+        params: {userId: this.fromUserId},
+      })
     },
   },
 }

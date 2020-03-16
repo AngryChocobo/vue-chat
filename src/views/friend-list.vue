@@ -25,11 +25,7 @@
             :key="friend.id"
             @click="checkFriendInfo(friend)"
           >
-            <img
-              :src="getImgSrc(friend.src)"
-              :alt="friend.name"
-              @click="goTalkView"
-            />
+            <img :src="getImgSrc(friend.src)" :alt="friend.name" />
             <span class="username">{{ friend.username }}</span>
           </van-cell>
         </van-list>
@@ -93,7 +89,6 @@ export default {
         ? require('@assets/head/' + src)
         : require('@assets/head/head.jpg')
     },
-    goTalkView() {},
   },
 }
 </script>
