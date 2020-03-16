@@ -211,6 +211,25 @@ module.exports = http => {
       )
     })
 
+    // 清空对当前目标的消息未读数
+    socket.on('clearUnReadMessages', targetId => {
+      console.log(
+        `${socket.loggedInUserId} 准备清空好友 ${targetId} 的未读消息数量`,
+      )
+      query(
+        `update message set \`read\`=1 where fromUserId = ${targetId} and toUserId = ${socket.loggedInUserId};`,
+        error => {
+          if (error) {
+            console.error(error)
+          } else {
+            getTalkList(socket.loggedInUserId, results => {
+              socket.emit('updateTalkList', results)
+            })
+          }
+        },
+      )
+    })
+
     socket.on('disconnect', () => {
       const socketId = socket.id
       console.log(socketId + ' user disconnect')

@@ -48,14 +48,25 @@ export default {
     targetId() {
       return this.$route.params.id
     },
+    totalUnReadMessage() {
+      return this.$store.getters.totalUnReadMessage
+    },
   },
   mounted() {
     this.getTalkTargetInfo(this.targetId)
     this.getMessageList()
+    this.clearUnReadMessages()
   },
   methods: {
+    clearUnReadMessages() {
+      if (this.totalUnReadMessage.find(v => v.targetUserId == this.targetId)) {
+        this.$store.dispatch('clearUnReadMessages', {
+          targetId: this.targetId,
+        })
+      }
+    },
     getTalkTargetInfo(targetId) {
-      this.$axios.get(getTalkTargetInfo(targetId)).then(res => {
+      this.$axios(getTalkTargetInfo(targetId)).then(res => {
         this.targetInfo = res.data
       })
     },

@@ -7,9 +7,12 @@ export default {
     messageList: [],
   },
   getters: {
-    totalMessageUnReadCount(state) {
-      return state.talkList
-        .map(v => v.unReadCount || 0)
+    totalUnReadMessage(state) {
+      return state.talkList.filter(v => v.unReadCount)
+    },
+    totalUnReadMessageCount(state, getters) {
+      return getters.totalUnReadMessage
+        .map(v => v.unReadCount)
         .reduce((a, b) => a + b, 0)
     },
   },

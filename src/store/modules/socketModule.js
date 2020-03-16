@@ -69,5 +69,8 @@ export default {
     getFriendRequestList(context) {
       context.state.socket.emit('getFriendRequestList')
     },
+    clearUnReadMessages(context, payload) {
+      context.state.socket.emit('clearUnReadMessages', payload.targetId)
+    },
   },
 }
