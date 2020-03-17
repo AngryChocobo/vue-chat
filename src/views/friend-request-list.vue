@@ -45,8 +45,15 @@ export default {
       return this.$store.state.socketModule.friendRequestList
     },
   },
-  mounted() {},
+  mounted() {
+    this.clearUnReadFriendRequest()
+  },
   methods: {
+    clearUnReadFriendRequest() {
+      if (this.friendRequestList.length) {
+        this.$store.dispatch('clearUnReadFriendRequest')
+      }
+    },
     checkFriendRequestInfo(friend) {
       this.$router.push({
         name: 'FriendRequestInfo',

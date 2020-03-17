@@ -29,6 +29,19 @@ const getTalkList = (loggedInUserId, callback) => {
     },
   )
 }
+// 获取好友申请列表
+const getFriendRequestList = (loggedInUserId, callback) => {
+  console.log(`${loggedInUserId} 获取好友申请列表`)
+  query(
+    `select makeFriendRecord.id, user.id as userId, user.username, user.nickname, user.src, 
+      makeFriendRecord.say, makeFriendRecord.stats, makeFriendRecord.read, makeFriendRecord.create_at
+      from makeFriendRecord 
+      left join user on user.id = makeFriendRecord.fromUserId
+      where toUserId = ${loggedInUserId}
+      order by makeFriendRecord.read asc, makeFriendRecord.create_at desc`,
+    callback,
+  )
+}
 
 module.exports = http => {
   // 私聊关系
@@ -193,22 +206,13 @@ module.exports = http => {
 
     // 获取好友申请列表
     socket.on('getFriendRequestList', function() {
-      console.log(`${socket.loggedInUserId} 获取好友申请列表`)
-      query(
-        `select makeFriendRecord.id, user.id as userId, user.username, user.nickname, user.src, 
-          makeFriendRecord.say, makeFriendRecord.stats, makeFriendRecord.read, makeFriendRecord.create_at
-          from makeFriendRecord 
-          left join user on user.id = makeFriendRecord.fromUserId
-          where toUserId = ${socket.loggedInUserId}
-          order by makeFriendRecord.read asc, makeFriendRecord.create_at desc`,
-        (error, results) => {
-          if (error) {
-            socket.emit('getFriendRequestResult', '发送失败')
-          } else {
-            socket.emit('getFriendRequestResult', results)
-          }
-        },
-      )
+      getFriendRequestList(socket.loggedInUserId, (error, results) => {
+        if (error) {
+          socket.emit('getFriendRequestResult', '发送失败')
+        } else {
+          socket.emit('getFriendRequestResult', results)
+        }
+      })
     })
 
     // 清空对当前目标的消息未读数
@@ -224,6 +228,27 @@ module.exports = http => {
           } else {
             getTalkList(socket.loggedInUserId, results => {
               socket.emit('updateTalkList', results)
+            })
+          }
+        },
+      )
+    })
+
+    // 清空当前用户的所有的好友请求未读数
+    socket.on('clearUnReadFriendRequest', () => {
+      console.log(`${socket.loggedInUserId} 准备清空好友请求的未读消息数量`)
+      query(
+        `update makeFriendRecord set \`read\`=1 where toUserId = ${socket.loggedInUserId};`,
+        error => {
+          if (error) {
+            console.error(error)
+          } else {
+            getFriendRequestList(socket.loggedInUserId, (error, results) => {
+              if (error) {
+                console.error(error)
+              } else {
+                socket.emit('getFriendRequestResult', results)
+              }
             })
           }
         },

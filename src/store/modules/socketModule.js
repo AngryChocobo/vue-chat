@@ -10,7 +10,7 @@ export default {
   },
   getters: {
     friendRequestUnReadCount(state) {
-      return state.friendRequestList.map(v => v.read === 0).length
+      return state.friendRequestList.filter(v => v.read === 0).length
     },
   },
   mutations: {
@@ -71,6 +71,9 @@ export default {
     },
     clearUnReadMessages(context, payload) {
       context.state.socket.emit('clearUnReadMessages', payload.targetId)
+    },
+    clearUnReadFriendRequest(context) {
+      context.state.socket.emit('clearUnReadFriendRequest')
     },
   },
 }
