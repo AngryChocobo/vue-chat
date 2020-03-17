@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import axios from '@/plugins/axios.js'
 import {getMessageList} from '@const/api'
+import {
+  UPDATE_TALK_LIST,
+  UPDATE_MESSAGE_LIST,
+  SEND_MESSAGE_SUCCESS,
+  RECEIVE_MESSAGE,
+} from '@store/types/mutation-types.js'
 
 export default {
   state: {
@@ -18,22 +24,22 @@ export default {
     },
   },
   mutations: {
-    updateTalkList(state, payload) {
+    [UPDATE_TALK_LIST](state, payload) {
       console.log('talk模块 准备更新会话列表')
       state.talkList = payload
     },
-    updateMessageList(state, payload) {
+    [UPDATE_MESSAGE_LIST](state, payload) {
       console.log('talk模块 准备更新消息列表', payload)
       Vue.set(state.messageLists, payload.targetId, payload.messageList)
     },
-    sendMessageSuccess(state, payload) {
+    [SEND_MESSAGE_SUCCESS](state, payload) {
       if (!state.messageLists[payload.targetId]) {
         Vue.set(state.messageLists, payload.targetId, [payload])
       } else {
         state.messageLists[payload.targetId].push(payload)
       }
     },
-    receiveMessage(state, payload) {
+    [RECEIVE_MESSAGE](state, payload) {
       if (!state.messageLists[payload.fromUserId]) {
         Vue.set(state.messageLists, payload.fromUserId, [payload])
       } else {
@@ -45,7 +51,7 @@ export default {
     getMessageList(context, payload) {
       const {loggedInUser} = context.rootState.loggedInUserModule
       axios.get(getMessageList(loggedInUser.id, payload.toUserId)).then(res => {
-        context.commit('updateMessageList', res.data)
+        context.commit(UPDATE_MESSAGE_LIST, res.data)
       })
     },
   },

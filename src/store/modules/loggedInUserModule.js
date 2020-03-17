@@ -1,6 +1,7 @@
 import {Toast} from 'vant'
 import axios from '@/plugins/axios.js'
-import router from '@/router/index'
+import router from '@/router/index.js'
+import {UPDATE_LOGGEDINUSER, CLEAR_TOKEN} from '@store/types/mutation-types.js'
 
 import {register, login} from '@const/api'
 export default {
@@ -9,11 +10,11 @@ export default {
     token: window.localStorage.getItem('token'),
   },
   mutations: {
-    cleanToken(state) {
+    [CLEAR_TOKEN](state) {
       state.token = null
       router.replace('/login')
     },
-    updateLoggedInUser(state, payload) {
+    [UPDATE_LOGGEDINUSER](state, payload) {
       state.loggedInUser = payload.user
       state.token = payload.token
       router.replace('/talk-list')
@@ -26,7 +27,8 @@ export default {
       const {username, password} = payload
       axios.post(login, {username, password}).then(res => {
         Toast('登陆成功！')
-        context.commit('updateLoggedInUser', res.data)
+        context.commit(UPDATE_LOGGEDINUSER, res.data)
+        context.dispatch('connectSocketIO')
       })
     },
     register(context, payload) {

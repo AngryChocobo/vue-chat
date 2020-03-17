@@ -2,6 +2,13 @@ import {Toast} from 'vant'
 import router from '@/router/index'
 import io from 'socket.io-client'
 import {SOCKETIO_PATH} from '@const/api.js'
+import {
+  UPDATE_TALK_LIST,
+  SEND_MESSAGE_SUCCESS,
+  UPDATE_FRIEND_REQUEST_LIST,
+  SET_SOCKET,
+  RECEIVE_MESSAGE,
+} from '@store/types/mutation-types.js'
 
 export default {
   state: {
@@ -14,10 +21,10 @@ export default {
     },
   },
   mutations: {
-    setSocket(state, payload) {
+    [SET_SOCKET](state, payload) {
       state.socket = payload
     },
-    updateFriendRequestList(state, payload) {
+    [UPDATE_FRIEND_REQUEST_LIST](state, payload) {
       state.friendRequestList = payload
     },
   },
@@ -25,19 +32,20 @@ export default {
     connectSocketIO(context) {
       const {loggedInUser} = context.rootState.loggedInUserModule
       if (!loggedInUser) {
+        console.log('没登录，拒接连接socket')
         return
       }
       const socket = io.connect(SOCKETIO_PATH, {reconnectionAttempts: 10})
       socket.emit('connectSocketIO', loggedInUser.id)
-      context.commit('setSocket', socket)
+      context.commit(SET_SOCKET, socket)
       socket.emit('getTalkList')
       socket.emit('getFriendRequestList')
       socket.on('receiveMessage', data => {
         console.log('收到了新消息', JSON.stringify(data))
-        context.commit('receiveMessage', data, {root: true})
+        context.commit(RECEIVE_MESSAGE, data, {root: true})
       })
       socket.on('sendMessageSuccess', data => {
-        context.commit('sendMessageSuccess', {
+        context.commit(SEND_MESSAGE_SUCCESS, {
           id: data.id,
           fromUserId: loggedInUser.id,
           src: loggedInUser.src,
@@ -53,12 +61,15 @@ export default {
         router.back()
       })
       socket.on('getFriendRequestResult', data => {
-        context.commit('updateFriendRequestList', data)
+        context.commit(UPDATE_FRIEND_REQUEST_LIST, data)
       })
       socket.on('updateTalkList', data => {
-        console.log('updateTalkList', data)
-        context.commit('updateTalkList', data)
+        console.log('updateTalkList', data, UPDATE_TALK_LIST)
+        context.commit(UPDATE_TALK_LIST, data)
       })
+    },
+    getTalkList(context) {
+      context.state.socket.emit('getTalkList')
     },
     sendMessage(context, payload) {
       context.state.sendingMessage = payload.message
