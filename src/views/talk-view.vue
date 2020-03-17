@@ -1,21 +1,23 @@
 <template>
   <div class="talk-view" ref="view">
     <my-nav-bar :title="navTitle" />
-    <van-list class="talk-list" ref="talkList" v-if="targetInfo">
-      <van-cell
-        :border="false"
-        v-for="message in messageList"
-        :key="message.id"
-      >
-        <message-item
-          :from-user-id="message.fromUserId"
-          :src="targetInfo.src"
-          :username="targetInfo.username"
-          :send-date="message.sendDate"
-          :message="message.message"
-        />
-      </van-cell>
-    </van-list>
+    <div ref="talkListWrapper">
+      <div class="talk-list" ref="talkList" v-if="targetInfo">
+        <van-cell
+          :border="false"
+          v-for="message in messageList"
+          :key="message.id"
+        >
+          <message-item
+            :from-user-id="message.fromUserId"
+            :src="targetInfo.src"
+            :username="targetInfo.username"
+            :send-date="message.sendDate"
+            :message="message.message"
+          />
+        </van-cell>
+      </div>
+    </div>
     <talk-input :on-send="sendMessage" />
   </div>
 </template>
@@ -36,6 +38,7 @@ export default {
   data() {
     return {
       targetInfo: null,
+      initScrollTimer: null,
     }
   },
   computed: {
@@ -43,7 +46,7 @@ export default {
       return this.targetInfo && this.targetInfo.username
     },
     messageList() {
-      return this.$store.state.talkModule.messageList
+      return this.$store.state.talkModule.messageLists[this.targetId]
     },
     targetId() {
       return Number(this.$route.params.id)
@@ -57,6 +60,9 @@ export default {
     this.getMessageList()
     this.clearUnReadMessages()
   },
+  destroyed() {
+    clearTimeout(this.initScrollTimer)
+  },
   methods: {
     clearUnReadMessages() {
       if (this.totalUnReadMessage.find(v => v.targetUserId == this.targetId)) {
@@ -68,6 +74,11 @@ export default {
     getTalkTargetInfo(targetId) {
       this.$axios(getTalkTargetInfo(targetId)).then(res => {
         this.targetInfo = res.data
+        this.$nextTick(() => {
+          this.initScrollTimer = setTimeout(() => {
+            this.scrollToBottom()
+          }, 100)
+        })
       })
     },
     getMessageList() {
@@ -77,11 +88,11 @@ export default {
     },
     scrollToBottom() {
       const dom = this.$refs.talkList
-      dom.$el.scrollIntoView()
+      dom.scrollIntoView(false)
     },
     sendMessage(message) {
       this.$store.dispatch('sendMessage', {
-        toUserId: this.targetId,
+        targetId: this.targetId,
         message,
       })
     },
@@ -92,7 +103,7 @@ export default {
 <style lang="less" scoped>
 .talk-view {
   .talk-list {
-    margin-bottom: 60px;
+    padding-bottom: 60px;
   }
 }
 </style>
