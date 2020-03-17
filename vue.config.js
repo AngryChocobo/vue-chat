@@ -28,6 +28,7 @@ module.exports = {
       .set('@views', resolve('src/views'))
       .set('@plugins', resolve('src/plugins'))
       .set('@const', resolve('src/const'))
+      .set('@store', resolve('src/store'))
       .set('static', resolve('src/static'))
     config.module.rule('')
   },
