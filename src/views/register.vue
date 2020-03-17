@@ -1,5 +1,6 @@
 <template>
   <div class="register">
+    <img class="logo" alt="Vue logo" src="../assets/logo.png" />
     <van-form @submit="onSubmit">
       <van-field
         v-model="username"
@@ -48,4 +49,19 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.register {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .logo {
+    display: block;
+    width: 60%;
+    margin: 0 auto;
+  }
+}
+</style>
