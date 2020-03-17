@@ -1,12 +1,12 @@
 <template>
-  <div class="message-item" :class="isMine && 'mine-message'">
+  <div class="message-item" :class="isMine ? 'mine' : 'other'">
     <div class="head-image">
       <img :src="imgSrc" alt="头像" @click="goUserInfo" />
     </div>
     <div class="content">
       <div class="content-header">
-        <p v-if="!isMine" class="username">{{ username }}</p>
-        <p class="send-date">{{ formatedSendDate }}</p>
+        <!-- <p v-if="!isMine" class="username">{{ username }}</p> -->
+        <!-- <p class="send-date">{{ formatedSendDate }}</p> -->
       </div>
       <p class="message">{{ message }}</p>
     </div>
@@ -61,20 +61,38 @@ export default {
   justify-content: flex-start;
   align-items: flex-start;
 
-  &.mine-message {
+  &.mine {
     flex-direction: row-reverse;
+    .message {
+      background-color: #a0e75a;
+      &::after {
+        right: -16px;
+        border-left: 8px solid #a0e75a;
+        border-right: 8px solid transparent;
+      }
+    }
   }
 
+  &.other {
+    .message {
+      background-color: gray;
+      &::after {
+        left: -16px;
+        border-left: 8px solid transparent;
+        border-right: 8px solid gray;
+      }
+    }
+  }
   .head-image {
     img {
-      width: 48px;
+      width: 40px;
+      border-radius: 50%;
     }
   }
 
   .content {
     max-width: 70%;
     margin: 0 12px;
-    border: 1px dashed orange;
     p {
       margin: 0;
     }
@@ -87,7 +105,19 @@ export default {
       }
     }
     .message {
-      font-weight: lighter;
+      position: relative;
+      border-radius: 8px;
+      padding: 8px;
+      min-height: 36px;
+      box-sizing: border-box;
+      color: black;
+      &::after {
+        content: ' ';
+        position: absolute;
+        top: 10px;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+      }
     }
   }
 }
