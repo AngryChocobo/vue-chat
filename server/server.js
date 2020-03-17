@@ -165,12 +165,12 @@ app.get('/getTalkTargetInfo', authMiddleWare, function(req, res) {
 
 // 会话页
 app.get('/getMessageList', authMiddleWare, function(req, res) {
-  const {fromUserId, toUserId} = req.query
+  const {fromUserId, targetId} = req.query
   query(
-    `select m.* from message m left JOIN user u ON m.fromUserId=u.id LEFT JOIN user u2 ON m.toUserId=u2.id where (m.fromUserId=${fromUserId} and m.toUserId=${toUserId} ) or (m.fromUserId=${toUserId} and m.toUserId=${fromUserId} ) order by m.sendDate`,
+    `select m.* from message m left JOIN user u ON m.fromUserId=u.id LEFT JOIN user u2 ON m.toUserId=u2.id where (m.fromUserId=${fromUserId} and m.toUserId=${targetId} ) or (m.fromUserId=${targetId} and m.toUserId=${fromUserId} ) order by m.sendDate`,
     function(error, results) {
       if (error) throw error
-      res.send({targetId: toUserId, messageList: results})
+      res.send({targetId: targetId, messageList: results})
     },
   )
 })
