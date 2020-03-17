@@ -56,7 +56,7 @@ module.exports = http => {
       socket.loggedInUserId = userId
       talkRelationMap.push({
         socketId: socket.id,
-        userId: String(userId),
+        userId: userId,
       })
     })
 

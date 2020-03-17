@@ -46,7 +46,7 @@ export default {
       return this.$store.state.talkModule.messageList
     },
     targetId() {
-      return this.$route.params.id
+      return Number(this.$route.params.id)
     },
     totalUnReadMessage() {
       return this.$store.getters.totalUnReadMessage
