@@ -10,6 +10,11 @@ import {
   RECEIVE_MESSAGE,
 } from '@store/types/mutation-types.js'
 
+import {
+  CONNECT_SOCKET_IO,
+  CLEAR_UNREAD_FRIEND_REQUEST,
+} from '@store/types/action-types.js'
+
 export default {
   state: {
     socket: null,
@@ -29,7 +34,7 @@ export default {
     },
   },
   actions: {
-    connectSocketIO(context) {
+    [CONNECT_SOCKET_IO](context) {
       const {loggedInUser} = context.rootState.loggedInUserModule
       if (!loggedInUser) {
         console.log('没登录，拒接连接socket')
@@ -84,7 +89,7 @@ export default {
     clearUnReadMessages(context, payload) {
       context.state.socket.emit('clearUnReadMessages', payload.targetId)
     },
-    clearUnReadFriendRequest(context) {
+    [CLEAR_UNREAD_FRIEND_REQUEST](context) {
       context.state.socket.emit('clearUnReadFriendRequest')
     },
   },
