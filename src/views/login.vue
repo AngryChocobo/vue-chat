@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import {LOGIN} from '@store/types/action-types.js'
+
 export default {
   name: 'Login',
   data() {
@@ -38,7 +40,7 @@ export default {
   methods: {
     onSubmit(values) {
       const {username, password} = values
-      this.$store.dispatch('login', {
+      this.$store.dispatch(LOGIN, {
         username,
         password,
       })

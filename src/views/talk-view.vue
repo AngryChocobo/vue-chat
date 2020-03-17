@@ -27,6 +27,11 @@ import MyNavBar from '@components/my-nav-bar.vue'
 import MessageItem from '@components/message-item.vue'
 import TalkInput from '@components/talk-input.vue'
 import {getTalkTargetInfo} from '@const/api'
+import {
+  GET_MESSAGE_LIST,
+  SEND_MESSAGE,
+  CLEAR_UN_READ_MESSAGES,
+} from '@store/types/action-types.js'
 
 export default {
   name: 'TalkView',
@@ -66,7 +71,7 @@ export default {
   methods: {
     clearUnReadMessages() {
       if (this.totalUnReadMessage.find(v => v.targetUserId == this.targetId)) {
-        this.$store.dispatch('clearUnReadMessages', {
+        this.$store.dispatch(CLEAR_UN_READ_MESSAGES, {
           targetId: this.targetId,
         })
       }
@@ -82,8 +87,8 @@ export default {
       })
     },
     getMessageList() {
-      this.$store.dispatch('getMessageList', {
-        toUserId: this.targetId,
+      this.$store.dispatch(GET_MESSAGE_LIST, {
+        targetId: this.targetId,
       })
     },
     scrollToBottom() {
@@ -91,7 +96,7 @@ export default {
       dom.scrollIntoView(false)
     },
     sendMessage(message) {
-      this.$store.dispatch('sendMessage', {
+      this.$store.dispatch(SEND_MESSAGE, {
         targetId: this.targetId,
         message,
       })

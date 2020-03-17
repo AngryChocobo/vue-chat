@@ -7,6 +7,7 @@ import {
   SEND_MESSAGE_SUCCESS,
   RECEIVE_MESSAGE,
 } from '@store/types/mutation-types.js'
+import {GET_MESSAGE_LIST} from '@store/types/action-types.js'
 
 export default {
   state: {
@@ -48,9 +49,9 @@ export default {
     },
   },
   actions: {
-    getMessageList(context, payload) {
+    [GET_MESSAGE_LIST](context, payload) {
       const {loggedInUser} = context.rootState.loggedInUserModule
-      axios.get(getMessageList(loggedInUser.id, payload.toUserId)).then(res => {
+      axios.get(getMessageList(loggedInUser.id, payload.targetId)).then(res => {
         context.commit(UPDATE_MESSAGE_LIST, res.data)
       })
     },

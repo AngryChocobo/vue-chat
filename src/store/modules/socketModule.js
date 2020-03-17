@@ -12,7 +12,12 @@ import {
 
 import {
   CONNECT_SOCKET_IO,
-  CLEAR_UNREAD_FRIEND_REQUEST,
+  CLEAR_UN_READ_FRIEND_REQUEST,
+  GET_TALK_LIST,
+  GET_FRIEND_REQUEST_LIST,
+  MAKE_FRIEND_REQUEST,
+  SEND_MESSAGE,
+  CLEAR_UN_READ_MESSAGES,
 } from '@store/types/action-types.js'
 
 export default {
@@ -43,8 +48,8 @@ export default {
       const socket = io.connect(SOCKETIO_PATH, {reconnectionAttempts: 10})
       socket.emit('connectSocketIO', loggedInUser.id)
       context.commit(SET_SOCKET, socket)
-      socket.emit('getTalkList')
-      socket.emit('getFriendRequestList')
+      context.dispatch(GET_TALK_LIST)
+      context.dispatch(GET_FRIEND_REQUEST_LIST)
       socket.on('receiveMessage', data => {
         console.log('收到了新消息', JSON.stringify(data))
         context.commit(RECEIVE_MESSAGE, data, {root: true})
@@ -73,23 +78,23 @@ export default {
         context.commit(UPDATE_TALK_LIST, data)
       })
     },
-    getTalkList(context) {
+    [GET_TALK_LIST](context) {
       context.state.socket.emit('getTalkList')
     },
-    sendMessage(context, payload) {
+    [SEND_MESSAGE](context, payload) {
       context.state.sendingMessage = payload.message
       context.state.socket.emit('sendMessage', payload)
     },
-    makeFriendRequest(context, payload) {
+    [MAKE_FRIEND_REQUEST](context, payload) {
       context.state.socket.emit('makeFriendRequest', payload)
     },
-    getFriendRequestList(context) {
+    [GET_FRIEND_REQUEST_LIST](context) {
       context.state.socket.emit('getFriendRequestList')
     },
-    clearUnReadMessages(context, payload) {
+    [CLEAR_UN_READ_MESSAGES](context, payload) {
       context.state.socket.emit('clearUnReadMessages', payload.targetId)
     },
-    [CLEAR_UNREAD_FRIEND_REQUEST](context) {
+    [CLEAR_UN_READ_FRIEND_REQUEST](context) {
       context.state.socket.emit('clearUnReadFriendRequest')
     },
   },

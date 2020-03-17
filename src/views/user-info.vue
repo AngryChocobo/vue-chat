@@ -47,8 +47,9 @@
 
 <script>
 import MyNavBar from '@components/my-nav-bar.vue'
-
 import {getUserInfo} from '@/const/api.js'
+import {MAKE_FRIEND_REQUEST} from '@store/types/action-types.js'
+
 export default {
   name: 'UserInfo',
   data() {
@@ -98,7 +99,7 @@ export default {
       })
     },
     makeFriendRequest() {
-      this.$store.dispatch('makeFriendRequest', {
+      this.$store.dispatch(MAKE_FRIEND_REQUEST, {
         userId: this.userInfo.userId,
         say: this.userInfo.say,
       })

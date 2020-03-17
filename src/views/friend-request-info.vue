@@ -73,9 +73,7 @@ export default {
           userId,
           recordId: this.requestInfo.id,
         })
-        .then(res => {
-          this.$router.back()
-        })
+        .then(this.$router.back)
     },
   },
 }

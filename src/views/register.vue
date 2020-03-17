@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import {REGISTER} from '@store/types/action-types.js'
+
 export default {
   name: 'Register',
   data() {
@@ -40,7 +42,7 @@ export default {
   methods: {
     onSubmit(values) {
       const {username, password} = values
-      this.$store.dispatch('register', {
+      this.$store.dispatch(REGISTER, {
         username,
         password,
       })

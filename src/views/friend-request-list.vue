@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import {CLEAR_UNREAD_FRIEND_REQUEST} from '@store/types/action-types.js'
+import {CLEAR_UN_READ_FRIEND_REQUEST} from '@store/types/action-types.js'
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
 export default {
@@ -52,7 +52,7 @@ export default {
   methods: {
     clearUnReadFriendRequest() {
       if (this.friendRequestList.length) {
-        this.$store.dispatch(CLEAR_UNREAD_FRIEND_REQUEST)
+        this.$store.dispatch(CLEAR_UN_READ_FRIEND_REQUEST)
       }
     },
     checkFriendRequestInfo(friend) {
