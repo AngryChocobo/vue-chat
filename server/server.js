@@ -170,7 +170,7 @@ app.get('/getMessageList', authMiddleWare, function(req, res) {
     `select m.* from message m left JOIN user u ON m.fromUserId=u.id LEFT JOIN user u2 ON m.toUserId=u2.id where (m.fromUserId=${fromUserId} and m.toUserId=${toUserId} ) or (m.fromUserId=${toUserId} and m.toUserId=${fromUserId} ) order by m.sendDate`,
     function(error, results) {
       if (error) throw error
-      res.send(results)
+      res.send({targetId: toUserId, messageList: results})
     },
   )
 })

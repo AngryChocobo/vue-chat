@@ -43,6 +43,7 @@ export default {
           src: loggedInUser.src,
           username: loggedInUser.username,
           message: context.state.sendingMessage,
+          targetId: data.targetId,
           sendDate: data.sendDate,
         })
       })

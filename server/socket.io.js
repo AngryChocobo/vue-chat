@@ -64,10 +64,10 @@ module.exports = http => {
     socket.on('sendMessage', function(data) {
       console.log('server receive sendNewMessage')
       const {loggedInUserId} = socket
-      const {toUserId, message} = data
+      const {targetId, message} = data
       const sendDate = Date.now()
       query(
-        `INSERT INTO message (fromUserId, toUserId, message, sendDate) VALUES (${loggedInUserId}, ${toUserId}, '${message}', ${sendDate})`,
+        `INSERT INTO message (fromUserId, toUserId, message, sendDate) VALUES (${loggedInUserId}, ${targetId}, '${message}', ${sendDate})`,
         (error, result) => {
           if (error) {
             throw error
@@ -76,19 +76,19 @@ module.exports = http => {
             // todo 重构 插入之前先判断，有则更新
             query(
               `select * from talkList
-                where userId = ${loggedInUserId} and targetId = ${toUserId}`,
+                where userId = ${loggedInUserId} and targetId = ${targetId}`,
               (error, results) => {
                 const newMessage = {
                   id: insertId,
                   fromUserId: loggedInUserId,
-                  toUserId,
+                  targetId,
                   message,
                   sendDate,
                 }
                 const pushMessageTo = () => {
                   console.log('准备推送', talkRelationMap)
                   const toUser = talkRelationMap.find(
-                    talk => talk.userId === toUserId,
+                    talk => talk.userId === targetId,
                   )
                   if (toUser) {
                     const toUserSocket = io.sockets.sockets[toUser.socketId]
@@ -104,14 +104,14 @@ module.exports = http => {
                 const createTargetNewTalkRecord = () => {
                   query(
                     `select * from talkList
-                      where userId = ${toUserId} and targetId = ${loggedInUserId}`,
+                      where userId = ${targetId} and targetId = ${loggedInUserId}`,
                     (error, results) => {
                       if (error) {
                         throw error
                       } else if (results.length > 0) {
                         // 更新该记录
                         query(
-                          `UPDATE talkList set lastMessageId=${insertId}, lastMessageUserId=${loggedInUserId}, userId=${toUserId}, targetId=${loggedInUserId} where id = ${results[0].id}`,
+                          `UPDATE talkList set lastMessageId=${insertId}, lastMessageUserId=${loggedInUserId}, userId=${targetId}, targetId=${loggedInUserId} where id = ${results[0].id}`,
                           error => {
                             if (error) {
                               throw error
@@ -123,7 +123,7 @@ module.exports = http => {
                       } else {
                         // 插入新记录
                         query(
-                          `insert into talkList (lastMessageId, lastMessageUserId, userId, targetId) values (${insertId}, ${loggedInUserId}, ${toUserId}, ${loggedInUserId})`,
+                          `insert into talkList (lastMessageId, lastMessageUserId, userId, targetId) values (${insertId}, ${loggedInUserId}, ${targetId}, ${loggedInUserId})`,
                           error => {
                             if (error) {
                               throw error
@@ -142,13 +142,14 @@ module.exports = http => {
                 } else if (results.length > 0) {
                   // 更新该记录
                   query(
-                    `UPDATE talkList set lastMessageId=${insertId}, lastMessageUserId=${loggedInUserId}, userId=${loggedInUserId}, targetId=${toUserId} where id = ${results[0].id}`,
+                    `UPDATE talkList set lastMessageId=${insertId}, lastMessageUserId=${loggedInUserId}, userId=${loggedInUserId}, targetId=${targetId} where id = ${results[0].id}`,
                     error => {
                       if (error) {
                         throw error
                       } else {
                         socket.emit('sendMessageSuccess', {
                           id: insertId,
+                          targetId,
                           sendDate,
                         })
                         createTargetNewTalkRecord()
@@ -158,13 +159,14 @@ module.exports = http => {
                 } else {
                   // 插入新记录
                   query(
-                    `insert into talkList (lastMessageId, lastMessageUserId, userId, targetId) values (${insertId}, ${loggedInUserId}, ${loggedInUserId}, ${toUserId})`,
+                    `insert into talkList (lastMessageId, lastMessageUserId, userId, targetId) values (${insertId}, ${loggedInUserId}, ${loggedInUserId}, ${targetId})`,
                     error => {
                       if (error) {
                         throw error
                       } else {
                         socket.emit('sendMessageSuccess', {
                           id: insertId,
+                          targetId,
                           sendDate,
                         })
                         createTargetNewTalkRecord()
