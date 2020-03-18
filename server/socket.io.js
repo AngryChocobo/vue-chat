@@ -48,6 +48,17 @@ module.exports = http => {
   const talkRelationMap = []
   const io = socketIO(http)
 
+  const getTargetOnlineSocket = targetId => {
+    const target = talkRelationMap.find(talk => talk.userId === targetId)
+    if (target) {
+      const targetSocket = io.sockets.sockets[target.socketId]
+      if (targetSocket) {
+        return targetSocket
+      }
+    }
+    return null
+  }
+
   io.on('connection', function(socket) {
     // 每个用户都加入到私聊关系表中
     socket.on('connectSocketIO', function(userId) {
@@ -88,20 +99,15 @@ module.exports = http => {
                   src: results[0].src,
                   sendDate,
                 }
+
                 const pushMessageTo = () => {
-                  console.log('准备推送', talkRelationMap)
-                  const toUser = talkRelationMap.find(
-                    talk => talk.userId === targetId,
-                  )
-                  if (toUser) {
-                    const toUserSocket = io.sockets.sockets[toUser.socketId]
-                    if (toUserSocket) {
-                      toUserSocket.emit('receiveMessage', newMessage)
-                      getTalkList(toUserSocket.loggedInUserId, results => {
-                        console.log('will')
-                        toUserSocket.emit('updateTalkList', results)
-                      })
-                    }
+                  const targetSocket = getTargetOnlineSocket(targetId)
+                  if (targetSocket) {
+                    targetSocket.emit('receiveMessage', newMessage)
+                    getTalkList(targetSocket.loggedInUserId, results => {
+                      console.log('will')
+                      targetSocket.emit('updateTalkList', results)
+                    })
                   }
                 }
                 const createTargetNewTalkRecord = () => {
@@ -191,7 +197,7 @@ module.exports = http => {
       })
     })
 
-    // 发出好友申请
+    // 发出好友申请 (以及对方的推送)
     socket.on('makeFriendRequest', function(data) {
       console.log(
         `Receive makeFriendRequest from ${socket.loggedInUserId} to ${data.userId}`,
@@ -204,6 +210,12 @@ module.exports = http => {
             socket.emit('makeFriendRequestResult', '发送失败')
           } else {
             socket.emit('makeFriendRequestResult', '发送成功')
+            // 判断对方是否在线
+            const targetSocket = getTargetOnlineSocket(data.userId)
+            if (targetSocket) {
+              console.log('推送好友申请')
+              targetSocket.emit('receiveFriendRequest')
+            }
           }
         },
       )

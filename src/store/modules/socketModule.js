@@ -18,6 +18,7 @@ import {
   MAKE_FRIEND_REQUEST,
   SEND_MESSAGE,
   CLEAR_UN_READ_MESSAGES,
+  RECEIVE_FRIEND_REQUEST,
 } from '@store/types/action-types.js'
 import {FRIEND_REQUEST_UN_READ_COUNT} from '@store/types/getters-types.js'
 
@@ -54,6 +55,10 @@ export default {
       socket.on('receiveMessage', data => {
         console.log('收到了新消息', JSON.stringify(data))
         context.commit(RECEIVE_MESSAGE, data, {root: true})
+      })
+      socket.on('receiveFriendRequest', data => {
+        console.log('收到了新的好友请求', JSON.stringify(data))
+        context.dispatch(RECEIVE_FRIEND_REQUEST)
       })
       socket.on('sendMessageSuccess', data => {
         context.commit(SEND_MESSAGE_SUCCESS, {
@@ -97,6 +102,9 @@ export default {
     },
     [CLEAR_UN_READ_FRIEND_REQUEST](context) {
       context.state.socket.emit('clearUnReadFriendRequest')
+    },
+    [RECEIVE_FRIEND_REQUEST](context) {
+      context.dispatch(GET_FRIEND_REQUEST_LIST)
     },
   },
 }
