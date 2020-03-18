@@ -1,13 +1,16 @@
 const express = require('express')
 const cors = require('cors')
-const app = express()
-const http = require('http').createServer(app)
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const query = require('./db/mysql.js')
-const SECRET_KEY = 'awd'
+const TestTable = require('./db/Models/TestTable.js')
+const {Users, MakeFriendRecords} = require('./db/Models/index.js')
 
+const app = express()
+const http = require('http').createServer(app)
+const query = require('./db/mysql.js')
+
+const SECRET_KEY = 'awd'
 require('./socket.io.js')(http)
 
 const passwordEncryption = password => {
@@ -51,6 +54,12 @@ const authMiddleWare = (req, res, next) => {
 
 app.get('/', function(req, res) {
   res.send('server ok')
+})
+
+app.get('/ss', function(req, res) {
+  MakeFriendRecords.findAll().then(data => {
+    res.send(data)
+  })
 })
 
 app.get('/init', (req, res) => {
