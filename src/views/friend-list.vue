@@ -12,8 +12,8 @@
       is-link
       @click="toFriendRequestList"
     >
-      <div v-show="friendRequestUnReadCount" class="dot" slot="right-icon">
-        {{ friendRequestUnReadCount }}
+      <div v-show="FRIEND_REQUEST_UN_READ_COUNT" class="dot" slot="right-icon">
+        {{ FRIEND_REQUEST_UN_READ_COUNT }}
       </div>
     </van-field>
     <van-collapse v-model="activeName" accordion>
@@ -38,9 +38,12 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
 import {getUserFriendList} from '@const/api'
+import {FRIEND_REQUEST_UN_READ_COUNT} from '@store/types/getters-types.js'
+
 export default {
   name: 'FriendList',
   components: {
@@ -54,9 +57,7 @@ export default {
     }
   },
   computed: {
-    friendRequestUnReadCount() {
-      return this.$store.getters.friendRequestUnReadCount
-    },
+    ...mapGetters([FRIEND_REQUEST_UN_READ_COUNT]),
   },
   mounted() {
     this.getUserFriendList()

@@ -4,13 +4,13 @@
       <van-tabbar-item
         to="/talk-list"
         icon="comment-o"
-        :info="totalUnReadMessageCount || ''"
+        :info="TOTAL_UN_READ_MESSAGE_COUNT || ''"
         >聊天</van-tabbar-item
       >
       <van-tabbar-item
         to="/friend-list"
         icon="friends-o"
-        :info="friendRequestUnReadCount || ''"
+        :info="FRIEND_REQUEST_UN_READ_COUNT || ''"
         >好友</van-tabbar-item
       >
       <van-tabbar-item to="/home" icon="home-o">我</van-tabbar-item>
@@ -19,6 +19,11 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+import {
+  TOTAL_UN_READ_MESSAGE_COUNT,
+  FRIEND_REQUEST_UN_READ_COUNT,
+} from '@store/types/getters-types.js'
 export default {
   name: 'MyTabBar',
   data() {
@@ -30,12 +35,7 @@ export default {
     },
   },
   computed: {
-    totalUnReadMessageCount() {
-      return this.$store.getters.totalUnReadMessageCount
-    },
-    friendRequestUnReadCount() {
-      return this.$store.getters.friendRequestUnReadCount
-    },
+    ...mapGetters([TOTAL_UN_READ_MESSAGE_COUNT, FRIEND_REQUEST_UN_READ_COUNT]),
   },
   methods: {
     // onChange(index) {},

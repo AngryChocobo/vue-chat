@@ -8,6 +8,10 @@ import {
   RECEIVE_MESSAGE,
 } from '@store/types/mutation-types.js'
 import {GET_MESSAGE_LIST} from '@store/types/action-types.js'
+import {
+  TOTAL_UN_READ_MESSAGE_COUNT,
+  TOTAL_UN_READ_MESSAGE,
+} from '@store/types/getters-types.js'
 
 export default {
   state: {
@@ -15,13 +19,14 @@ export default {
     messageLists: {},
   },
   getters: {
-    totalUnReadMessage(state) {
+    [TOTAL_UN_READ_MESSAGE](state) {
       return state.talkList.filter(v => v.unReadCount)
     },
-    totalUnReadMessageCount(state, getters) {
-      return getters.totalUnReadMessage
-        .map(v => v.unReadCount)
-        .reduce((a, b) => a + b, 0)
+    [TOTAL_UN_READ_MESSAGE_COUNT](state, getters) {
+      return getters[TOTAL_UN_READ_MESSAGE].map(v => v.unReadCount).reduce(
+        (a, b) => a + b,
+        0,
+      )
     },
   },
   mutations: {

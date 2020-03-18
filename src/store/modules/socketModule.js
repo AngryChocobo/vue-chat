@@ -19,6 +19,7 @@ import {
   SEND_MESSAGE,
   CLEAR_UN_READ_MESSAGES,
 } from '@store/types/action-types.js'
+import {FRIEND_REQUEST_UN_READ_COUNT} from '@store/types/getters-types.js'
 
 export default {
   state: {
@@ -26,7 +27,7 @@ export default {
     friendRequestList: [],
   },
   getters: {
-    friendRequestUnReadCount(state) {
+    [FRIEND_REQUEST_UN_READ_COUNT](state) {
       return state.friendRequestList.filter(v => v.read === 0).length
     },
   },

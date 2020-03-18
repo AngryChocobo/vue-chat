@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 import MyNavBar from '@components/my-nav-bar.vue'
 import MessageItem from '@components/message-item.vue'
 import TalkInput from '@components/talk-input.vue'
@@ -32,6 +33,7 @@ import {
   SEND_MESSAGE,
   CLEAR_UN_READ_MESSAGES,
 } from '@store/types/action-types.js'
+import {TOTAL_UN_READ_MESSAGE} from '@store/types/getters-types.js'
 
 export default {
   name: 'TalkView',
@@ -56,9 +58,7 @@ export default {
     targetId() {
       return Number(this.$route.params.id)
     },
-    totalUnReadMessage() {
-      return this.$store.getters.totalUnReadMessage
-    },
+    ...mapGetters([TOTAL_UN_READ_MESSAGE]),
   },
   mounted() {
     this.getTalkTargetInfo(this.targetId)
@@ -70,7 +70,9 @@ export default {
   },
   methods: {
     clearUnReadMessages() {
-      if (this.totalUnReadMessage.find(v => v.targetUserId == this.targetId)) {
+      if (
+        this[TOTAL_UN_READ_MESSAGE].find(v => v.targetUserId == this.targetId)
+      ) {
         this.$store.dispatch(CLEAR_UN_READ_MESSAGES, {
           targetId: this.targetId,
         })
