@@ -1,13 +1,17 @@
 <template>
   <div id="app">
     <router-view></router-view>
+    <reconnect-overlay />
   </div>
 </template>
 
 <script>
+import ReconnectOverlay from '@components/reconnect-overlay.vue'
 export default {
   name: 'app',
-  components: {},
+  components: {
+    ReconnectOverlay,
+  },
   computed: {
     count() {
       return this.$store.state.count

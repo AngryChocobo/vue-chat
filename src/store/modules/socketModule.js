@@ -8,6 +8,8 @@ import {
   UPDATE_FRIEND_REQUEST_LIST,
   SET_SOCKET,
   RECEIVE_MESSAGE,
+  RECONNECT_ATTEMPT,
+  RECONNECT_FAILED,
 } from '@store/types/mutation-types.js'
 
 import {
@@ -25,6 +27,8 @@ import {FRIEND_REQUEST_UN_READ_COUNT} from '@store/types/getters-types.js'
 export default {
   state: {
     socket: null,
+    reconnectAttempt: null, // socket尝试重连次数
+    reconnectFailed: false, // socket尝试重连失败
     friendRequestList: [],
   },
   getters: {
@@ -39,6 +43,14 @@ export default {
     [UPDATE_FRIEND_REQUEST_LIST](state, payload) {
       state.friendRequestList = payload
     },
+    [RECONNECT_ATTEMPT](state, payload) {
+      console.log('att: ', payload)
+      state.reconnectAttempt = payload
+    },
+    [RECONNECT_FAILED](state) {
+      state.reconnectAttempt = null
+      state.reconnectFailed = true
+    },
   },
   actions: {
     [CONNECT_SOCKET_IO](context) {
@@ -47,7 +59,7 @@ export default {
         console.log('没登录，拒接连接socket')
         return
       }
-      const socket = io.connect(SOCKETIO_PATH, {reconnectionAttempts: 10})
+      const socket = io.connect(SOCKETIO_PATH, {reconnectionAttempts: 5})
       socket.emit('connectSocketIO', loggedInUser.id)
       context.commit(SET_SOCKET, socket)
       context.dispatch(GET_TALK_LIST)
@@ -82,6 +94,19 @@ export default {
       socket.on('updateTalkList', data => {
         console.log('updateTalkList', data, UPDATE_TALK_LIST)
         context.commit(UPDATE_TALK_LIST, data)
+      })
+      // socket.on('connect_error', error => {
+      //   console.log('connect_error', error)
+      // })
+
+      socket.on('reconnect_attempt', attemptNumber => {
+        // console.log('reconnect_attempt', attemptNumber)
+        context.commit(RECONNECT_ATTEMPT, attemptNumber)
+      })
+
+      socket.on('reconnect_failed', () => {
+        // console.log('reconnect_failed')
+        context.commit(RECONNECT_FAILED)
       })
     },
     [GET_TALK_LIST](context) {

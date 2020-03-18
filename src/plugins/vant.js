@@ -20,6 +20,8 @@ import {
   CollapseItem,
   Search,
   Tag,
+  Overlay,
+  Loading,
 } from 'vant'
 import 'vant/lib/index.css'
 
@@ -44,3 +46,5 @@ Vue.use(NavBar)
   .use(CollapseItem)
   .use(Search)
   .use(Tag)
+  .use(Overlay)
+  .use(Loading)
