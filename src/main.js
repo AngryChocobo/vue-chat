@@ -5,7 +5,8 @@ import App from './App.vue'
 import './plugins/vant.js'
 import './plugins/axios.js'
 import './plugins/icon.js'
-import router from './router/index'
+import './plugins/notification.js'
+import router from './router/index.js'
 import store from './store/store.js'
 Vue.config.productionTip = false
 

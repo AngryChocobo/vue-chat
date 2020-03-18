@@ -6,8 +6,12 @@ import {
   UPDATE_MESSAGE_LIST,
   SEND_MESSAGE_SUCCESS,
   RECEIVE_MESSAGE,
+  ALLOW_NOTIFICATION,
 } from '@store/types/mutation-types.js'
-import {GET_MESSAGE_LIST} from '@store/types/action-types.js'
+import {
+  GET_MESSAGE_LIST,
+  NOTIFICATION_GRANTED,
+} from '@store/types/action-types.js'
 import {
   TOTAL_UN_READ_MESSAGE_COUNT,
   TOTAL_UN_READ_MESSAGE,
@@ -15,6 +19,7 @@ import {
 
 export default {
   state: {
+    allowNotification: false,
     talkList: [],
     messageLists: {},
   },
@@ -30,6 +35,9 @@ export default {
     },
   },
   mutations: {
+    [ALLOW_NOTIFICATION](state) {
+      state.allowNotification = true
+    },
     [UPDATE_TALK_LIST](state, payload) {
       console.log('talk模块 准备更新会话列表')
       state.talkList = payload
@@ -51,9 +59,17 @@ export default {
       } else {
         state.messageLists[payload.fromUserId].push(payload)
       }
+      // 使用浏览器推送
+      new Notification(payload.username, {
+        body: payload.message,
+        // icon: 'https://image.zhangxinxu.com/image/blog/zxx_240_0818.jpg',
+      })
     },
   },
   actions: {
+    [NOTIFICATION_GRANTED](context) {
+      context.commit(ALLOW_NOTIFICATION)
+    },
     [GET_MESSAGE_LIST](context, payload) {
       const {loggedInUser} = context.rootState.loggedInUserModule
       axios.get(getMessageList(loggedInUser.id, payload.targetId)).then(res => {

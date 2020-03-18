@@ -75,7 +75,7 @@ module.exports = http => {
             const {insertId} = result
             // todo 重构 插入之前先判断，有则更新
             query(
-              `select * from talkList
+              `select talkList.id, user.username, user.nickname, user.src from talkList, user
                 where userId = ${loggedInUserId} and targetId = ${targetId}`,
               (error, results) => {
                 const newMessage = {
@@ -83,6 +83,9 @@ module.exports = http => {
                   fromUserId: loggedInUserId,
                   targetId,
                   message,
+                  username: results[0].username,
+                  nickname: results[0].nickname,
+                  src: results[0].src,
                   sendDate,
                 }
                 const pushMessageTo = () => {
