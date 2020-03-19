@@ -14,7 +14,7 @@ const sequelize = new Sequelize(
       idle: 3000,
     },
     define: {
-      timestamps: false,
+      // timestamps: false,
       freezeTableName: true, // 阻止自动改为复数形式
     },
   },

@@ -19,12 +19,9 @@ Users.init(
     src: {
       type: Sequelize.STRING,
     },
-    createDate: {
-      type: Sequelize.DATE,
-    },
   },
   {sequelize, modelName: 'newusers'},
 )
 
-// User.sync({force: true})
+// Users.sync({force: true})
 module.exports = Users

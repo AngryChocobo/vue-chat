@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken')
 const middleWares = require('./middleWares/index.js')
 const {authMiddleWare} = middleWares
 
-// const TestTable = require('./db/Models/TestTable.js')
 const {Users, MakeFriendRecords} = require('./db/Models/index.js')
 const query = require('./db/mysql.js')
 
@@ -84,6 +83,51 @@ app.get('/', function(req, res) {
 app.get('/ss', function(req, res) {
   MakeFriendRecords.findAll().then(data => {
     res.send(data)
+  })
+})
+
+// 注册
+app.post('/register', function(req, res) {
+  const {username, password} = req.body
+  const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+  Users.create({username, password: hashedPassword}).then(user => {
+    console.log('新注册用户: ' + JSON.stringify(user))
+    res.send('注册成功')
+  })
+})
+
+// // 登陆
+app.post('/login', function(req, res) {
+  const {username, password} = req.body
+  query(`select * from user where username = '${username}'`, function(
+    error,
+    result,
+  ) {
+    if (error) {
+      throw error
+    } else if (result.length == 0) {
+      return res.status(422).send({message: '用户名不存在'})
+    } else {
+      const user = result[0]
+      if (bcrypt.compareSync(password, user.password)) {
+        const userDate = Object.assign({}, user)
+        // 不返回用户的密码
+        delete userDate.password
+        // 生成token
+        const token = require('jsonwebtoken').sign(
+          {
+            id: userDate.id,
+          },
+          SECRET_KEY,
+        )
+        res.send({
+          user: userDate,
+          token,
+        })
+      } else {
+        return res.status(422).send('密码不正确')
+      }
+    }
   })
 })
 // 查看搜索用户详细信息及是否是好友
@@ -206,68 +250,6 @@ app.get('/searchUsers', authMiddleWare, (req, res) => {
       res.send(results)
     },
   )
-})
-
-// 注册
-app.post('/register', function(req, res) {
-  const {username, password} = req.body
-  const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-  const now = Date.now()
-  query(
-    `insert into user (username, password, create_at) values
-      ('${username}', '${hashedPassword}', ${now}) `,
-    function(error, result) {
-      if (error) {
-        console.error(error)
-        res.status(500)
-        switch (error.sqlState) {
-          case '23000':
-            res.send(error.sqlMessage)
-            break
-          default:
-            res.send('未知错误')
-            break
-        }
-      } else {
-        res.send(result)
-      }
-    },
-  )
-})
-
-// // 登陆
-app.post('/login', function(req, res) {
-  const {username, password} = req.body
-  query(`select * from user where username = '${username}'`, function(
-    error,
-    result,
-  ) {
-    if (error) {
-      throw error
-    } else if (result.length == 0) {
-      return res.status(422).send({message: '用户名不存在'})
-    } else {
-      const user = result[0]
-      if (bcrypt.compareSync(password, user.password)) {
-        const userDate = Object.assign({}, user)
-        // 不返回用户的密码
-        delete userDate.password
-        // 生成token
-        const token = require('jsonwebtoken').sign(
-          {
-            id: userDate.id,
-          },
-          SECRET_KEY,
-        )
-        res.send({
-          user: userDate,
-          token,
-        })
-      } else {
-        return res.status(422).send('密码不正确')
-      }
-    }
-  })
 })
 
 module.exports = app
