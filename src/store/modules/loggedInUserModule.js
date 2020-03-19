@@ -16,11 +16,14 @@ export default {
       router.replace('/login')
     },
     [UPDATE_LOGGEDINUSER](state, payload) {
-      state.loggedInUser = payload.user
+      state.loggedInUser = payload.loggedInUser
       state.token = payload.token
       router.replace('/talk-list')
       window.localStorage.setItem('token', payload.token)
-      window.localStorage.setItem('loggedInUser', JSON.stringify(payload.user))
+      window.localStorage.setItem(
+        'loggedInUser',
+        JSON.stringify(payload.loggedInUser),
+      )
     },
   },
   actions: {

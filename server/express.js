@@ -2,15 +2,21 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 const middleWares = require('./middleWares/index.js')
 const {authMiddleWare} = middleWares
+const utils = require('./utils/index.js')
+const {generateToken} = utils
 
 const {Users, MakeFriendRecords} = require('./db/Models/index.js')
 const query = require('./db/mysql.js')
 
 const app = express()
-const SECRET_KEY = 'awd'
+
+const INVALID_USERNAME = '用户名未注册'
+const INVALID_USERNAME_CODE = 422
+
+const INVALID_PASSWORD = '密码错误'
+const INVALID_PASSWORD_CODE = 422
 
 const initApp = () => {
   // parse application/x-www-form-urlencoded
@@ -47,30 +53,6 @@ const testApi = () => {
       })
     })
   })
-
-  app.get('/profile', (req, res) => {
-    const token = String(req.headers.authorization)
-      .split(' ')
-      .pop()
-    // 解析出用户的id
-    jwt.verify(token, SECRET_KEY, (err, data) => {
-      if (err) {
-        res.status(401).send(err.message)
-      } else {
-        //判断有没有这个用户
-        query(`select * from user where id = ${data.id}`, function(
-          error,
-          result,
-        ) {
-          if (error || result.length === 0) {
-            res.status(401).send('登陆失效')
-          } else {
-            res.send('有')
-          }
-        })
-      }
-    })
-  })
 }
 
 initApp()
@@ -99,33 +81,27 @@ app.post('/register', function(req, res) {
 // // 登陆
 app.post('/login', function(req, res) {
   const {username, password} = req.body
-  query(`select * from user where username = '${username}'`, function(
-    error,
-    result,
-  ) {
-    if (error) {
-      throw error
-    } else if (result.length == 0) {
-      return res.status(422).send({message: '用户名不存在'})
+  Users.findOne({
+    where: {
+      username,
+    },
+  }).then(loggedInUser => {
+    if (!loggedInUser) {
+      res.status(INVALID_USERNAME_CODE).send(INVALID_USERNAME)
     } else {
-      const user = result[0]
-      if (bcrypt.compareSync(password, user.password)) {
-        const userDate = Object.assign({}, user)
-        // 不返回用户的密码
-        delete userDate.password
+      if (bcrypt.compareSync(password, loggedInUser.password)) {
         // 生成token
-        const token = require('jsonwebtoken').sign(
-          {
-            id: userDate.id,
-          },
-          SECRET_KEY,
-        )
+        const token = generateToken({
+          id: loggedInUser.id,
+        })
+        // 删除用户密码等敏感信息
+        loggedInUser.password = null
         res.send({
-          user: userDate,
+          loggedInUser,
           token,
         })
       } else {
-        return res.status(422).send('密码不正确')
+        res.status(INVALID_PASSWORD_CODE).send(INVALID_PASSWORD)
       }
     }
   })
