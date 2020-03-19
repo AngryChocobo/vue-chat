@@ -53,19 +53,12 @@ export default {
       })
     },
     searchUsers() {
-      this.$axios
-        .get(
-          searchUsers(
-            this.$store.state.loggedInUserModule.loggedInUser.id.id,
-            this.keyword,
-          ),
-        )
-        .then(res => {
-          this.userList = res.data
-          if (res.data.length == 0) {
-            this.$toast('无查询结果')
-          }
-        })
+      this.$axios.get(searchUsers(this.keyword)).then(res => {
+        this.userList = res.data
+        if (res.data.length == 0) {
+          this.$toast('无查询结果')
+        }
+      })
     },
     getImgSrc(src) {
       return src

@@ -2,12 +2,13 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
+const {Op} = require('sequelize')
 const middleWares = require('./middleWares/index.js')
 const {authMiddleWare} = middleWares
 const utils = require('./utils/index.js')
 const {generateToken} = utils
 
-const {Users, MakeFriendRecords} = require('./db/Models/index.js')
+const {Users, MakeFriendRecords, Friends} = require('./db/Models/index.js')
 const query = require('./db/mysql.js')
 
 const app = express()
@@ -106,6 +107,29 @@ app.post('/login', function(req, res) {
     }
   })
 })
+
+// 搜索用户
+app.get('/searchUsers', authMiddleWare, (req, res) => {
+  const {keyword} = req.query
+  const loggedInUserId = req.loggedInUser.id
+
+  Users.findAll({
+    attributes: {
+      exclude: ['password'],
+    },
+    where: {
+      username: {
+        [Op.substring]: keyword,
+      },
+      id: {
+        [Op.ne]: loggedInUserId,
+      },
+    },
+  }).then(users => {
+    res.send(users)
+  })
+})
+
 // 查看搜索用户详细信息及是否是好友
 app.get('/getUserInfo', authMiddleWare, (req, res) => {
   const targetId = req.query.userId // 查询目标id
@@ -209,18 +233,6 @@ app.get('/getUserFriendList', authMiddleWare, (req, res) => {
   const {userId} = req.query
   query(
     `select friend.userId, friend.create_at, username, src from friend,user where friend.userId=user.id and friend.friendId=${userId}`,
-    function(error, results) {
-      if (error) throw error
-      res.send(results)
-    },
-  )
-})
-
-// 搜索用户
-app.get('/searchUsers', authMiddleWare, (req, res) => {
-  const {keyword} = req.query
-  query(
-    `select id, username, nickname, src from user where user.username like '%${keyword}%' or user.id='${keyword}'`,
     function(error, results) {
       if (error) throw error
       res.send(results)
