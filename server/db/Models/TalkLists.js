@@ -25,5 +25,5 @@ TalkLists.init(
   {sequelize, modelName: 'newTalkLists'},
 )
 
-TalkLists.sync({force: true})
+// TalkLists.sync({force: true})
 module.exports = TalkLists

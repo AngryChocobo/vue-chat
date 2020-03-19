@@ -26,5 +26,5 @@ Messages.init(
   {sequelize, modelName: 'newMessages'},
 )
 
-Messages.sync({force: true})
+// Messages.sync({force: true})
 module.exports = Messages
