@@ -3,6 +3,9 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const middleWares = require('./middleWares/index.js')
+const {authMiddleWare} = middleWares
+
 // const TestTable = require('./db/Models/TestTable.js')
 const {Users, MakeFriendRecords} = require('./db/Models/index.js')
 const query = require('./db/mysql.js')
@@ -10,44 +13,69 @@ const query = require('./db/mysql.js')
 const app = express()
 const SECRET_KEY = 'awd'
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({extended: false}))
+const initApp = () => {
+  // parse application/x-www-form-urlencoded
+  app.use(bodyParser.urlencoded({extended: false}))
 
-// parse application/json
-app.use(bodyParser.json())
+  // parse application/json
+  app.use(bodyParser.json())
 
-// 跨域
-app.use(cors())
-
-const passwordEncryption = password => {
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+  // 跨域
+  app.use(cors())
 }
 
-// 判断登陆状态 中间件
-const authMiddleWare = (req, res, next) => {
-  const token = String(req.headers.authorization)
-    .split(' ')
-    .pop()
-  // 解析出用户的id
-  jwt.verify(token, SECRET_KEY, (jwtError, data) => {
-    if (jwtError) {
-      res.status(401).send(jwtError.message)
-    } else {
-      // 判断有没有这个用户
-      query(
-        `select id, username, nickname, src from user where id = ${data.id}`,
-        (error, result) => {
+const testApi = () => {
+  app.get('/init', (req, res) => {
+    query(`insert into test (id) values (1)`)
+    res.send('init success')
+  })
+
+  app.get('/deleteAllData', (req, res) => {
+    query(`delete from friend`, error => {
+      if (error) throw error
+      query(`delete from user`, error => {
+        if (error) throw error
+        query(`delete from makeFriendRecord`, error => {
+          if (error) throw error
+          query(`delete from message`, error => {
+            if (error) throw error
+            query(`delete from talkList`, error => {
+              if (error) throw error
+              res.send('looks delete success')
+            })
+          })
+        })
+      })
+    })
+  })
+
+  app.get('/profile', (req, res) => {
+    const token = String(req.headers.authorization)
+      .split(' ')
+      .pop()
+    // 解析出用户的id
+    jwt.verify(token, SECRET_KEY, (err, data) => {
+      if (err) {
+        res.status(401).send(err.message)
+      } else {
+        //判断有没有这个用户
+        query(`select * from user where id = ${data.id}`, function(
+          error,
+          result,
+        ) {
           if (error || result.length === 0) {
             res.status(401).send('登陆失效')
           } else {
-            req.user = result[0]
-            next()
+            res.send('有')
           }
-        },
-      )
-    }
+        })
+      }
+    })
   })
 }
+
+initApp()
+testApi()
 
 app.get('/', function(req, res) {
   res.send('server ok')
@@ -58,31 +86,6 @@ app.get('/ss', function(req, res) {
     res.send(data)
   })
 })
-
-app.get('/init', (req, res) => {
-  query(`insert into test (id) values (1)`)
-  res.send('init success')
-})
-
-app.get('/deleteAllData', (req, res) => {
-  query(`delete from friend`, error => {
-    if (error) throw error
-    query(`delete from user`, error => {
-      if (error) throw error
-      query(`delete from makeFriendRecord`, error => {
-        if (error) throw error
-        query(`delete from message`, error => {
-          if (error) throw error
-          query(`delete from talkList`, error => {
-            if (error) throw error
-            res.send('looks delete success')
-          })
-        })
-      })
-    })
-  })
-})
-
 // 查看搜索用户详细信息及是否是好友
 app.get('/getUserInfo', authMiddleWare, (req, res) => {
   const targetId = req.query.userId // 查询目标id
@@ -208,7 +211,7 @@ app.get('/searchUsers', authMiddleWare, (req, res) => {
 // 注册
 app.post('/register', function(req, res) {
   const {username, password} = req.body
-  const hashedPassword = passwordEncryption(password)
+  const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
   const now = Date.now()
   query(
     `insert into user (username, password, create_at) values
@@ -263,30 +266,6 @@ app.post('/login', function(req, res) {
       } else {
         return res.status(422).send('密码不正确')
       }
-    }
-  })
-})
-
-app.get('/profile', (req, res) => {
-  const token = String(req.headers.authorization)
-    .split(' ')
-    .pop()
-  // 解析出用户的id
-  jwt.verify(token, SECRET_KEY, (err, data) => {
-    if (err) {
-      res.status(401).send(err.message)
-    } else {
-      //判断有没有这个用户
-      query(`select * from user where id = ${data.id}`, function(
-        error,
-        result,
-      ) {
-        if (error || result.length === 0) {
-          res.status(401).send('登陆失效')
-        } else {
-          res.send('有')
-        }
-      })
     }
   })
 })
