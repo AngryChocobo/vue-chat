@@ -1,4 +1,6 @@
 const socketIO = require('socket.io')
+const {Users, Friends, MakeFriendRecords} = require('./db/Models/index.js')
+
 const query = require('./db/mysql.js')
 
 // 获取会话列表 （同时查询新消息数量，插入到会话列表的数据结构中）
@@ -32,15 +34,18 @@ const getTalkList = (loggedInUserId, callback) => {
 // 获取好友申请列表
 const getFriendRequestList = (loggedInUserId, callback) => {
   console.log(`${loggedInUserId} 获取好友申请列表`)
-  query(
-    `select makeFriendRecord.id, user.id as userId, user.username, user.nickname, user.src, 
-      makeFriendRecord.say, makeFriendRecord.stats, makeFriendRecord.read, makeFriendRecord.create_at
-      from makeFriendRecord 
-      left join user on user.id = makeFriendRecord.fromUserId
-      where toUserId = ${loggedInUserId}
-      order by makeFriendRecord.read asc, makeFriendRecord.create_at desc`,
-    callback,
-  )
+  MakeFriendRecords.findAll({
+    targetUserId: loggedInUserId,
+  }).then(callback)
+  // query(
+  //   `select makeFriendRecord.id, user.id as userId, user.username, user.nickname, user.src,
+  //     makeFriendRecord.say, makeFriendRecord.stats, makeFriendRecord.read, makeFriendRecord.create_at
+  //     from makeFriendRecord
+  //     left join user on user.id = makeFriendRecord.fromUserId
+  //     where toUserId = ${loggedInUserId}
+  //     order by makeFriendRecord.read asc, makeFriendRecord.create_at desc`,
+  //   callback,
+  // )
 }
 
 module.exports = http => {
@@ -202,33 +207,35 @@ module.exports = http => {
       console.log(
         `Receive makeFriendRequest from ${socket.loggedInUserId} to ${data.userId}`,
       )
-      query(
-        `insert into makeFriendRecord (fromUserId, toUserId, say, create_at) VALUES 
-      (${socket.loggedInUserId}, ${data.userId}, '${data.say}', ${Date.now()})`,
-        error => {
-          if (error) {
-            socket.emit('makeFriendRequestResult', '发送失败')
-          } else {
+      MakeFriendRecords.findOne({
+        fromUserId: socket.loggedInUserId,
+        targetUserId: data.targetUserId,
+        stats: 'Waiting',
+      }).then(record => {
+        if (record) {
+          socket.emit('makeFriendRequestResult', '已经发送过好友申请了')
+        } else {
+          MakeFriendRecords.create({
+            fromUserId: socket.loggedInUserId,
+            targetUserId: data.targetUserId,
+            say: data.say,
+          }).then(() => {
             socket.emit('makeFriendRequestResult', '发送成功')
-            // 判断对方是否在线
-            const targetSocket = getTargetOnlineSocket(data.userId)
+            // 若对方在线则推送
+            const targetSocket = getTargetOnlineSocket(data.targetUserId)
             if (targetSocket) {
               console.log('推送好友申请')
               targetSocket.emit('receiveFriendRequest')
             }
-          }
-        },
-      )
+          })
+        }
+      })
     })
 
     // 获取好友申请列表
     socket.on('getFriendRequestList', function() {
-      getFriendRequestList(socket.loggedInUserId, (error, results) => {
-        if (error) {
-          socket.emit('getFriendRequestResult', '发送失败')
-        } else {
-          socket.emit('getFriendRequestResult', results)
-        }
+      getFriendRequestList(socket.loggedInUserId, results => {
+        socket.emit('getFriendRequestResult', results)
       })
     })
 
@@ -260,12 +267,8 @@ module.exports = http => {
           if (error) {
             console.error(error)
           } else {
-            getFriendRequestList(socket.loggedInUserId, (error, results) => {
-              if (error) {
-                console.error(error)
-              } else {
-                socket.emit('getFriendRequestResult', results)
-              }
+            getFriendRequestList(socket.loggedInUserId, results => {
+              socket.emit('getFriendRequestResult', results)
             })
           }
         },
