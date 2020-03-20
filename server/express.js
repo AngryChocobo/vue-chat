@@ -133,27 +133,26 @@ app.get('/searchUsers', authMiddleWare, (req, res) => {
 // 查看搜索用户详细信息及是否是好友
 app.get('/getUserInfo', authMiddleWare, (req, res) => {
   const targetId = req.query.userId // 查询目标id
-  const loggedInUserId = req.user.id
-  query(
-    `select friend.id as friendRelationId, friendRemark, friend.create_at as beFriendDate, makeFriendRecord.stats, makeFriendRecord.create_at as recordSendDate,  user.id as userId, username, nickname, src, say
-    from user 
-    left join friend 
-    on friend.friendId = ${loggedInUserId} and friend.userId = ${targetId}
-    left join makeFriendRecord
-    on makeFriendRecord.fromUserId = ${loggedInUserId} and makeFriendRecord.toUserId = ${targetId}
-    where
-    user.id = ${targetId}`,
-    (error, results) => {
-      if (error) throw error
-      res.send(results[0])
+  const loggedInUserId = req.loggedInUser.id
+  Users.findOne({
+    attributes: {
+      exclude: ['password'],
     },
-  )
+  }).then(user => {
+    if (!user) {
+      res.status(500).send('无效的用户id')
+    } else {
+      // 查询该用户与自己的好友状态、好友申请状态
+      // Friends.findOne
+      res.send(user)
+    }
+  })
 })
 
 // 查看好友请求详细信息
 app.get('/getFriendRequestInfo', authMiddleWare, (req, res) => {
   const userId = req.query.userId // 查询目标id
-  const loggedInUserId = req.user.id
+  const loggedInUserId = req.loggedInUser.id
   query(
     `select makeFriendRecord.id, user.id as userId, user.username, user.nickname, user.src, 
     makeFriendRecord.say, makeFriendRecord.stats, makeFriendRecord.read, makeFriendRecord.create_at
@@ -171,7 +170,7 @@ app.get('/getFriendRequestInfo', authMiddleWare, (req, res) => {
 // 同意好友请求
 app.post('/agreeMakeFriendRequest', authMiddleWare, (req, res) => {
   const {userId, recordId} = req.body
-  const loggedInUserId = req.user.id
+  const loggedInUserId = req.loggedInUser.id
   console.log(`${loggedInUserId} 同意了好友请求id: ${recordId}`)
   query(
     `update makeFriendRecord set stats = 1 where id = ${recordId}`,
