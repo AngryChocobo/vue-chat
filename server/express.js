@@ -63,8 +63,8 @@ app.get('/', function(req, res) {
   // res.send('server ok')
   Friends.findAll({
     include: [
-      {model: Users, as: 'UserInfo'},
-      {model: Users, as: 'FriendUserInfo'},
+      {model: Users, as: 'userInfo'},
+      {model: Users, as: 'friendUserInfo'},
     ],
   }).then(friends => {
     res.send(friends)
@@ -280,14 +280,23 @@ app.get('/getMessageList', authMiddleWare, function(req, res) {
 
 // 好友列表
 app.get('/getUserFriendList', authMiddleWare, (req, res) => {
-  const {userId} = req.query
-  query(
-    `select friend.userId, friend.create_at, username, src from friend,user where friend.userId=user.id and friend.friendId=${userId}`,
-    function(error, results) {
-      if (error) throw error
-      res.send(results)
+  const loggedInUserId = req.loggedInUser.id
+  Friends.findAll({
+    where: {
+      userId: loggedInUserId,
     },
-  )
+    include: [
+      {
+        model: Users,
+        as: 'friendUserInfo',
+        attributes: {
+          exclude: ['password'],
+        },
+      },
+    ],
+  }).then(friendList => {
+    res.send(friendList)
+  })
 })
 
 module.exports = app

@@ -4,8 +4,8 @@ const Messages = require('./Messages.js')
 const MakeFriendRecords = require('./MakeFriendRecords.js')
 const TalkLists = require('./TalkLists.js')
 
-Friends.belongsTo(Users, {foreignKey: 'userId', as: 'UserInfo'})
-Friends.belongsTo(Users, {foreignKey: 'friendId', as: 'FriendUserInfo'})
+Friends.belongsTo(Users, {foreignKey: 'userId', as: 'userInfo'})
+Friends.belongsTo(Users, {foreignKey: 'friendId', as: 'friendUserInfo'})
 
 MakeFriendRecords.belongsTo(Users, {
   foreignKey: 'fromUserId',

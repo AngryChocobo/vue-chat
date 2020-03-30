@@ -23,10 +23,13 @@
             class="friend"
             v-for="friend in friendList"
             :key="friend.id"
-            @click="checkFriendInfo(friend)"
+            @click="checkFriendInfo(friend.friendUserInfo)"
           >
-            <img :src="getImgSrc(friend.src)" :alt="friend.name" />
-            <span class="username">{{ friend.username }}</span>
+            <img
+              :src="getImgSrc(friend.friendUserInfo.src)"
+              :alt="friend.friendUserInfo.name"
+            />
+            <span class="username">{{ friend.friendUserInfo.username }}</span>
           </van-cell>
         </van-list>
       </van-collapse-item>
@@ -71,19 +74,14 @@ export default {
     checkFriendInfo(friend) {
       this.$router.push({
         name: 'UserInfo',
-        params: {userId: friend.userId},
+        params: {userId: friend.id},
       })
     },
     getUserFriendList() {
-      this.$axios
-        .get(
-          getUserFriendList(
-            this.$store.state.loggedInUserModule.loggedInUser.id,
-          ),
-        )
-        .then(res => {
-          this.friendList = res.data || []
-        })
+      this.$axios.get(getUserFriendList).then(res => {
+        console.log('好友列表: ', res.data)
+        this.friendList = res.data || []
+      })
     },
     getImgSrc(src) {
       return src

@@ -93,7 +93,7 @@ export default {
         context.commit(UPDATE_FRIEND_REQUEST_LIST, data)
       })
       socket.on('updateTalkList', data => {
-        console.log('updateTalkList', data, UPDATE_TALK_LIST)
+        console.log('updateTalkList', data)
         context.commit(UPDATE_TALK_LIST, data)
       })
       // socket.on('connect_error', error => {

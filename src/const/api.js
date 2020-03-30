@@ -7,8 +7,7 @@ export const getMessageList = (fromUserId, targetId) =>
   `${apiPath}/getMessageList?fromUserId=${fromUserId}&targetId=${targetId}`
 
 // export const sendNewMessage = `${apiPath}/sendNewMessage`
-export const getUserFriendList = userId =>
-  `${apiPath}/getUserFriendList?userId=${userId}`
+export const getUserFriendList = `${apiPath}/getUserFriendList`
 
 export const getTalkTargetInfo = userId =>
   `${apiPath}/getTalkTargetInfo?userId=${userId}`
