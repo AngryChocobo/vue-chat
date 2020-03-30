@@ -5,41 +5,38 @@
       <div class="main-info">
         <img :src="imgSrc" alt="" class="userImg" />
         <div class="info-content">
-          <h3 v-if="userIsFriend">
-            {{
-              userInfo.friendRemark || userInfo.nickname || userInfo.username
-            }}
+          <h3>
+            {{ userInfo.nickname || userInfo.username }}
           </h3>
-          <h3 v-else>{{ userInfo.nickname }}</h3>
-          <p v-if="userInfo.friendRemark">昵称： {{ userInfo.nickname }}</p>
-          <p>用户名： {{ userInfo.username }}</p>
+          <!-- <p v-if="userInfo.friendRemark">昵称： {{ userInfo.nickname }}</p> -->
+          <!-- <p>用户名： {{ userInfo.username }}</p> -->
           <!-- <p>地区： todo......</p> -->
         </div>
       </div>
-      <template v-if="userIsFriend">
+      <template v-if="isMyFriend">
         <van-cell> 设置备注和标签 </van-cell>
         <van-cell> 朋友权限 </van-cell>
         <van-cell> 朋友圈 </van-cell>
         <van-cell @click="talkTo"> 发消息 </van-cell>
         <van-cell> 音视频通话 </van-cell>
       </template>
-      <div v-if="!userIsFriend">
+      <div v-if="!isMyFriend">
         <van-cell-group>
           <van-field
-            v-model="userInfo.say"
+            v-model="say"
             label="好友申请"
             placeholder="请输入好友申请信息"
-            :disabled="userInfo.stats === 0"
+            :disabled="isMakedFriendRequest"
           />
         </van-cell-group>
         <van-cell>
           <van-button
             type="primary"
             size="large"
-            :disabled="userInfo.stats === 0"
+            :disabled="isMakedFriendRequest"
             @click="makeFriendRequest"
           >
-            {{ userInfo.stats | statsFilter }}
+            {{ isMakedFriendRequest ? '好友申请已发送' : '发送好友申请' }}
           </van-button>
         </van-cell>
       </div>
@@ -56,16 +53,12 @@ export default {
   name: 'UserInfo',
   data() {
     return {
+      say: '',
       userInfo: null,
     }
   },
   components: {
     MyNavBar,
-  },
-  filters: {
-    statsFilter(stats) {
-      return stats === null ? '发送好友申请' : '好友申请已发送'
-    },
   },
   computed: {
     imgSrc() {
@@ -73,8 +66,11 @@ export default {
         ? require('@assets/head/' + this.userInfo.src)
         : require('@assets/head/head.jpg')
     },
-    userIsFriend() {
-      return this.userInfo && this.userInfo.friendRelation ? true : false
+    isMyFriend() {
+      return this.userInfo && !!this.userInfo.friendRelation
+    },
+    isMakedFriendRequest() {
+      return this.userInfo && !!this.userInfo.makeFriendRecord
     },
     loggedInUserId() {
       return this.$store.state.loggedInUserModule.loggedInUser.id
@@ -98,12 +94,14 @@ export default {
       }
       this.$axios.get(getUserInfo(userId)).then(res => {
         this.userInfo = res.data
+        this.say =
+          (res.data.makeFriendRecord && res.data.makeFriendRecord.say) || ''
       })
     },
     makeFriendRequest() {
       this.$store.dispatch(MAKE_FRIEND_REQUEST, {
         targetUserId: this.userInfo.id,
-        say: this.userInfo.say,
+        say: this.say,
       })
     },
   },

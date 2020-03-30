@@ -2,14 +2,14 @@ const Sequelize = require('Sequelize')
 const sequelize = require('../sequelize.js')
 
 const MakeFriendRecords = sequelize.define('newMakeFriendRecords', {
-  // fromUserId: {
-  //   type: Sequelize.INTEGER,
-  //   allowNull: false,
-  // },
-  // targetUserId: {
-  //   type: Sequelize.INTEGER,
-  //   allowNull: false,
-  // },
+  fromUserId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  targetUserId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
   say: {
     type: Sequelize.STRING,
   },

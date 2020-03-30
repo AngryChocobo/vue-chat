@@ -160,13 +160,34 @@ app.get('/getUserInfo', authMiddleWare, (req, res) => {
           friendId: targetUserId,
         },
       }).then(friend => {
-        // 存在好友关系，则为用户对象添加相关信息
+        // 存在好友关系，则为用户对象添加好友关系信息（备注等）
         // TODO Refactor 想更好地实现办法
         if (friend) {
           user.dataValues.friendRelation = friend
+          console.log('查看了好友的用户信息: ', JSON.stringify(user, null, 4))
+          res.send(user.dataValues)
+        } else {
+          // 故意冗余，以便前端判断
+          user.dataValues.friendRelation = null
+          // 查找是否曾向对方发送过好友申请
+          MakeFriendRecords.findOne({
+            attributes: {
+              exclude: ['read'],
+            },
+            where: {
+              fromUserId: loggedInUserId,
+              targetUserId,
+              stats: 'Waiting',
+            },
+          }).then(record => {
+            user.dataValues.makeFriendRecord = record
+            console.log(
+              '查看了曾申请过好友的用户信息: ',
+              JSON.stringify(user, null, 4),
+            )
+            res.send(user.dataValues)
+          })
         }
-        console.log('find: ', JSON.stringify(user, null, 4))
-        res.send(user.dataValues)
       })
     }
   })

@@ -219,6 +219,7 @@ module.exports = http => {
             fromUserId: socket.loggedInUserId,
             targetUserId: data.targetUserId,
             say: data.say,
+            stats: 'Waiting',
           }).then(() => {
             socket.emit('makeFriendRequestResult', '发送成功')
             // 若对方在线则推送
