@@ -6,12 +6,14 @@
         <img :src="imgSrc" alt="" class="userImg" />
         <div class="info-content">
           <h3 v-if="userIsFriend">
-            {{ userInfo.friendRemark || userInfo.nickname }}
+            {{
+              userInfo.friendRemark || userInfo.nickname || userInfo.username
+            }}
           </h3>
           <h3 v-else>{{ userInfo.nickname }}</h3>
           <p v-if="userInfo.friendRemark">昵称： {{ userInfo.nickname }}</p>
           <p>用户名： {{ userInfo.username }}</p>
-          <p>地区： todo......</p>
+          <!-- <p>地区： todo......</p> -->
         </div>
       </div>
       <template v-if="userIsFriend">
@@ -21,7 +23,7 @@
         <van-cell @click="talkTo"> 发消息 </van-cell>
         <van-cell> 音视频通话 </van-cell>
       </template>
-      <div v-if="!userIsFriend && userInfo.stats !== 1">
+      <div v-if="!userIsFriend">
         <van-cell-group>
           <van-field
             v-model="userInfo.say"
@@ -72,10 +74,10 @@ export default {
         : require('@assets/head/head.jpg')
     },
     userIsFriend() {
-      return this.userInfo && this.userInfo.friendRelationId ? true : false
+      return this.userInfo && this.userInfo.friendRelation ? true : false
     },
     loggedInUserId() {
-      return this.$store.state.loggedInUserModule.loggedInUser.id.id
+      return this.$store.state.loggedInUserModule.loggedInUser.id
     },
   },
   mounted() {
@@ -85,7 +87,7 @@ export default {
     talkTo() {
       this.$router.push({
         name: 'TalkView',
-        params: {id: this.userInfo.userId},
+        params: {id: this.userInfo.id},
       })
     },
     getUserInfo() {
@@ -100,7 +102,7 @@ export default {
     },
     makeFriendRequest() {
       this.$store.dispatch(MAKE_FRIEND_REQUEST, {
-        userId: this.userInfo.userId,
+        targetUserId: this.userInfo.id,
         say: this.userInfo.say,
       })
     },

@@ -60,7 +60,15 @@ initApp()
 testApi()
 
 app.get('/', function(req, res) {
-  res.send('server ok')
+  // res.send('server ok')
+  Friends.findAll({
+    include: [
+      {model: Users, as: 'UserInfo'},
+      {model: Users, as: 'FriendUserInfo'},
+    ],
+  }).then(friends => {
+    res.send(friends)
+  })
 })
 
 app.get('/ss', function(req, res) {
@@ -132,19 +140,34 @@ app.get('/searchUsers', authMiddleWare, (req, res) => {
 
 // 查看搜索用户详细信息及是否是好友
 app.get('/getUserInfo', authMiddleWare, (req, res) => {
-  const targetId = req.query.userId // 查询目标id
+  const {targetUserId} = req.query // 查询目标id
   const loggedInUserId = req.loggedInUser.id
   Users.findOne({
     attributes: {
       exclude: ['password'],
+    },
+    where: {
+      id: targetUserId,
     },
   }).then(user => {
     if (!user) {
       res.status(500).send('无效的用户id')
     } else {
       // 查询该用户与自己的好友状态、好友申请状态
-      // Friends.findOne
-      res.send(user)
+      Friends.findOne({
+        where: {
+          userId: loggedInUserId,
+          friendId: targetUserId,
+        },
+      }).then(friend => {
+        // 存在好友关系，则为用户对象添加相关信息
+        // TODO Refactor 想更好地实现办法
+        if (friend) {
+          user.dataValues.friendRelation = friend
+        }
+        console.log('find: ', JSON.stringify(user, null, 4))
+        res.send(user.dataValues)
+      })
     }
   })
 })
