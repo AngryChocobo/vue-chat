@@ -35,7 +35,9 @@ const getTalkList = (loggedInUserId, callback) => {
 const getFriendRequestList = (loggedInUserId, callback) => {
   console.log(`${loggedInUserId} 获取好友申请列表`)
   MakeFriendRecords.findAll({
-    targetUserId: loggedInUserId,
+    where: {
+      targetUserId: loggedInUserId,
+    },
   }).then(callback)
   // query(
   //   `select makeFriendRecord.id, user.id as userId, user.username, user.nickname, user.src,

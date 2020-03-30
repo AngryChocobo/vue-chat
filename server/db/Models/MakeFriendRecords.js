@@ -15,9 +15,11 @@ const MakeFriendRecords = sequelize.define('newMakeFriendRecords', {
   },
   read: {
     type: Sequelize.BOOLEAN,
+    defaultValue: 0,
   },
   stats: {
     type: Sequelize.ENUM('Waiting', 'Agree', 'Disagree'),
+    defaultValue: 'Waiting',
   },
 })
 

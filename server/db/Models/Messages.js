@@ -1,30 +1,22 @@
 const Sequelize = require('Sequelize')
 const sequelize = require('../sequelize.js')
 
-class Messages extends Sequelize.Model {}
-
-Messages.init(
-  {
-    fromUserId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
-    targetUserId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
-    message: {
-      type: Sequelize.STRING,
-    },
-    read: {
-      type: Sequelize.BOOLEAN,
-    },
-    createDate: {
-      type: Sequelize.DATE,
-    },
+const Messages = sequelize.define('newMessages', {
+  fromUserId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
   },
-  {sequelize, modelName: 'newMessages'},
-)
+  targetUserId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  message: {
+    type: Sequelize.STRING,
+  },
+  read: {
+    type: Sequelize.BOOLEAN,
+  },
+})
 
 // Messages.sync({force: true})
 module.exports = Messages

@@ -33,7 +33,7 @@ export default {
   },
   getters: {
     [FRIEND_REQUEST_UN_READ_COUNT](state) {
-      return state.friendRequestList.filter(v => v.read === 0).length
+      return state.friendRequestList.filter(v => !v.read).length
     },
   },
   mutations: {
@@ -41,6 +41,7 @@ export default {
       state.socket = payload
     },
     [UPDATE_FRIEND_REQUEST_LIST](state, payload) {
+      console.log('用户的好友请求列表： ', payload)
       state.friendRequestList = payload
     },
     [RECONNECT_ATTEMPT](state, payload) {

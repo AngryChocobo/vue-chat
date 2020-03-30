@@ -250,13 +250,20 @@ app.post('/agreeMakeFriendRequest', authMiddleWare, (req, res) => {
 // 会话目标信息
 app.get('/getTalkTargetInfo', authMiddleWare, function(req, res) {
   const {userId} = req.query
-  query(
-    `select id, username, nickname, src from user WHERE user.id=${userId}`,
-    function(error, results) {
-      if (error) throw error
-      res.send(results[0])
+  Users.findOne({
+    where: {
+      id: userId,
     },
-  )
+    attributes: {
+      exclude: ['password'],
+    },
+  }).then(userInfo => {
+    if (!userInfo) {
+      res.status(500).send('无效的用户id')
+    } else {
+      res.send(userInfo)
+    }
+  })
 })
 
 // 会话页
