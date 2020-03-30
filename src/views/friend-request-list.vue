@@ -10,15 +10,21 @@
         class="friend"
         v-for="friend in friendRequestList"
         :key="friend.id"
-        :value="friend.stats == 0 ? '查看' : '已同意'"
-        @click="checkFriendRequestInfo(friend)"
+        @click="checkFriendRequestInfo(friend.makeRecordUserInfo)"
       >
         <div class="friend-info">
-          <img :src="getImgSrc(friend.src)" :alt="friend.name" />
-          <span class="username">{{ friend.username }}</span>
+          <img :src="getImgSrc(friend.makeRecordUserInfo.src)" />
+          <span class="username">{{ friend.makeRecordUserInfo.username }}</span>
         </div>
-        <van-tag type="primary" v-if="friend.stats === 0" plain>待通过</van-tag>
-        <van-tag type="success" v-if="friend.stats === 1" plain>已通过</van-tag>
+        <van-tag type="primary" v-if="friend.stats === 'Waiting'" plain
+          >待通过</van-tag
+        >
+        <van-tag type="success" v-if="friend.stats === 'Agree'" plain
+          >已通过</van-tag
+        >
+        <van-tag type="danger" v-if="friend.stats === 'Disagree'" plain
+          >已拒绝</van-tag
+        >
         <!-- todo 根据不同的stats显示通过状态 -->
       </van-cell>
     </van-list>
@@ -59,7 +65,7 @@ export default {
       this.$router.push({
         name: 'FriendRequestInfo',
         params: {
-          userId: friend.userId,
+          userId: friend.id,
         },
       })
     },

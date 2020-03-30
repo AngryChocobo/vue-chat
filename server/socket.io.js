@@ -38,16 +38,9 @@ const getFriendRequestList = (loggedInUserId, callback) => {
     where: {
       targetUserId: loggedInUserId,
     },
+    include: [{model: Users, as: 'makeRecordUserInfo'}],
+    // todo 排序 先按read排序，后按时间排序
   }).then(callback)
-  // query(
-  //   `select makeFriendRecord.id, user.id as userId, user.username, user.nickname, user.src,
-  //     makeFriendRecord.say, makeFriendRecord.stats, makeFriendRecord.read, makeFriendRecord.create_at
-  //     from makeFriendRecord
-  //     left join user on user.id = makeFriendRecord.fromUserId
-  //     where toUserId = ${loggedInUserId}
-  //     order by makeFriendRecord.read asc, makeFriendRecord.create_at desc`,
-  //   callback,
-  // )
 }
 
 module.exports = http => {

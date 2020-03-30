@@ -9,11 +9,11 @@ Friends.belongsTo(Users, {foreignKey: 'friendId', as: 'friendUserInfo'})
 
 MakeFriendRecords.belongsTo(Users, {
   foreignKey: 'fromUserId',
-  as: 'MakeRecordUserInfo',
+  as: 'makeRecordUserInfo',
 })
 MakeFriendRecords.belongsTo(Users, {
   foreignKey: 'targetUserId',
-  as: 'ReceiveRecordUserInfo',
+  as: 'requestRecordUserInfo',
 })
 
 module.exports = {
