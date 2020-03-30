@@ -1,18 +1,10 @@
 const mysql = require('mysql')
+const mysqlConfig = require('./mysqlConfig.js')
 
-const mysqlConfig = {
-  host: 'localhost',
-  user: 'root',
-  password: '123456',
-  database: 'chat',
-}
+const password = process.env.sqlPassword
+console.log('数据库密码：' + password)
 
-const pool = mysql.createPool({
-  host: mysqlConfig.host,
-  user: mysqlConfig.user,
-  password: mysqlConfig.password,
-  database: mysqlConfig.database,
-})
+const pool = mysql.createPool(mysqlConfig)
 
 const query = (sql, callback) => {
   return new Promise((resolve, reject) => {
