@@ -7,6 +7,15 @@ const TalkLists = require('./TalkLists.js')
 Friends.belongsTo(Users, {foreignKey: 'userId', as: 'UserInfo'})
 Friends.belongsTo(Users, {foreignKey: 'friendId', as: 'FriendUserInfo'})
 
+MakeFriendRecords.belongsTo(Users, {
+  foreignKey: 'fromUserId',
+  as: 'MakeRecordUserInfo',
+})
+MakeFriendRecords.belongsTo(Users, {
+  foreignKey: 'targetUserId',
+  as: 'ReceiveRecordUserInfo',
+})
+
 module.exports = {
   Users,
   Friends,
