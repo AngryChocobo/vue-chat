@@ -181,10 +181,14 @@ app.get('/getUserInfo', authMiddleWare, (req, res) => {
             },
           }).then(record => {
             user.dataValues.makeFriendRecord = record
-            console.log(
-              '查看了曾申请过好友的用户信息: ',
-              JSON.stringify(user, null, 4),
-            )
+            if (record) {
+              console.log(
+                '查看了曾申请过好友的用户信息: ',
+                JSON.stringify(user, null, 4),
+              )
+            } else {
+              console.log('查看了用户信息: ', JSON.stringify(user, null, 4))
+            }
             res.send(user.dataValues)
           })
         }

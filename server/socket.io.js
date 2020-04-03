@@ -293,9 +293,11 @@ module.exports = http => {
         `Receive makeFriendRequest from ${socket.loggedInUserId} to ${data.userId}`,
       )
       MakeFriendRecords.findOne({
-        fromUserId: socket.loggedInUserId,
-        targetUserId: data.targetUserId,
-        stats: 'Waiting',
+        where: {
+          fromUserId: socket.loggedInUserId,
+          targetUserId: data.targetUserId,
+          stats: 'Waiting',
+        },
       }).then(record => {
         if (record) {
           socket.emit('makeFriendRequestResult', '已经发送过好友申请了')
@@ -306,7 +308,7 @@ module.exports = http => {
             say: data.say,
             stats: 'Waiting',
           }).then(() => {
-            socket.emit('makeFriendRequestResult', '发送成功')
+            socket.emit('makeFriendRequestResult', '好友请求发送成功')
             // 若对方在线则推送
             const targetSocket = getTargetOnlineSocket(data.targetUserId)
             if (targetSocket) {
