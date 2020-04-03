@@ -1,6 +1,6 @@
 <template>
   <van-overlay
-    :show="reconnectAttempt || reconnectFailed"
+    :show="!!reconnectAttempt || reconnectFailed"
     class="reconnect-overlay"
   >
     <div class="wrapper">

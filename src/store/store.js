@@ -23,6 +23,5 @@ if (store.state.loggedInUserModule.loggedInUser) {
   store.dispatch(GET_USER_FRIEND_LIST)
 }
 
-// console.log(store)
 window.store = store
 export default store

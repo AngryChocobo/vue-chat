@@ -12,6 +12,9 @@ import SearchUser from '../views/search-user.vue'
 import UserInfo from '../views/user-info.vue'
 import store from '../store/store.js'
 import {Toast} from 'vant'
+
+import {RESET_RECONNECT_OVERLAY} from '@store/types/mutation-types.js'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -94,6 +97,11 @@ router.beforeEach((to, from, next) => {
       router.replace('/login')
     }
   }
+  if (to.name == 'Login') {
+    store.state.socketModule.socket.close()
+    store.commit(RESET_RECONNECT_OVERLAY)
+  }
+
   next()
 })
 

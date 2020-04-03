@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import moment from 'moment'
 import App from './App.vue'
-
 import './plugins/vant.js'
 import './plugins/axios.js'
 import './plugins/icon.js'

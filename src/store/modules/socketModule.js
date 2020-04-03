@@ -11,6 +11,7 @@ import {
   RECONNECT_ATTEMPT,
   RECONNECT_FAILED,
   UPDATE_USER_FRIEND_LIST,
+  RESET_RECONNECT_OVERLAY,
 } from '@store/types/mutation-types.js'
 
 import {
@@ -30,7 +31,7 @@ import {FRIEND_REQUEST_UN_READ_COUNT} from '@store/types/getters-types.js'
 export default {
   state: {
     socket: null,
-    reconnectAttempt: null, // socket尝试重连次数
+    reconnectAttempt: 0, // socket尝试重连次数
     reconnectFailed: false, // socket尝试重连失败
     friendRequestList: [],
     friendList: [],
@@ -53,12 +54,16 @@ export default {
       state.friendList = payload
     },
     [RECONNECT_ATTEMPT](state, payload) {
-      console.log('att: ', payload)
+      console.log('重联次数: ', payload)
       state.reconnectAttempt = payload
     },
     [RECONNECT_FAILED](state) {
       state.reconnectAttempt = null
       state.reconnectFailed = true
+    },
+    [RESET_RECONNECT_OVERLAY](state) {
+      state.reconnectAttempt = 0
+      state.reconnectFailed = false
     },
   },
   actions: {
@@ -131,6 +136,12 @@ export default {
       socket.on('reconnect_failed', () => {
         // console.log('reconnect_failed')
         context.commit(RECONNECT_FAILED)
+      })
+
+      // 重联成功
+      socket.on('reconnect', () => {
+        console.log('reconnect')
+        context.commit(RESET_RECONNECT_OVERLAY)
       })
     },
     [AGREE_MAKE_FRIEND_REQUEST](context, payload) {
