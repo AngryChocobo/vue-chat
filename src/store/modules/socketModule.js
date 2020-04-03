@@ -10,6 +10,7 @@ import {
   RECEIVE_MESSAGE,
   RECONNECT_ATTEMPT,
   RECONNECT_FAILED,
+  UPDATE_USER_FRIEND_LIST,
 } from '@store/types/mutation-types.js'
 
 import {
@@ -21,6 +22,8 @@ import {
   SEND_MESSAGE,
   CLEAR_UN_READ_MESSAGES,
   RECEIVE_FRIEND_REQUEST,
+  AGREE_MAKE_FRIEND_REQUEST,
+  GET_USER_FRIEND_LIST,
 } from '@store/types/action-types.js'
 import {FRIEND_REQUEST_UN_READ_COUNT} from '@store/types/getters-types.js'
 
@@ -30,6 +33,7 @@ export default {
     reconnectAttempt: null, // socket尝试重连次数
     reconnectFailed: false, // socket尝试重连失败
     friendRequestList: [],
+    friendList: [],
   },
   getters: {
     [FRIEND_REQUEST_UN_READ_COUNT](state) {
@@ -43,6 +47,10 @@ export default {
     [UPDATE_FRIEND_REQUEST_LIST](state, payload) {
       console.log('用户的好友请求列表： ', payload)
       state.friendRequestList = payload
+    },
+    [UPDATE_USER_FRIEND_LIST](state, payload) {
+      console.log('用户的好友列表： ', payload)
+      state.friendList = payload
     },
     [RECONNECT_ATTEMPT](state, payload) {
       console.log('att: ', payload)
@@ -86,7 +94,6 @@ export default {
       })
       socket.on('makeFriendRequestResult', data => {
         Toast(data)
-        // todo 思考更好的处理办法
         router.back()
       })
       socket.on('getFriendRequestResult', data => {
@@ -96,6 +103,22 @@ export default {
         console.log('updateTalkList', data)
         context.commit(UPDATE_TALK_LIST, data)
       })
+      socket.on('updateFriendList', data => {
+        console.log('updateFriendList', data)
+        context.commit(UPDATE_USER_FRIEND_LIST, data)
+      })
+
+      socket.on('agreeMakeFriendRequestFaild', data => {
+        console.log('同意好友请求失败', data)
+        Toast(data)
+      })
+
+      socket.on('agreeMakeFriendRequestSuccess', data => {
+        console.log('同意好友请求成功', data)
+        Toast('已通过好友请求')
+        router.back()
+      })
+
       // socket.on('connect_error', error => {
       //   console.log('connect_error', error)
       // })
@@ -110,6 +133,9 @@ export default {
         context.commit(RECONNECT_FAILED)
       })
     },
+    [AGREE_MAKE_FRIEND_REQUEST](context, payload) {
+      context.state.socket.emit('agreeMakeFriendRequest', payload)
+    },
     [GET_TALK_LIST](context) {
       context.state.socket.emit('getTalkList')
     },
@@ -122,6 +148,9 @@ export default {
     },
     [GET_FRIEND_REQUEST_LIST](context) {
       context.state.socket.emit('getFriendRequestList')
+    },
+    [GET_USER_FRIEND_LIST](context) {
+      context.state.socket.emit('getUserFriendList')
     },
     [CLEAR_UN_READ_MESSAGES](context, payload) {
       context.state.socket.emit('clearUnReadMessages', payload.targetId)

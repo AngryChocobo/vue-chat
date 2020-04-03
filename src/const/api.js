@@ -24,5 +24,3 @@ export const getUserInfo = targetUserId =>
 
 export const getFriendRequestInfo = userId =>
   `${apiPath}/getFriendRequestInfo?userId=${userId}`
-
-export const agreeMakeFriendRequest = `${apiPath}/agreeMakeFriendRequest`

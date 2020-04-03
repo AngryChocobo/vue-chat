@@ -196,55 +196,70 @@ app.get('/getUserInfo', authMiddleWare, (req, res) => {
 // 查看好友请求详细信息
 app.get('/getFriendRequestInfo', authMiddleWare, (req, res) => {
   const userId = req.query.userId // 查询目标id
-  const loggedInUserId = req.loggedInUser.id
-  query(
-    `select makeFriendRecord.id, user.id as userId, user.username, user.nickname, user.src, 
-    makeFriendRecord.say, makeFriendRecord.stats, makeFriendRecord.read, makeFriendRecord.create_at
-    from makeFriendRecord 
-    left join user on user.id = makeFriendRecord.fromUserId
-    where toUserId = ${loggedInUserId} and user.id = ${userId}
-    order by makeFriendRecord.read asc, makeFriendRecord.create_at desc`,
-    (error, results) => {
-      if (error) throw error
-      res.send(results[0])
+  MakeFriendRecords.findOne({
+    where: {
+      fromUserId: userId,
     },
-  )
+    include: [
+      {
+        model: Users,
+        as: 'makeRecordUserInfo',
+        attributes: {
+          exclude: ['password'],
+        },
+      },
+    ],
+  }).then(record => {
+    if (record) {
+      res.send(record)
+    } else {
+      res.status(500).send('无效的数据')
+    }
+  })
 })
 
 // 同意好友请求
 app.post('/agreeMakeFriendRequest', authMiddleWare, (req, res) => {
   const {userId, recordId} = req.body
   const loggedInUserId = req.loggedInUser.id
-  console.log(`${loggedInUserId} 同意了好友请求id: ${recordId}`)
-  query(
-    `update makeFriendRecord set stats = 1 where id = ${recordId}`,
-    error => {
-      if (error) {
-        res.status(500).send('通过失败')
-      } else {
-        const now = Date.now()
-        query(
-          `insert into friend (userId, friendId, create_at) values (${userId}, ${loggedInUserId}, ${now})`,
-          error => {
-            if (error) {
-              res.status(500).send('添加好友失败')
-            } else {
-              query(
-                `insert into friend (userId, friendId, create_at) values (${loggedInUserId}, ${userId}, ${now})`,
-                error => {
-                  if (error) {
-                    res.status(500).send('添加好友失败')
-                  } else {
-                    res.send('')
-                  }
-                },
-              )
-            }
-          },
-        )
-      }
+  // 先查询该条记录是否已经被处理
+  MakeFriendRecords.findOne({
+    where: {
+      recordId,
     },
-  )
+  }).then(record => {
+    if (!record) {
+      res.status(500).send('无效的好友请求记录')
+    } else if (record.stats !== 'Waiting') {
+      res.status(500).send('好友请求记录已处理')
+    } else {
+      MakeFriendRecords.update(
+        {stats: 'Agree'},
+        {
+          where: {
+            recordId,
+          },
+        },
+      ).then(updatedRecord => {
+        console.log(`${loggedInUserId} 同意了好友请求id: ${recordId}`)
+        res.send(updatedRecord)
+        // 更新自己的好友列表
+        Friends.insert({
+          userId: loggedInUserId,
+          friendId: userId,
+        }).then(() => {
+          res.send('成功添加对方为好友')
+        })
+        // 更新对方的好友列表
+        Friends.insert({
+          userId,
+          friendId: loggedInUserId,
+        }).then(() => {
+          // 检测对方是否在线，在线则刷新对方的好友列表
+        })
+      })
+    }
+  })
 })
 
 // 会话目标信息

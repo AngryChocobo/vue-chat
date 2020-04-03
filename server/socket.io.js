@@ -42,6 +42,21 @@ const getFriendRequestList = (loggedInUserId, callback) => {
     // todo 排序 先按read排序，后按时间排序
   }).then(callback)
 }
+// 获取好友列表
+const getFriendList = (userId, callback) => {
+  Friends.findAll({
+    where: {
+      userId,
+    },
+    include: {
+      model: Users,
+      as: 'friendUserInfo',
+      attribute: {
+        exclude: ['password'],
+      },
+    },
+  }).then(callback)
+}
 
 module.exports = http => {
   // 私聊关系
@@ -49,7 +64,9 @@ module.exports = http => {
   const io = socketIO(http)
 
   const getTargetOnlineSocket = targetId => {
-    const target = talkRelationMap.find(talk => talk.userId === targetId)
+    const target = talkRelationMap.find(
+      talk => talk.userId === Number(targetId),
+    )
     if (target) {
       const targetSocket = io.sockets.sockets[target.socketId]
       if (targetSocket) {
@@ -194,6 +211,79 @@ module.exports = http => {
     socket.on('getTalkList', () => {
       getTalkList(socket.loggedInUserId, results => {
         socket.emit('updateTalkList', results)
+      })
+    })
+
+    // 获取好友列表
+    socket.on('getUserFriendList', () => {
+      getFriendList(socket.loggedInUserId, friends => {
+        socket.emit('updateFriendList', friends)
+      })
+    })
+
+    // 通过好友请求
+    socket.on('agreeMakeFriendRequest', data => {
+      const {targetUserId, recordId} = data
+      const {loggedInUserId} = socket
+      // 先查询该条记录是否已经被处理
+
+      MakeFriendRecords.findOne({
+        where: {
+          id: recordId,
+        },
+      }).then(record => {
+        if (!record) {
+          socket.emit('agreeMakeFriendRequestFaild', '无效的好友请求记录')
+        } else if (record.stats !== 'Waiting') {
+          socket.emit('agreeMakeFriendRequestFaild', '好友请求记录已处理')
+        } else {
+          // todo 直接修改记录的那种api
+          MakeFriendRecords.update(
+            {stats: 'Agree'},
+            {
+              where: {
+                id: recordId,
+              },
+            },
+          ).then(updatedRecord => {
+            console.log(`${loggedInUserId} 同意了好友请求id: ${recordId}`)
+            socket.emit('agreeMakeFriendRequestSuccess', updatedRecord)
+            // 更新自己的好友列表
+            Friends.create({
+              userId: loggedInUserId,
+              friendId: targetUserId,
+            }).then(() => {
+              getFriendList(loggedInUserId, friends => {
+                socket.emit('updateFriendList', friends)
+              })
+            })
+            // 更新对方的好友列表
+            Friends.create({
+              userId: targetUserId,
+              friendId: loggedInUserId,
+            }).then(() => {
+              // 检测对方是否在线，在线则刷新对方的好友列表
+              const targetSocket = getTargetOnlineSocket(targetUserId)
+              if (targetSocket) {
+                getFriendList(targetUserId, friends => {
+                  targetSocket.emit('updateFriendList', friends)
+                })
+              }
+            })
+          })
+        }
+      })
+      // 对方可能也向当前用户发送了好友申请
+      MakeFriendRecords.findOne({
+        where: {
+          fromUserId: targetUserId,
+          targetUserId: loggedInUserId,
+        },
+      }).then(record => {
+        if (record) {
+          record.stats = 'Agree'
+          MakeFriendRecords.save()
+        }
       })
     })
 

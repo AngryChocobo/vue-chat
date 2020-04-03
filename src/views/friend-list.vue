@@ -41,10 +41,9 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
-import {getUserFriendList} from '@const/api'
 import {FRIEND_REQUEST_UN_READ_COUNT} from '@store/types/getters-types.js'
 
 export default {
@@ -55,15 +54,14 @@ export default {
   },
   data() {
     return {
-      friendList: [],
       activeName: 'all',
     }
   },
   computed: {
     ...mapGetters([FRIEND_REQUEST_UN_READ_COUNT]),
-  },
-  mounted() {
-    this.getUserFriendList()
+    ...mapState({
+      friendList: state => state.socketModule.friendList,
+    }),
   },
   methods: {
     toFriendRequestList() {
@@ -75,12 +73,6 @@ export default {
       this.$router.push({
         name: 'UserInfo',
         params: {userId: friend.id},
-      })
-    },
-    getUserFriendList() {
-      this.$axios.get(getUserFriendList).then(res => {
-        console.log('好友列表: ', res.data)
-        this.friendList = res.data || []
       })
     },
     getImgSrc(src) {

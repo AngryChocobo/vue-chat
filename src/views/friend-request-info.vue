@@ -6,7 +6,10 @@
         <img :src="imgSrc" alt="" class="userImg" />
         <div class="info-content">
           <h3>
-            {{ requestInfo.nickname }}
+            {{
+              requestInfo.makeRecordUserInfo.nickname ||
+                requestInfo.makeRecordUserInfo.username
+            }}
           </h3>
           <p>{{ 100 }} 个共同好友</p>
         </div>
@@ -16,15 +19,30 @@
       </van-cell-group>
       <van-cell>
         <van-button
-          v-if="requestInfo.stats == 0"
+          v-if="requestInfo.stats === 'Waiting'"
           type="primary"
           size="large"
           @click="agree"
         >
           同意
         </van-button>
-        <van-button v-else disabled type="primary" size="large" @click="agree">
+        <van-button
+          v-if="requestInfo.stats === 'Agree'"
+          disabled
+          type="primary"
+          size="large"
+          @click="agree"
+        >
           已同意
+        </van-button>
+        <van-button
+          v-if="requestInfo.stats === 'Disagree'"
+          disabled
+          type="danger"
+          size="large"
+          @click="agree"
+        >
+          已拒绝
         </van-button>
       </van-cell>
     </template>
@@ -33,7 +51,8 @@
 
 <script>
 import MyNavBar from '@components/my-nav-bar.vue'
-import {getFriendRequestInfo, agreeMakeFriendRequest} from '@/const/api.js'
+import {getFriendRequestInfo} from '@/const/api.js'
+import {AGREE_MAKE_FRIEND_REQUEST} from '@store/types/action-types.js'
 export default {
   name: 'FriendRequestInfo',
   data() {
@@ -44,11 +63,10 @@ export default {
   components: {
     MyNavBar,
   },
-  filters: {},
   computed: {
     imgSrc() {
-      return this.requestInfo && this.requestInfo.src
-        ? require('@assets/head/' + this.requestInfo.src)
+      return this.requestInfo && this.requestInfo.makeRecordUserInfo.src
+        ? require('@assets/head/' + this.requestInfo.makeRecordUserInfo.src)
         : require('@assets/head/head.jpg')
     },
   },
@@ -67,13 +85,10 @@ export default {
       })
     },
     agree() {
-      const {userId} = this.$route.params
-      this.$axios
-        .post(agreeMakeFriendRequest, {
-          userId,
-          recordId: this.requestInfo.id,
-        })
-        .then(() => this.$router.back)
+      this.$store.dispatch(AGREE_MAKE_FRIEND_REQUEST, {
+        targetUserId: this.$route.params.userId,
+        recordId: this.requestInfo.id,
+      })
     },
   },
 }
