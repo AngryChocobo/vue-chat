@@ -80,10 +80,21 @@ app.get('/ss', function(req, res) {
 // 注册
 app.post('/register', function(req, res) {
   const {username, password} = req.body
-  const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-  Users.create({username, password: hashedPassword}).then(user => {
-    console.log('新注册用户: ' + JSON.stringify(user))
-    res.send('注册成功')
+  Users.findOne({
+    where: {
+      username,
+    },
+  }).then(user => {
+    if (user) {
+      console.log('重复注册: ', username)
+      res.status(500).send('该用户名已被占用')
+    } else {
+      const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+      Users.create({username, password: hashedPassword}).then(user => {
+        console.log('新注册用户: ' + JSON.stringify(user))
+        res.send('注册成功')
+      })
+    }
   })
 })
 

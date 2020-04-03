@@ -18,7 +18,7 @@ export default {
     [UPDATE_LOGGEDINUSER](state, payload) {
       state.loggedInUser = payload.loggedInUser
       state.token = payload.token
-      router.replace('/talk-list')
+      router.push('/talk-list')
       window.localStorage.setItem('token', payload.token)
       window.localStorage.setItem(
         'loggedInUser',
@@ -38,7 +38,7 @@ export default {
     [REGISTER](context, payload) {
       const {username, password} = payload
       axios.post(register, {username, password}).then(() => {
-        router.replace('/login')
+        router.push('/login')
       })
     },
   },
