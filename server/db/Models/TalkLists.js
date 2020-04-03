@@ -1,29 +1,24 @@
 const Sequelize = require('Sequelize')
 const sequelize = require('../sequelize.js')
 
-class TalkLists extends Sequelize.Model {}
-
-TalkLists.init(
-  {
-    userId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
-    targetUserId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
-    lastMessageUserId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
-    lastMessageId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
+const TalkLists = sequelize.define('newTalkLists', {
+  userId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
   },
-  {sequelize, modelName: 'newTalkLists'},
-)
+  targetUserId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  lastMessageUserId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  lastMessageId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+})
 
 // TalkLists.sync({force: true})
 module.exports = TalkLists

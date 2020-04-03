@@ -27,7 +27,7 @@ export default {
     message: String, // 对话内容
     src: String, // 头像src
     targetUserName: String, // 对话目标名
-    sendDate: Number, // 对话时间
+    sendDate: String, // 对话时间
     targetUserId: Number, // 对话目标id
     lastMessageUserName: String, // 最后发言用户名
     unReadCount: Number,

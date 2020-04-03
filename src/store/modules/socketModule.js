@@ -87,15 +87,8 @@ export default {
         context.dispatch(RECEIVE_FRIEND_REQUEST)
       })
       socket.on('sendMessageSuccess', data => {
-        context.commit(SEND_MESSAGE_SUCCESS, {
-          id: data.id,
-          fromUserId: loggedInUser.id,
-          src: loggedInUser.src,
-          username: loggedInUser.username,
-          message: context.state.sendingMessage,
-          targetId: data.targetId,
-          sendDate: data.sendDate,
-        })
+        console.log('sendMessageSuccess', data)
+        context.commit(SEND_MESSAGE_SUCCESS, data)
       })
       socket.on('makeFriendRequestResult', data => {
         Toast(data)

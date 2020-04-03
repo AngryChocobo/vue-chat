@@ -47,10 +47,11 @@ export default {
       Vue.set(state.messageLists, payload.targetId, payload.messageList)
     },
     [SEND_MESSAGE_SUCCESS](state, payload) {
-      if (!state.messageLists[payload.targetId]) {
-        Vue.set(state.messageLists, payload.targetId, [payload])
+      console.log('SEND_MESSAGE_SUCCESS mutation ', payload)
+      if (!state.messageLists[payload.targetUserId]) {
+        Vue.set(state.messageLists, payload.targetUserId, payload.message)
       } else {
-        state.messageLists[payload.targetId].push(payload)
+        state.messageLists[payload.targetUserId].push(payload.message)
       }
     },
     [RECEIVE_MESSAGE](state, payload) {

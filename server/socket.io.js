@@ -1,35 +1,41 @@
 const socketIO = require('socket.io')
-const {Users, Friends, MakeFriendRecords} = require('./db/Models/index.js')
+const {
+  Users,
+  Friends,
+  MakeFriendRecords,
+  Messages,
+  TalkLists,
+} = require('./db/Models/index.js')
 
 const query = require('./db/mysql.js')
 
 // 获取会话列表 （同时查询新消息数量，插入到会话列表的数据结构中）
 const getTalkList = (loggedInUserId, callback) => {
   console.log(`${loggedInUserId} 获取会话列表`)
-  query(
-    `select  talkList.id,targetUser.id as targetUserId, lastMessageUserId, targetUser.username as targetUserName, lastMessageUser.username as lastMessageUserName, message.message, targetUser.src, message.sendDate
-      from talkList
-      left join user lastMessageUser on lastMessageUser.id = talkList.lastMessageUserId
-      left join user targetUser on targetUser.id =  talkList.targetId
-      left join message on message.id = talkList.lastMessageId
-      where talkList.userId = ${loggedInUserId}`,
-    function(error, results) {
-      if (error) throw error
-      query(
-        `select fromUserId, toUserId, count(fromUserId) as unReadCount from message
-        where message.read = 0  and toUserId = ${loggedInUserId}
-        GROUP BY fromUserId, toUserId`,
-        (error, unReadResults) => {
-          if (error) throw error
-          unReadResults.forEach(data => {
-            const item = results.find(v => v.targetUserId === data.fromUserId)
-            item.unReadCount = data.unReadCount
-          })
-          callback(results)
-        },
-      )
+  TalkLists.findAll({
+    where: {
+      userId: loggedInUserId,
     },
-  )
+    include: [
+      {model: Messages, as: 'lastMessageInfo'},
+      {
+        model: Users,
+        attributes: {
+          exclude: ['password'],
+        },
+        as: 'lastMessageUserInfo',
+      },
+      {
+        model: Users,
+        attributes: {
+          exclude: ['password'],
+        },
+        as: 'targetUserInfo',
+      },
+    ],
+  }).then(talkList => {
+    callback(talkList)
+  })
 }
 // 获取好友申请列表
 const getFriendRequestList = (loggedInUserId, callback) => {
@@ -93,118 +99,87 @@ module.exports = http => {
       console.log('server receive sendNewMessage')
       const {loggedInUserId} = socket
       const {targetId, message} = data
-      const sendDate = Date.now()
-      query(
-        `INSERT INTO message (fromUserId, toUserId, message, sendDate) VALUES (${loggedInUserId}, ${targetId}, '${message}', ${sendDate})`,
-        (error, result) => {
-          if (error) {
-            throw error
+      Messages.create({
+        fromUserId: loggedInUserId,
+        targetUserId: targetId,
+        message,
+      }).then(message => {
+        // todo 返回新消息
+        socket.emit('sendMessageSuccess', {targetUserId: targetId, message})
+        // 更新自己的对话列表
+        TalkLists.findOne({
+          where: {
+            userId: loggedInUserId,
+            targetUserId: targetId,
+          },
+        }).then(talk => {
+          if (talk) {
+            // 修改
+            talk
+              .update({
+                lastMessageUserId: loggedInUserId,
+                lastMessageId: message.id,
+              })
+              .then(() => {
+                getTalkList(loggedInUserId, talkList => {
+                  socket.emit('updateTalkList', talkList)
+                })
+              })
           } else {
-            const {insertId} = result
-            // todo 重构 插入之前先判断，有则更新
-            query(
-              `select talkList.id, user.username, user.nickname, user.src from talkList, user
-                where userId = ${loggedInUserId} and targetId = ${targetId}`,
-              (error, results) => {
-                const newMessage = {
-                  id: insertId,
-                  fromUserId: loggedInUserId,
-                  targetId,
-                  message,
-                  username: results[0].username,
-                  nickname: results[0].nickname,
-                  src: results[0].src,
-                  sendDate,
-                }
-
-                const pushMessageTo = () => {
-                  const targetSocket = getTargetOnlineSocket(targetId)
-                  if (targetSocket) {
-                    targetSocket.emit('receiveMessage', newMessage)
-                    getTalkList(targetSocket.loggedInUserId, results => {
-                      console.log('will')
-                      targetSocket.emit('updateTalkList', results)
-                    })
-                  }
-                }
-                const createTargetNewTalkRecord = () => {
-                  query(
-                    `select * from talkList
-                      where userId = ${targetId} and targetId = ${loggedInUserId}`,
-                    (error, results) => {
-                      if (error) {
-                        throw error
-                      } else if (results.length > 0) {
-                        // 更新该记录
-                        query(
-                          `UPDATE talkList set lastMessageId=${insertId}, lastMessageUserId=${loggedInUserId}, userId=${targetId}, targetId=${loggedInUserId} where id = ${results[0].id}`,
-                          error => {
-                            if (error) {
-                              throw error
-                            } else {
-                              pushMessageTo()
-                            }
-                          },
-                        )
-                      } else {
-                        // 插入新记录
-                        query(
-                          `insert into talkList (lastMessageId, lastMessageUserId, userId, targetId) values (${insertId}, ${loggedInUserId}, ${targetId}, ${loggedInUserId})`,
-                          error => {
-                            if (error) {
-                              throw error
-                            } else {
-                              pushMessageTo()
-                            }
-                          },
-                        )
-                      }
-                    },
-                  )
-                }
-
-                if (error) {
-                  throw error
-                } else if (results.length > 0) {
-                  // 更新该记录
-                  query(
-                    `UPDATE talkList set lastMessageId=${insertId}, lastMessageUserId=${loggedInUserId}, userId=${loggedInUserId}, targetId=${targetId} where id = ${results[0].id}`,
-                    error => {
-                      if (error) {
-                        throw error
-                      } else {
-                        socket.emit('sendMessageSuccess', {
-                          id: insertId,
-                          targetId,
-                          sendDate,
-                        })
-                        createTargetNewTalkRecord()
-                      }
-                    },
-                  )
-                } else {
-                  // 插入新记录
-                  query(
-                    `insert into talkList (lastMessageId, lastMessageUserId, userId, targetId) values (${insertId}, ${loggedInUserId}, ${loggedInUserId}, ${targetId})`,
-                    error => {
-                      if (error) {
-                        throw error
-                      } else {
-                        socket.emit('sendMessageSuccess', {
-                          id: insertId,
-                          targetId,
-                          sendDate,
-                        })
-                        createTargetNewTalkRecord()
-                      }
-                    },
-                  )
-                }
-              },
-            )
+            // 新增
+            TalkLists.create({
+              userId: loggedInUserId,
+              targetUserId: targetId,
+              lastMessageId: message.id,
+              lastMessageUserId: loggedInUserId,
+            }).then(() => {
+              TalkLists.findAll().then(talkList => {
+                socket.emit('updateTalkList', talkList)
+              })
+            })
           }
-        },
-      )
+        })
+        // 更新对方的对话列表
+        TalkLists.findOne({
+          where: {
+            userId: targetId,
+            targetUserId: loggedInUserId,
+          },
+        }).then(talk => {
+          if (talk) {
+            // 修改
+            talk
+              .update({
+                lastMessageUserId: targetId,
+                lastMessageId: message.id,
+              })
+              .then(() => {
+                // 如果对方在线，更新对方的对话列表
+                const targetToken = getTargetOnlineSocket(targetId)
+                if (targetToken) {
+                  TalkLists.findAll().then(talkList => {
+                    targetToken.emit('updateTalkList', talkList)
+                  })
+                }
+              })
+          } else {
+            // 新增
+            TalkLists.create({
+              userId: loggedInUserId,
+              targetUserId: targetId,
+              lastMessageId: message.id,
+              lastMessageUserId: loggedInUserId,
+            }).then(() => {
+              const targetToken = getTargetOnlineSocket(targetId)
+              if (targetToken) {
+                TalkLists.findAll().then(talkList => {
+                  targetToken.emit('updateTalkList', talkList)
+                })
+              }
+            })
+          }
+        })
+      })
     })
 
     // 获取会话列表

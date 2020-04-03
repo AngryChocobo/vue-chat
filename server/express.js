@@ -8,7 +8,12 @@ const {authMiddleWare} = middleWares
 const utils = require('./utils/index.js')
 const {generateToken} = utils
 
-const {Users, MakeFriendRecords, Friends} = require('./db/Models/index.js')
+const {
+  Users,
+  MakeFriendRecords,
+  Friends,
+  Messages,
+} = require('./db/Models/index.js')
 const query = require('./db/mysql.js')
 
 const app = express()
@@ -299,13 +304,23 @@ app.get('/getTalkTargetInfo', authMiddleWare, function(req, res) {
 // 会话页
 app.get('/getMessageList', authMiddleWare, function(req, res) {
   const {fromUserId, targetId} = req.query
-  query(
-    `select m.* from message m left JOIN user u ON m.fromUserId=u.id LEFT JOIN user u2 ON m.toUserId=u2.id where (m.fromUserId=${fromUserId} and m.toUserId=${targetId} ) or (m.fromUserId=${targetId} and m.toUserId=${fromUserId} ) order by m.sendDate`,
-    function(error, results) {
-      if (error) throw error
-      res.send({targetId: targetId, messageList: results})
+  Messages.findAll({
+    where: {
+      [Op.or]: [
+        {
+          fromUserId: fromUserId,
+          targetUserId: targetId,
+        },
+        {
+          fromUserId: targetId,
+          targetUserId: fromUserId,
+        },
+      ],
     },
-  )
+    order: [['createdAt', 'ASC']],
+  }).then(messages => {
+    res.send({targetId: targetId, messageList: messages})
+  })
 })
 
 // 好友列表

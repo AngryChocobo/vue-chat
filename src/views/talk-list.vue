@@ -7,11 +7,11 @@
         <talk-list-item
           :id="talk.id"
           :src="talk.src"
-          :targetUserName="talk.targetUserName"
+          :targetUserName="talk.targetUserInfo.username"
           :targetUserId="talk.targetUserId"
-          :sendDate="talk.sendDate"
-          :lastMessageUserName="talk.lastMessageUserName"
-          :message="talk.message"
+          :sendDate="talk.createdAt"
+          :lastMessageUserName="talk.lastMessageUserInfo.username"
+          :message="talk.lastMessageInfo.message"
           :unReadCount="talk.unReadCount"
         />
       </van-cell>

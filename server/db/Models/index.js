@@ -16,6 +16,31 @@ MakeFriendRecords.belongsTo(Users, {
   as: 'requestRecordUserInfo',
 })
 
+Messages.belongsTo(Users, {
+  foreignKey: 'fromUserId',
+  as: 'sendMessageUserInfo',
+})
+
+Messages.belongsTo(Users, {
+  foreignKey: 'targetUserId',
+  as: 'receiveMessageUserInfo',
+})
+
+TalkLists.belongsTo(Messages, {
+  foreignKey: 'lastMessageId',
+  as: 'lastMessageInfo',
+})
+
+TalkLists.belongsTo(Users, {
+  foreignKey: 'lastMessageUserId',
+  as: 'lastMessageUserInfo',
+})
+
+TalkLists.belongsTo(Users, {
+  foreignKey: 'targetUserId',
+  as: 'targetUserInfo',
+})
+
 module.exports = {
   Users,
   Friends,
