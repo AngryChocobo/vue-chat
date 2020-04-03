@@ -349,18 +349,20 @@ module.exports = http => {
     // 清空当前用户的所有的好友请求未读数
     socket.on('clearUnReadFriendRequest', () => {
       console.log(`${socket.loggedInUserId} 准备清空好友请求的未读消息数量`)
-      query(
-        `update makeFriendRecord set \`read\`=1 where toUserId = ${socket.loggedInUserId};`,
-        error => {
-          if (error) {
-            console.error(error)
-          } else {
-            getFriendRequestList(socket.loggedInUserId, results => {
-              socket.emit('getFriendRequestResult', results)
-            })
-          }
+      MakeFriendRecords.update(
+        {
+          read: true,
         },
-      )
+        {
+          where: {
+            targetUserId: socket.loggedInUserId,
+          },
+        },
+      ).then(() => {
+        getFriendRequestList(socket.loggedInUserId, results => {
+          socket.emit('getFriendRequestResult', results)
+        })
+      })
     })
 
     socket.on('disconnect', () => {
