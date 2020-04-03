@@ -17,17 +17,22 @@ axios.interceptors.response.use(
     return response
   },
   error => {
-    switch (error.response.status) {
-      case 401: // token失效
-        Toast(error.response.data)
-        store.commit(CLEAR_TOKEN)
-        break
-      case 422: // 用户不存在、密码错误
-        Toast(error.response.data)
-        break
-      default:
-        Toast('default error')
+    if (!error.response) {
+      Toast('服务器不想服务了')
+    } else {
+      switch (error.response.status) {
+        case 401: // token失效
+          Toast(error.response.data)
+          store.commit(CLEAR_TOKEN)
+          break
+        case 422: // 用户不存在、密码错误
+          Toast(error.response.data)
+          break
+        default:
+          Toast(error.response.data)
+      }
     }
+
     return Promise.reject(error)
   },
 )

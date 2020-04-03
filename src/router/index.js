@@ -96,12 +96,10 @@ router.beforeEach((to, from, next) => {
       Toast('登陆失效，请重新登录')
       router.replace('/login')
     }
-  }
-  if (to.name == 'Login') {
+  } else {
     store.state.socketModule.socket.close()
     store.commit(RESET_RECONNECT_OVERLAY)
   }
-
   next()
 })
 
