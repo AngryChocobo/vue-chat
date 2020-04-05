@@ -15,6 +15,7 @@ const Messages = sequelize.define('newMessages', {
   },
   read: {
     type: Sequelize.BOOLEAN,
+    defaultValue: false,
   },
 })
 

@@ -34,7 +34,24 @@ const getTalkList = (loggedInUserId, callback) => {
       },
     ],
   }).then(talkList => {
-    callback(talkList)
+    Messages.count({
+      attributes: ['fromUserId'],
+      group: 'fromUserId',
+      where: {
+        targetUserId: loggedInUserId,
+        read: 0,
+      },
+    }).then(unReadGroup => {
+      // todo 是否可以想办法在TalkLists关联Messages表的时候顺便统计未读总数
+      let unReadObj = {}
+      unReadGroup.forEach(group => {
+        unReadObj[group.fromUserId] = group.count
+      })
+      talkList.forEach(talk => {
+        talk.dataValues.unReadCount = unReadObj[talk.dataValues.targetUserId]
+      })
+      callback(talkList)
+    })
   })
 }
 // 获取好友申请列表
