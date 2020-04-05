@@ -7,8 +7,6 @@ const {
   TalkLists,
 } = require('./db/Models/index.js')
 
-const query = require('./db/mysql.js')
-
 // 获取会话列表 （同时查询新消息数量，插入到会话列表的数据结构中）
 const getTalkList = (loggedInUserId, callback) => {
   console.log(`${loggedInUserId} 获取会话列表`)
@@ -39,7 +37,7 @@ const getTalkList = (loggedInUserId, callback) => {
       group: 'fromUserId',
       where: {
         targetUserId: loggedInUserId,
-        read: 0,
+        read: false,
       },
     }).then(unReadGroup => {
       // todo 是否可以想办法在TalkLists关联Messages表的时候顺便统计未读总数
@@ -327,18 +325,21 @@ module.exports = http => {
       console.log(
         `${socket.loggedInUserId} 准备清空好友 ${targetId} 的未读消息数量`,
       )
-      query(
-        `update message set \`read\`=1 where fromUserId = ${targetId} and toUserId = ${socket.loggedInUserId};`,
-        error => {
-          if (error) {
-            console.error(error)
-          } else {
-            getTalkList(socket.loggedInUserId, results => {
-              socket.emit('updateTalkList', results)
-            })
-          }
+      Messages.update(
+        {
+          read: true,
         },
-      )
+        {
+          where: {
+            fromUserId: targetId,
+            targetUserId: socket.loggedInUserId,
+          },
+        },
+      ).then(() => {
+        getTalkList(socket.loggedInUserId, talkList => {
+          socket.emit('updateTalkList', talkList)
+        })
+      })
     })
 
     // 清空当前用户的所有的好友请求未读数

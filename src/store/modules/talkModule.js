@@ -25,7 +25,7 @@ export default {
   },
   getters: {
     [TOTAL_UN_READ_MESSAGE](state) {
-      return state.talkList.filter(v => !v.read)
+      return state.talkList.filter(v => v.unReadCount)
     },
     [TOTAL_UN_READ_MESSAGE_COUNT](state, getters) {
       return getters[TOTAL_UN_READ_MESSAGE].map(v => v.unReadCount).reduce(
