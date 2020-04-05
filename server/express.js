@@ -24,46 +24,6 @@ const INVALID_USERNAME_CODE = 422
 const INVALID_PASSWORD = '密码错误'
 const INVALID_PASSWORD_CODE = 422
 
-const initApp = () => {
-  // parse application/x-www-form-urlencoded
-  app.use(bodyParser.urlencoded({extended: false}))
-
-  // parse application/json
-  app.use(bodyParser.json())
-
-  // 跨域
-  app.use(cors())
-}
-
-const testApi = () => {
-  app.get('/init', (req, res) => {
-    query(`insert into test (id) values (1)`)
-    res.send('init success')
-  })
-
-  app.get('/deleteAllData', (req, res) => {
-    query(`delete from friend`, error => {
-      if (error) throw error
-      query(`delete from user`, error => {
-        if (error) throw error
-        query(`delete from makeFriendRecord`, error => {
-          if (error) throw error
-          query(`delete from message`, error => {
-            if (error) throw error
-            query(`delete from talkList`, error => {
-              if (error) throw error
-              res.send('looks delete success')
-            })
-          })
-        })
-      })
-    })
-  })
-}
-
-initApp()
-testApi()
-
 app.get('/', function(req, res) {
   // res.send('server ok')
   Friends.findAll({
