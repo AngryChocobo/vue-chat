@@ -55,6 +55,7 @@ export default {
       }
     },
     [RECEIVE_MESSAGE](state, payload) {
+      console.log('收到消息: ', payload)
       if (!state.messageLists[payload.fromUserId]) {
         Vue.set(state.messageLists, payload.fromUserId, [payload])
       } else {

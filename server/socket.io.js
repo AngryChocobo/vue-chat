@@ -103,9 +103,12 @@ module.exports = http => {
         fromUserId: loggedInUserId,
         targetUserId: targetId,
         message,
-      }).then(message => {
+      }).then(newMessage => {
         // todo 返回新消息
-        socket.emit('sendMessageSuccess', {targetUserId: targetId, message})
+        socket.emit('sendMessageSuccess', {
+          targetUserId: targetId,
+          message: newMessage,
+        })
         // 更新自己的对话列表
         TalkLists.findOne({
           where: {
@@ -118,7 +121,7 @@ module.exports = http => {
             talk
               .update({
                 lastMessageUserId: loggedInUserId,
-                lastMessageId: message.id,
+                lastMessageId: newMessage.id,
               })
               .then(() => {
                 getTalkList(loggedInUserId, talkList => {
@@ -130,10 +133,10 @@ module.exports = http => {
             TalkLists.create({
               userId: loggedInUserId,
               targetUserId: targetId,
-              lastMessageId: message.id,
+              lastMessageId: newMessage.id,
               lastMessageUserId: loggedInUserId,
             }).then(() => {
-              TalkLists.findAll().then(talkList => {
+              getTalkList(loggedInUserId, talkList => {
                 socket.emit('updateTalkList', talkList)
               })
             })
@@ -151,13 +154,13 @@ module.exports = http => {
             talk
               .update({
                 lastMessageUserId: targetId,
-                lastMessageId: message.id,
+                lastMessageId: newMessage.id,
               })
               .then(() => {
                 // 如果对方在线，更新对方的对话列表
                 const targetToken = getTargetOnlineSocket(targetId)
                 if (targetToken) {
-                  TalkLists.findAll().then(talkList => {
+                  getTalkList(targetId, talkList => {
                     targetToken.emit('updateTalkList', talkList)
                   })
                 }
@@ -165,14 +168,14 @@ module.exports = http => {
           } else {
             // 新增
             TalkLists.create({
-              userId: loggedInUserId,
-              targetUserId: targetId,
-              lastMessageId: message.id,
+              userId: targetId,
+              targetUserId: loggedInUserId,
+              lastMessageId: newMessage.id,
               lastMessageUserId: loggedInUserId,
             }).then(() => {
               const targetToken = getTargetOnlineSocket(targetId)
               if (targetToken) {
-                TalkLists.findAll().then(talkList => {
+                getTalkList(targetId, talkList => {
                   targetToken.emit('updateTalkList', talkList)
                 })
               }
