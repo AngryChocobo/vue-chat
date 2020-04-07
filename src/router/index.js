@@ -97,7 +97,9 @@ router.beforeEach((to, from, next) => {
       router.replace('/login')
     }
   } else {
-    store.state.socketModule.socket.close()
+    if (store.state.socketModule.socket) {
+      store.state.socketModule.socket.close()
+    }
     store.commit(RESET_RECONNECT_OVERLAY)
   }
   next()
