@@ -67,7 +67,11 @@ app.post('/register', function(req, res) {
       res.status(500).send('该用户名已被占用')
     } else {
       const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-      Users.create({username, password: hashedPassword}).then(user => {
+      Users.create({
+        username,
+        nickname: username,
+        password: hashedPassword,
+      }).then(user => {
         console.log('新注册用户: ' + JSON.stringify(user))
         res.send('注册成功')
       })
