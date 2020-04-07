@@ -20,7 +20,7 @@ const sequelize = require('../sequelize.js')
 //   {sequelize, modelName: 'newFriends'},
 // )
 
-const Friends = sequelize.define('newFriends', {
+const Friends = sequelize.define('friends', {
   userId: {
     type: Sequelize.INTEGER,
     allowNull: false,

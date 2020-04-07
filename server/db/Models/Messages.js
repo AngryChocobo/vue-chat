@@ -1,7 +1,7 @@
 const Sequelize = require('Sequelize')
 const sequelize = require('../sequelize.js')
 
-const Messages = sequelize.define('newMessages', {
+const Messages = sequelize.define('messages', {
   fromUserId: {
     type: Sequelize.INTEGER,
     allowNull: false,

@@ -1,7 +1,7 @@
 const Sequelize = require('Sequelize')
 const sequelize = require('../sequelize.js')
 
-const TalkLists = sequelize.define('newTalkLists', {
+const TalkLists = sequelize.define('talkLists', {
   userId: {
     type: Sequelize.INTEGER,
     allowNull: false,
