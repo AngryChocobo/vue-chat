@@ -14,9 +14,21 @@ const {
   Friends,
   Messages,
 } = require('./db/Models/index.js')
-const query = require('./db/mysql.js')
 
 const app = express()
+
+const initApp = () => {
+  // parse application/x-www-form-urlencoded
+  app.use(bodyParser.urlencoded({extended: false}))
+
+  // parse application/json
+  app.use(bodyParser.json())
+
+  // 跨域
+  app.use(cors())
+}
+
+initApp()
 
 const INVALID_USERNAME = '用户名未注册'
 const INVALID_USERNAME_CODE = 422
