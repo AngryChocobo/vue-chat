@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import My from '../views/my.vue'
+import MySettings from '../views/my-settings.vue'
 import Register from '../views/register.vue'
 import Login from '../views/login.vue'
 import TalkList from '../views/talk-list.vue'
@@ -73,6 +75,18 @@ const routes = [
     path: '/user-info/:userId',
     name: 'UserInfo',
     component: UserInfo,
+    meta: {requireAuth: true},
+  },
+  {
+    path: '/my',
+    name: 'My',
+    component: My,
+    meta: {requireAuth: true},
+  },
+  {
+    path: '/my-settings',
+    name: 'MySettings',
+    component: MySettings,
     meta: {requireAuth: true},
   },
   {

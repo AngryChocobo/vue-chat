@@ -22,6 +22,7 @@ import {
   Tag,
   Overlay,
   Loading,
+  Popup,
 } from 'vant'
 import 'vant/lib/index.css'
 
@@ -48,3 +49,4 @@ Vue.use(NavBar)
   .use(Tag)
   .use(Overlay)
   .use(Loading)
+  .use(Popup)

@@ -13,7 +13,7 @@
         :info="FRIEND_REQUEST_UN_READ_COUNT || ''"
         >好友</van-tabbar-item
       >
-      <van-tabbar-item to="/home" icon="home-o">我</van-tabbar-item>
+      <van-tabbar-item to="/my" icon="home-o">我</van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
