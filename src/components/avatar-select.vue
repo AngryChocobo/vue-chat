@@ -68,7 +68,11 @@ export default {
   computed: {},
   methods: {
     selectAvatar(src) {
+<<<<<<< HEAD
       this.$emit('select', src)
+=======
+      this.emit('select', src)
+>>>>>>> fda6a04eaf4e6104d07144c70785edc4ce53955f
     },
   },
 }
