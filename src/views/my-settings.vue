@@ -3,7 +3,12 @@
     <my-nav-bar title="我" :left-arrow="false" />
     <div class="setting-fields">
       <van-cell-group>
-        <van-field label="头像" class="user-img-field" is-link>
+        <van-field
+          label="头像"
+          class="user-img-field"
+          is-link
+          @click="showAvatarSelect"
+        >
           <template slot="input">
             <img :src="imgSrc" alt="" class="user-img" />
           </template>
@@ -15,13 +20,13 @@
           label="昵称"
           class="nickname"
           readonly
-          @click="showNickNamePopup = true"
+          @click="nickNamePopupVisible = true"
         />
       </van-cell-group>
     </div>
 
     <van-popup
-      v-model="showNickNamePopup"
+      v-model="nickNamePopupVisible"
       position="bottom"
       class="nickname-popup"
       :safe-area-inset-bottom="true"
@@ -37,11 +42,11 @@
         placeholder="请输入昵称"
         class="nickname"
       />
-      <van-button type="primary" size="large" @click="onSaveNickName"
-        >保存</van-button
-      >
+      <van-button type="primary" size="large" @click="onSaveNickName">
+        保存
+      </van-button>
     </van-popup>
-
+    <avatar-select @select="onSelectAvatar" />
     <my-tab-bar />
   </div>
 </template>
@@ -50,17 +55,20 @@
 import {mapState} from 'vuex'
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
+import AvatarSelect from '@components/avatar-select.vue'
 export default {
   name: 'MySettings',
   components: {
     MyTabBar,
     MyNavBar,
+    AvatarSelect,
   },
   data() {
     const nickname = this.$store.state.loggedInUserModule.loggedInUser.nickname
     return {
       nickname,
-      showNickNamePopup: false,
+      nickNamePopupVisible: false,
+      avatarSelectVisible: false,
     }
   },
   computed: {
@@ -79,8 +87,13 @@ export default {
     },
     focusInput() {
       console.log(this.$refs.nickname)
-
       this.$refs.nickname.focus()
+    },
+    showAvatarSelect() {
+      this.avatarSelectVisible = true
+    },
+    onSelectAvatar(src) {
+      console.log('选择了头像： ' + src)
     },
   },
 }
