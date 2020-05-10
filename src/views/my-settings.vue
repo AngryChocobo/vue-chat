@@ -46,7 +46,15 @@
         保存
       </van-button>
     </van-popup>
-    <avatar-select @select="onSelectAvatar" />
+    <van-dialog
+      class="avatar-select-dialog"
+      v-model="avatarSelectVisible"
+      title="选择头像"
+      show-cancel-button
+      @confirm="onChangeAvatar"
+    >
+      <avatar-select class="content" @select="onSelectAvatar" />
+    </van-dialog>
     <my-tab-bar />
   </div>
 </template>
@@ -69,6 +77,7 @@ export default {
       nickname,
       nickNamePopupVisible: false,
       avatarSelectVisible: false,
+      selectAvatar: '',
     }
   },
   computed: {
@@ -94,6 +103,11 @@ export default {
     },
     onSelectAvatar(src) {
       console.log('选择了头像： ' + src)
+
+      this.selectAvatar = src
+    },
+    onChangeAvatar() {
+      console.log('修改了头像' + this.selectAvatar)
     },
   },
 }
@@ -109,14 +123,16 @@ export default {
         display: flex;
         justify-content: flex-end;
       }
-    }
-    .nickname {
-      /deep/ .van-field__control {
-        text-align: right;
+      .user-img {
+        width: 48px;
       }
     }
   }
-
+  .nickname {
+    /deep/ .van-field__control {
+      text-align: right;
+    }
+  }
   .nickname-popup {
     display: flex;
     justify-content: space-between;
@@ -125,18 +141,9 @@ export default {
       margin-top: 48px;
     }
   }
-  .user-img {
-    width: 48px;
-  }
-  .info-content {
-    margin-left: 16px;
-    h3 {
-      margin: 0;
-    }
-    p {
-      margin: 0.5em 0;
-      font-size: 14px;
-      color: #888;
+  .avatar-select-dialog {
+    .content {
+      padding: 32px;
     }
   }
 }

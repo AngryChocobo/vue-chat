@@ -23,6 +23,7 @@ import {
   Overlay,
   Loading,
   Popup,
+  Dialog,
 } from 'vant'
 import 'vant/lib/index.css'
 
@@ -50,3 +51,4 @@ Vue.use(NavBar)
   .use(Overlay)
   .use(Loading)
   .use(Popup)
+  .use(Dialog)
