@@ -1,6 +1,7 @@
+const processPassword = process.env.PWD
 module.exports = {
   host: 'localhost',
   user: 'root',
-  password: '123456',
+  password: processPassword || '123456',
   database: 'chat',
 }
