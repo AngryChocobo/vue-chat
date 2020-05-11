@@ -1,4 +1,4 @@
-const processPassword = process.env.PWD
+const processPassword = process.env.password
 module.exports = {
   host: 'localhost',
   user: 'root',
