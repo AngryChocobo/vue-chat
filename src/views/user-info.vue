@@ -20,7 +20,7 @@
         <van-cell @click="talkTo"> 发消息 </van-cell>
         <van-cell> 音视频通话 </van-cell>
       </template>
-      <div v-if="!isMyFriend">
+      <div v-if="canMakeFriend">
         <van-cell-group>
           <van-field
             v-model="say"
@@ -68,6 +68,9 @@ export default {
     },
     isMyFriend() {
       return this.userInfo && !!this.userInfo.friendRelation
+    },
+    canMakeFriend() {
+      return !this.isMyFriend && this.loggedInUserId !== this.userInfo.id
     },
     isMakedFriendRequest() {
       return this.userInfo && !!this.userInfo.makeFriendRecord
