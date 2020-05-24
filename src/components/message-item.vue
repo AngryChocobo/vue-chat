@@ -19,8 +19,9 @@ export default {
   props: {
     fromUserId: Number, // 对话目标id
     message: String, // 对话内容
-    src: String, // 头像src
-    username: String, // 对话目标名
+    // src: String, // 头像src
+    target: Object,
+    // username: String, // 对话目标名
     sendDate: Number, // 对话时间
     type: Number, // 对话目标类型 （todo: 用户、群等）
   },
@@ -35,9 +36,10 @@ export default {
       return this.$moment(this.sendDate).format('MM/DD HH:mm:ss')
     },
     imgSrc() {
-      return this.src
-        ? require('@assets/head/' + this.src)
-        : require('@assets/head/head.jpg')
+      return this.isMine
+        ? require('@assets/head/' +
+            this.$store.state.loggedInUserModule.loggedInUser.src)
+        : require('@assets/head/' + this.target.src)
     },
   },
   mounted() {},

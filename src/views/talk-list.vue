@@ -6,7 +6,7 @@
       <van-cell :border="false" v-for="talk in talkList" :key="talk.id">
         <talk-list-item
           :id="talk.id"
-          :src="talk.src"
+          :src="talk.targetUserInfo.src"
           :targetUserName="talk.targetUserInfo.username"
           :targetUserId="talk.targetUserId"
           :sendDate="talk.createdAt"

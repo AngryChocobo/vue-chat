@@ -9,9 +9,8 @@
           :key="message.id"
         >
           <message-item
+            :target="targetInfo"
             :from-user-id="message.fromUserId"
-            :src="targetInfo.src"
-            :username="targetInfo.username"
             :send-date="message.sendDate"
             :message="message.message"
           />
