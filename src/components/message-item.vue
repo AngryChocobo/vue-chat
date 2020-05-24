@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 import UserAvator from '@/components/user-avatar.vue'
 export default {
   name: 'MessageItem',
@@ -29,12 +30,10 @@ export default {
     sendDate: Number, // 对话时间
   },
   computed: {
+    ...mapGetters(['loggedInUser']),
     isMine() {
       // 是否是自己的发言
       return this.fromUserId === this.loggedInUser.id
-    },
-    loggedInUser() {
-      return this.$store.getters.loggedInUser
     },
     formatedSendDate() {
       return this.$moment(this.sendDate).format('MM/DD HH:mm:ss')

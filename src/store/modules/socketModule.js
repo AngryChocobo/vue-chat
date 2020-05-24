@@ -26,7 +26,6 @@ import {
   AGREE_MAKE_FRIEND_REQUEST,
   GET_USER_FRIEND_LIST,
 } from '@store/types/action-types.js'
-import {FRIEND_REQUEST_UN_READ_COUNT} from '@store/types/getters-types.js'
 
 export default {
   state: {
@@ -36,11 +35,7 @@ export default {
     friendRequestList: [],
     friendList: [],
   },
-  getters: {
-    [FRIEND_REQUEST_UN_READ_COUNT](state) {
-      return state.friendRequestList.filter(v => !v.read).length
-    },
-  },
+
   mutations: {
     [SET_SOCKET](state, payload) {
       state.socket = payload

@@ -12,27 +12,12 @@ import {
   GET_MESSAGE_LIST,
   NOTIFICATION_GRANTED,
 } from '@store/types/action-types.js'
-import {
-  TOTAL_UN_READ_MESSAGE_COUNT,
-  TOTAL_UN_READ_MESSAGE,
-} from '@store/types/getters-types.js'
 
 export default {
   state: {
     allowNotification: false,
     talkList: [],
     messageLists: {},
-  },
-  getters: {
-    [TOTAL_UN_READ_MESSAGE](state) {
-      return state.talkList.filter(v => v.unReadCount)
-    },
-    [TOTAL_UN_READ_MESSAGE_COUNT](state, getters) {
-      return getters[TOTAL_UN_READ_MESSAGE].map(v => v.unReadCount).reduce(
-        (a, b) => a + b,
-        0,
-      )
-    },
   },
   mutations: {
     [ALLOW_NOTIFICATION](state) {

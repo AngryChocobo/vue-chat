@@ -30,7 +30,6 @@ import {
   SEND_MESSAGE,
   CLEAR_UN_READ_MESSAGES,
 } from '@store/types/action-types.js'
-import {TOTAL_UN_READ_MESSAGE} from '@store/types/getters-types.js'
 
 export default {
   name: 'TalkView',
@@ -55,7 +54,7 @@ export default {
     targetId() {
       return Number(this.$route.params.id)
     },
-    ...mapGetters([TOTAL_UN_READ_MESSAGE]),
+    ...mapGetters(['totalUnReadMessage']),
   },
   mounted() {
     this.getTalkTargetInfo(this.targetId)
@@ -67,9 +66,7 @@ export default {
   },
   methods: {
     clearUnReadMessages() {
-      if (
-        this[TOTAL_UN_READ_MESSAGE].find(v => v.targetUserId == this.targetId)
-      ) {
+      if (this.totalUnReadMessage.find(v => v.targetUserId == this.targetId)) {
         this.$store.dispatch(CLEAR_UN_READ_MESSAGES, {
           targetId: this.targetId,
         })

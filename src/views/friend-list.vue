@@ -12,8 +12,8 @@
       is-link
       @click="toFriendRequestList"
     >
-      <div v-show="FRIEND_REQUEST_UN_READ_COUNT" class="dot" slot="right-icon">
-        {{ FRIEND_REQUEST_UN_READ_COUNT }}
+      <div v-show="friendRequestUnReadCount" class="dot" slot="right-icon">
+        {{ friendRequestUnReadCount }}
       </div>
     </van-field>
     <van-collapse v-model="activeName" accordion>
@@ -44,7 +44,6 @@
 import {mapGetters, mapState} from 'vuex'
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
-import {FRIEND_REQUEST_UN_READ_COUNT} from '@store/types/getters-types.js'
 
 export default {
   name: 'FriendList',
@@ -58,7 +57,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([FRIEND_REQUEST_UN_READ_COUNT]),
+    ...mapGetters(['friendRequestUnReadCount']),
     ...mapState({
       friendList: state => state.socketModule.friendList,
     }),
