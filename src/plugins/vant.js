@@ -24,6 +24,7 @@ import {
   Loading,
   Popup,
   Dialog,
+  Image,
 } from 'vant'
 import 'vant/lib/index.css'
 
@@ -52,3 +53,4 @@ Vue.use(NavBar)
   .use(Loading)
   .use(Popup)
   .use(Dialog)
+  .use(Image)
