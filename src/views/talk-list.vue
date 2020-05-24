@@ -1,14 +1,10 @@
 <template>
   <div class="talk-list">
-    <!-- todo 配置当前用户的头像作为左侧显示内容 -->
     <my-nav-bar title="聊天" :left-arrow="false" />
     <van-list>
       <van-cell :border="false" v-for="talk in talkList" :key="talk.id">
         <talk-list-item
-          :id="talk.id"
-          :src="talk.targetUserInfo.src"
-          :targetUserName="talk.targetUserInfo.username"
-          :targetUserId="talk.targetUserId"
+          :userInfo="talk.targetUserInfo"
           :sendDate="talk.createdAt"
           :lastMessageUserName="talk.lastMessageUserInfo.username"
           :message="talk.lastMessageInfo.message"
@@ -31,22 +27,12 @@ export default {
     MyTabBar,
     MyNavBar,
   },
-  data() {
-    return {}
-  },
   computed: {
     talkList() {
       return this.$store.state.talkModule.talkList
     },
   },
-  mounted() {
-    // console.log()
-  },
-  methods: {},
 }
 </script>
 
-<style lang="less" scoped>
-// .talk-list {
-// }
-</style>
+<style lang="less" scoped></style>
