@@ -7,6 +7,7 @@ import {
   CONNECT_SOCKET_IO,
   GET_USER_FRIEND_LIST,
 } from '@store/types/action-types.js'
+import getters from './getters'
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ const store = new Vuex.Store({
     socketModule,
     talkModule,
   },
+  getters,
 })
 
 if (store.state.loggedInUserModule.loggedInUser) {
