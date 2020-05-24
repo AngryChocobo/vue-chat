@@ -1,11 +1,15 @@
 <template>
   <div class="message-item" :class="isMine ? 'mine' : 'other'">
     <div class="head-image">
-      <img :src="imgSrc" alt="头像" @click="goUserInfo" />
+      <UserAvator
+        :user="isMine ? loggedInUser : targetUserInfo"
+        round
+        @click.native="goUserInfo"
+      />
     </div>
     <div class="content">
       <div class="content-header">
-        <!-- <p v-if="!isMine" class="username">{{ username }}</p> -->
+        <!-- <p v-if="!isMine" class="username">{{ targetUserInfo.username }}</p> -->
         <!-- <p class="send-date">{{ formatedSendDate }}</p> -->
       </div>
       <p class="message">{{ message }}</p>
@@ -14,37 +18,27 @@
 </template>
 
 <script>
+import UserAvator from '@/components/user-avatar.vue'
 export default {
   name: 'MessageItem',
+  components: {UserAvator},
   props: {
     fromUserId: Number, // 对话目标id
     message: String, // 对话内容
-    // src: String, // 头像src
-    target: Object,
-    // username: String, // 对话目标名
+    targetUserInfo: Object,
     sendDate: Number, // 对话时间
-    type: Number, // 对话目标类型 （todo: 用户、群等）
   },
   computed: {
     isMine() {
       // 是否是自己的发言
-      return (
-        this.fromUserId === this.$store.state.loggedInUserModule.loggedInUser.id
-      )
+      return this.fromUserId === this.loggedInUser.id
+    },
+    loggedInUser() {
+      return this.$store.getters.loggedInUser
     },
     formatedSendDate() {
       return this.$moment(this.sendDate).format('MM/DD HH:mm:ss')
     },
-    imgSrc() {
-      return this.isMine
-        ? require('@assets/head/' +
-            this.$store.state.loggedInUserModule.loggedInUser.src)
-        : require('@assets/head/' + this.target.src)
-    },
-  },
-  mounted() {},
-  data() {
-    return {}
   },
   methods: {
     goUserInfo() {
@@ -77,11 +71,11 @@ export default {
 
   &.other {
     .message {
-      background-color: gray;
+      background-color: #ccc;
       &::after {
         left: -16px;
         border-left: 8px solid transparent;
-        border-right: 8px solid gray;
+        border-right: 8px solid #ccc;
       }
     }
   }

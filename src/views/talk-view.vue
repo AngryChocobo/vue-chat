@@ -1,21 +1,19 @@
 <template>
   <div class="talk-view" ref="view">
     <my-nav-bar :title="navTitle" />
-    <div ref="talkListWrapper">
-      <div class="talk-list" ref="talkList" v-if="targetInfo">
-        <van-cell
-          :border="false"
-          v-for="message in messageList"
-          :key="message.id"
-        >
-          <message-item
-            :target="targetInfo"
-            :from-user-id="message.fromUserId"
-            :send-date="message.sendDate"
-            :message="message.message"
-          />
-        </van-cell>
-      </div>
+    <div class="talk-list" ref="talkList" v-if="targetInfo">
+      <van-cell
+        :border="false"
+        v-for="message in messageList"
+        :key="message.id"
+      >
+        <message-item
+          :targetUserInfo="targetInfo"
+          :from-user-id="message.fromUserId"
+          :send-date="message.sendDate"
+          :message="message.message"
+        />
+      </van-cell>
     </div>
     <talk-input :on-send="sendMessage" />
   </div>
