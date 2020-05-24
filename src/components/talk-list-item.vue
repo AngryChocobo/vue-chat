@@ -1,12 +1,12 @@
 <template>
   <div class="talk-list-item" @click="goTalkDetail">
-    <div class="head-image">
-      <img :src="imgSrc" alt="" />
+    <div class="avatar-wrapper">
+      <UserAvator :user="userInfo" round />
       <div v-show="unReadCount" class="dot">{{ unReadCount }}</div>
     </div>
     <div class="content">
       <div class="content-header">
-        <p class="targetUserName">{{ targetUserName }}</p>
+        <p class="targetUserName">{{ userInfo.username }}</p>
         <p class="sendDate">{{ formatedDate }}</p>
       </div>
       <p class="message van-ellipsis">
@@ -20,27 +20,22 @@
 /**
  * 对话列表的子组件，作为一个用户/群存在
  */
+import UserAvator from '@/components/user-avatar.vue'
 export default {
   name: 'TalkListItem',
+  components: {
+    UserAvator,
+  },
   props: {
-    id: Number,
+    userInfo: Object,
     message: String, // 对话内容
-    src: String, // 头像src
-    targetUserName: String, // 对话目标名
     sendDate: String, // 对话时间
-    targetUserId: Number, // 对话目标id
     lastMessageUserName: String, // 最后发言用户名
     unReadCount: Number,
-    type: Number, // 对话目标类型 （todo: 用户、群等）
   },
   computed: {
     formatedDate() {
-      return this.$moment(this.sendDate).format('YY/MM/DD')
-    },
-    imgSrc() {
-      return this.src
-        ? require('@assets/head/' + this.src)
-        : require('@assets/head/head.jpg')
+      return this.$moment(this.sendDate).format('YYYY/MM/DD')
     },
   },
   mounted() {},
@@ -48,7 +43,7 @@ export default {
     goTalkDetail() {
       this.$router.push({
         name: 'TalkView',
-        params: {id: this.targetUserId},
+        params: {id: this.userInfo.id},
       })
     },
   },
@@ -61,12 +56,8 @@ export default {
   justify-content: space-between;
   align-items: center;
 
-  .head-image {
+  .avatar-wrapper {
     position: relative;
-    img {
-      width: 48px;
-      border-radius: 50%;
-    }
     .dot {
       position: absolute;
       top: 0;
@@ -77,7 +68,6 @@ export default {
       color: #fff;
       font-weight: 500;
       font-size: 12px;
-      font-family: PingFang SC, Helvetica Neue, Arial, sans-serif;
       line-height: 14px;
       text-align: center;
       background-color: #ee0a24;
