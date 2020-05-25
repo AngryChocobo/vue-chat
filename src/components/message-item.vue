@@ -1,12 +1,10 @@
 <template>
   <div class="message-item" :class="isMine ? 'mine' : 'other'">
-    <div class="head-image">
-      <UserAvator
-        :user="isMine ? loggedInUser : targetUserInfo"
-        round
-        @click.native="goUserInfo"
-      />
-    </div>
+    <UserAvator
+      :user="isMine ? loggedInUser : targetUserInfo"
+      round
+      @click.native="goUserInfo"
+    />
     <div class="content">
       <div class="content-header">
         <!-- <p v-if="!isMine" class="username">{{ targetUserInfo.username }}</p> -->
@@ -76,12 +74,6 @@ export default {
         border-left: 8px solid transparent;
         border-right: 8px solid #ccc;
       }
-    }
-  }
-  .head-image {
-    img {
-      width: 40px;
-      border-radius: 50%;
     }
   }
 

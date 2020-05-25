@@ -3,7 +3,7 @@
     <my-nav-bar title="用户信息" />
     <template v-if="userInfo">
       <div class="main-info">
-        <img :src="imgSrc" alt="" class="userImg" />
+        <UserAvator :user="userInfo" width="64" height="64" />
         <div class="info-content">
           <h3>
             {{ userInfo.nickname || userInfo.username }}
@@ -47,7 +47,9 @@
 <script>
 import MyNavBar from '@components/my-nav-bar.vue'
 import {getUserInfo} from '@/const/api.js'
+import UserAvator from '@/components/user-avatar.vue'
 import {MAKE_FRIEND_REQUEST} from '@store/types/action-types.js'
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'UserInfo',
@@ -59,8 +61,10 @@ export default {
   },
   components: {
     MyNavBar,
+    UserAvator,
   },
   computed: {
+    ...mapGetters(['loggedInUserId']),
     imgSrc() {
       return this.userInfo && this.userInfo.src
         ? require('@assets/head/' + this.userInfo.src)
@@ -74,9 +78,6 @@ export default {
     },
     isMakedFriendRequest() {
       return this.userInfo && !!this.userInfo.makeFriendRecord
-    },
-    loggedInUserId() {
-      return this.$store.state.loggedInUserModule.loggedInUser.id
     },
   },
   mounted() {
@@ -117,9 +118,6 @@ export default {
     display: flex;
     align-items: flex-start;
     padding: 10px 16px;
-    .userImg {
-      width: 64px;
-    }
     .info-content {
       margin-left: 16px;
       h3 {

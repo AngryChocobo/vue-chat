@@ -8,38 +8,32 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
   name: 'UserAvator',
   props: {
     user: Object,
-    userId: String,
     width: String,
     height: String,
   },
   computed: {
+    ...mapGetters(['loggedInUser']),
     imgSrc() {
-      if (!this.user.src) {
-        return require('@assets/head/head.jpg')
-      }
       if (this.isMine) {
-        return require('@assets/head/' +
-          this.$store.state.loggedInUserModule.loggedInUser.src)
+        return require('@assets/head/' + this.loggedInUser.src)
       } else {
         return require('@assets/head/' + this.user.src)
       }
     },
     isMine() {
-      // 是否是自己的发言
-      return (
-        this.fromUserId === this.$store.state.loggedInUserModule.loggedInUser.id
-      )
+      return this.user.id === this.loggedInUser.id
     },
   },
   methods: {
     goTalkDetail() {
       this.$router.push({
         name: 'TalkView',
-        params: {id: this.targetUserId},
+        params: {id: this.user.id},
       })
     },
   },

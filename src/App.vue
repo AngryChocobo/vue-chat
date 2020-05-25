@@ -12,12 +12,6 @@ export default {
   components: {
     ReconnectOverlay,
   },
-  computed: {
-    count() {
-      return this.$store.state.count
-    },
-  },
-  mounted() {},
 }
 </script>
 

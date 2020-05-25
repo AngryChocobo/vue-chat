@@ -20,7 +20,7 @@ const store = new Vuex.Store({
   getters,
 })
 
-if (store.state.loggedInUserModule.loggedInUser) {
+if (store.getters.loggedInUser) {
   store.dispatch(CONNECT_SOCKET_IO)
   store.dispatch(GET_USER_FRIEND_LIST)
 }

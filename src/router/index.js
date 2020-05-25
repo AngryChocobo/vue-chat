@@ -106,7 +106,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
-    if (!store.state.loggedInUserModule.loggedInUser) {
+    if (!store.getters.loggedInUser) {
       Toast('登陆失效，请重新登录')
       router.replace('/login')
     }
