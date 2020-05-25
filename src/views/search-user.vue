@@ -13,10 +13,11 @@
         :key="user.id"
         @click="checkUserInfo(user)"
       >
-        <img
-          :src="getImgSrc(user.avatar)"
-          :alt="user.name"
-          @click="goTalkView"
+        <UserAvator
+          :user="user"
+          round
+          @click.native="goTalkView"
+          style="margin-right: 8px;"
         />
         <span class="username">{{ user.username }}</span>
       </van-cell>
@@ -26,11 +27,13 @@
 
 <script>
 import MyNavBar from '@components/my-nav-bar.vue'
+import UserAvator from '@/components/user-avatar.vue'
 import {searchUsers} from '@const/api'
 export default {
   name: 'SearchUser',
   components: {
     MyNavBar,
+    UserAvator,
   },
   data() {
     return {
@@ -81,10 +84,6 @@ export default {
     .van-cell__value {
       display: flex;
       align-items: center;
-      img {
-        width: 32px;
-        margin-right: 8px;
-      }
     }
   }
 }

@@ -2,12 +2,12 @@
   <div class="my">
     <my-nav-bar title="我" :left-arrow="false" />
     <div class="main-info">
-      <img :src="imgSrc" alt="" class="user-img" />
+      <UserAvator :user="loggedInUser" width="64" height="64" />
       <div class="info-content">
         <h3>
-          {{ loggedInUserInfo.nickname }}
+          {{ loggedInUser.nickname }}
         </h3>
-        <p class="username">用户名：{{ loggedInUserInfo.username }}</p>
+        <p class="username">用户名：{{ loggedInUser.username }}</p>
       </div>
     </div>
     <van-cell @click="goMySettings"> 设置个人资料 </van-cell>
@@ -16,7 +16,8 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapGetters} from 'vuex'
+import UserAvator from '@/components/user-avatar.vue'
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
 export default {
@@ -24,6 +25,7 @@ export default {
   components: {
     MyTabBar,
     MyNavBar,
+    UserAvator,
   },
   data() {
     return {
@@ -31,14 +33,7 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      loggedInUserInfo: state => state.loggedInUserModule.loggedInUser,
-    }),
-    imgSrc() {
-      return this.loggedInUserInfo && this.loggedInUserInfo.avatar
-        ? require('@assets/head/' + this.loggedInUserInfo.avatar)
-        : require('@assets/head/head.jpg')
-    },
+    ...mapGetters(['loggedInUser']),
   },
   methods: {
     goMySettings() {
@@ -54,9 +49,6 @@ export default {
     display: flex;
     align-items: flex-start;
     padding: 10px 16px;
-    .user-img {
-      width: 64px;
-    }
     .info-content {
       margin-left: 16px;
       h3 {

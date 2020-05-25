@@ -2,7 +2,7 @@
   <van-image
     :width="width || 48"
     :height="height || 48"
-    :avatar="imgSrc"
+    :src="imgSrc"
     v-bind="$attrs"
   />
 </template>
@@ -20,9 +20,17 @@ export default {
     ...mapGetters(['loggedInUser']),
     imgSrc() {
       if (this.isMine) {
-        return require('@assets/head/' + this.loggedInUser.avatar)
+        if (this.loggedInUser.avatar) {
+          return require('@assets/head/' + this.loggedInUser.avatar)
+        } else {
+          return require('@assets/head/head.jpg')
+        }
       } else {
-        return require('@assets/head/' + this.user.avatar)
+        if (this.user.avatar) {
+          return require('@assets/head/' + this.user.avatar)
+        } else {
+          return require('@assets/head/head.jpg')
+        }
       }
     },
     isMine() {
