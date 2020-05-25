@@ -13,7 +13,10 @@
         @click="checkFriendRequestInfo(friend.makeRecordUserInfo)"
       >
         <div class="friend-info">
-          <img :src="getImgSrc(friend.makeRecordUserInfo.src)" />
+          <UserAvator
+            :user="friend.makeRecordUserInfo"
+            style="margin-right: 8px"
+          />
           <span class="username">{{ friend.makeRecordUserInfo.username }}</span>
         </div>
         <van-tag type="primary" v-if="friend.stats === 'Waiting'" plain
@@ -36,11 +39,14 @@
 import {CLEAR_UN_READ_FRIEND_REQUEST} from '@store/types/action-types.js'
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
+import UserAvator from '@/components/user-avatar.vue'
+
 export default {
   name: 'FriendRequestList',
   components: {
     MyTabBar,
     MyNavBar,
+    UserAvator,
   },
   data() {
     return {
@@ -69,11 +75,6 @@ export default {
         },
       })
     },
-    getImgSrc(src) {
-      return src
-        ? require('@assets/head/' + src)
-        : require('@assets/head/head.jpg')
-    },
   },
 }
 </script>
@@ -89,10 +90,6 @@ export default {
       .friend-info {
         display: flex;
         align-items: center;
-        img {
-          width: 32px;
-          margin-right: 8px;
-        }
       }
     }
   }

@@ -25,9 +25,9 @@
             :key="friend.id"
             @click="checkFriendInfo(friend.friendUserInfo)"
           >
-            <img
-              :src="getImgSrc(friend.friendUserInfo.src)"
-              :alt="friend.friendUserInfo.name"
+            <UserAvator
+              :user="friend.friendUserInfo"
+              style="margin-right: 8px"
             />
             <span class="username">{{ friend.friendUserInfo.username }}</span>
           </van-cell>
@@ -42,6 +42,8 @@
 
 <script>
 import {mapGetters, mapState} from 'vuex'
+import UserAvator from '@/components/user-avatar.vue'
+
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
 
@@ -50,6 +52,7 @@ export default {
   components: {
     MyTabBar,
     MyNavBar,
+    UserAvator,
   },
   data() {
     return {
@@ -115,10 +118,6 @@ export default {
       /deep/ .van-cell__value {
         display: flex;
         align-items: center;
-        img {
-          width: 32px;
-          margin-right: 8px;
-        }
       }
     }
   }

@@ -3,7 +3,7 @@
     <my-nav-bar title="好友申请" />
     <template v-if="requestInfo">
       <div class="main-info">
-        <img :src="imgSrc" alt="" class="userImg" />
+        <UserAvator :user="requestInfo.makeRecordUserInfo" />
         <div class="info-content">
           <h3>
             {{
@@ -51,6 +51,7 @@
 
 <script>
 import MyNavBar from '@components/my-nav-bar.vue'
+import UserAvator from '@/components/user-avatar.vue'
 import {getFriendRequestInfo} from '@/const/api.js'
 import {AGREE_MAKE_FRIEND_REQUEST} from '@store/types/action-types.js'
 export default {
@@ -62,13 +63,7 @@ export default {
   },
   components: {
     MyNavBar,
-  },
-  computed: {
-    imgSrc() {
-      return this.requestInfo && this.requestInfo.makeRecordUserInfo.src
-        ? require('@assets/head/' + this.requestInfo.makeRecordUserInfo.src)
-        : require('@assets/head/head.jpg')
-    },
+    UserAvator,
   },
   mounted() {
     this.getFriendRequestInfo()
@@ -100,9 +95,6 @@ export default {
     display: flex;
     align-items: flex-start;
     padding: 10px 16px;
-    .userImg {
-      width: 64px;
-    }
     .info-content {
       margin-left: 16px;
       h3 {
