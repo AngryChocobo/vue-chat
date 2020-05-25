@@ -8,41 +8,18 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
 export default {
-  name: 'UserAvator',
+  name: 'UserAvatar',
   props: {
-    user: Object,
+    avatar: {
+      type: String,
+    },
     width: String,
     height: String,
   },
   computed: {
-    ...mapGetters(['loggedInUser']),
     imgSrc() {
-      if (this.isMine) {
-        if (this.loggedInUser.avatar) {
-          return require('@assets/head/' + this.loggedInUser.avatar)
-        } else {
-          return require('@assets/head/head.jpg')
-        }
-      } else {
-        if (this.user.avatar) {
-          return require('@assets/head/' + this.user.avatar)
-        } else {
-          return require('@assets/head/head.jpg')
-        }
-      }
-    },
-    isMine() {
-      return this.user && this.user.id === this.loggedInUser.id
-    },
-  },
-  methods: {
-    goTalkDetail() {
-      this.$router.push({
-        name: 'TalkView',
-        params: {id: this.user.id},
-      })
+      return require('@assets/head/' + (this.avatar || 'head.jpg'))
     },
   },
 }

@@ -1,22 +1,24 @@
 <template>
   <div class="avatar-select">
-    <img
+    <UserAvatar
+      class="avatar"
+      width="auto"
+      height="auto"
       v-for="avatar in avatarList"
       :key="avatar.src"
-      :src="avatar.src | imgSrcFilter"
-      alt="头像"
-      class="avatar"
+      :avatar="avatar.src"
       :class="selectedAvatar === avatar.src && 'selected'"
-      @click="selectAvatar(avatar.src)"
+      @click.native="selectAvatar(avatar.src)"
     />
   </div>
 </template>
 
 <script>
+import UserAvatar from '@/components/user-avatar.vue'
+
 export default {
   name: 'AvatarSelect',
-  props: {},
-  mounted() {},
+  components: {UserAvatar},
   data() {
     return {
       avatarList: [
@@ -60,14 +62,6 @@ export default {
       selectedAvatar: '',
     }
   },
-  filters: {
-    imgSrcFilter(src) {
-      return src
-        ? require('@assets/head/' + src)
-        : require('@assets/head/head.jpg')
-    },
-  },
-  computed: {},
   methods: {
     selectAvatar(src) {
       this.selectedAvatar = src
@@ -85,6 +79,7 @@ export default {
   row-gap: 8px;
   .avatar {
     width: 100%;
+
     border: 1px dashed transparent;
     &.selected {
       border-color: black;

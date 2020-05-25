@@ -2,7 +2,7 @@
   <div class="my">
     <my-nav-bar title="我" :left-arrow="false" />
     <div class="main-info">
-      <UserAvator :user="loggedInUser" width="64" height="64" />
+      <UserAvatar :avatar="loggedInUser.avatar" width="64" height="64" />
       <div class="info-content">
         <h3>
           {{ loggedInUser.nickname }}
@@ -17,7 +17,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import UserAvator from '@/components/user-avatar.vue'
+import UserAvatar from '@/components/user-avatar.vue'
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
 export default {
@@ -25,7 +25,7 @@ export default {
   components: {
     MyTabBar,
     MyNavBar,
-    UserAvator,
+    UserAvatar,
   },
   data() {
     return {

@@ -13,8 +13,8 @@
         :key="user.id"
         @click="checkUserInfo(user)"
       >
-        <UserAvator
-          :user="user"
+        <UserAvatar
+          :avatar="user.avatar"
           round
           @click.native="goTalkView"
           style="margin-right: 8px;"
@@ -27,13 +27,13 @@
 
 <script>
 import MyNavBar from '@components/my-nav-bar.vue'
-import UserAvator from '@/components/user-avatar.vue'
+import UserAvatar from '@/components/user-avatar.vue'
 import {searchUsers} from '@const/api'
 export default {
   name: 'SearchUser',
   components: {
     MyNavBar,
-    UserAvator,
+    UserAvatar,
   },
   data() {
     return {

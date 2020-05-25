@@ -10,7 +10,7 @@
           @click="showAvatarSelect"
         >
           <template slot="input">
-            <UserAvator :user="loggedInUser" width="48" height="48" />
+            <UserAvatar :avatar="loggedInUser.avatar" width="48" height="48" />
           </template>
         </van-field>
       </van-cell-group>
@@ -64,7 +64,7 @@ import {mapGetters} from 'vuex'
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
 import AvatarSelect from '@components/avatar-select.vue'
-import UserAvator from '@/components/user-avatar.vue'
+import UserAvatar from '@/components/user-avatar.vue'
 import {CONFIRM_NICK_NAME, CONFIRM_AVATAR} from '@store/types/action-types.js'
 
 export default {
@@ -73,7 +73,7 @@ export default {
     MyTabBar,
     MyNavBar,
     AvatarSelect,
-    UserAvator,
+    UserAvatar,
   },
   data() {
     return {

@@ -25,8 +25,8 @@
             :key="friend.id"
             @click="checkFriendInfo(friend.friendUserInfo)"
           >
-            <UserAvator
-              :user="friend.friendUserInfo"
+            <UserAvatar
+              :avatar="friend.friendUserInfo.avatar"
               style="margin-right: 8px"
             />
             <span class="username">{{ friend.friendUserInfo.username }}</span>
@@ -42,7 +42,7 @@
 
 <script>
 import {mapGetters, mapState} from 'vuex'
-import UserAvator from '@/components/user-avatar.vue'
+import UserAvatar from '@/components/user-avatar.vue'
 
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
@@ -52,7 +52,7 @@ export default {
   components: {
     MyTabBar,
     MyNavBar,
-    UserAvator,
+    UserAvatar,
   },
   data() {
     return {

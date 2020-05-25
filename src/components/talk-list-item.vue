@@ -1,7 +1,7 @@
 <template>
   <div class="talk-list-item" @click="goTalkDetail">
     <div class="avatar-wrapper">
-      <UserAvator :user="userInfo" round />
+      <UserAvatar :avatar="userInfo.avatar" round />
       <div v-show="unReadCount" class="dot">{{ unReadCount }}</div>
     </div>
     <div class="content">
@@ -20,11 +20,11 @@
 /**
  * 对话列表的子组件，作为一个用户/群存在
  */
-import UserAvator from '@/components/user-avatar.vue'
+import UserAvatar from '@/components/user-avatar.vue'
 export default {
   name: 'TalkListItem',
   components: {
-    UserAvator,
+    UserAvatar,
   },
   props: {
     userInfo: Object,

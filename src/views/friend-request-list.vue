@@ -13,8 +13,8 @@
         @click="checkFriendRequestInfo(friend.makeRecordUserInfo)"
       >
         <div class="friend-info">
-          <UserAvator
-            :user="friend.makeRecordUserInfo"
+          <UserAvatar
+            :avatar="friend.makeRecordUserInfo.avatar"
             style="margin-right: 8px"
           />
           <span class="username">{{ friend.makeRecordUserInfo.username }}</span>
@@ -39,14 +39,14 @@
 import {CLEAR_UN_READ_FRIEND_REQUEST} from '@store/types/action-types.js'
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
-import UserAvator from '@/components/user-avatar.vue'
+import UserAvatar from '@/components/user-avatar.vue'
 
 export default {
   name: 'FriendRequestList',
   components: {
     MyTabBar,
     MyNavBar,
-    UserAvator,
+    UserAvatar,
   },
   data() {
     return {

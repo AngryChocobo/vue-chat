@@ -1,7 +1,7 @@
 <template>
   <div class="message-item" :class="isMine ? 'mine' : 'other'">
-    <UserAvator
-      :user="isMine ? loggedInUser : targetUserInfo"
+    <UserAvatar
+      :avatar="isMine ? loggedInUser.avatar : targetUserInfo.avatar"
       round
       @click.native="goUserInfo"
     />
@@ -17,10 +17,10 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import UserAvator from '@/components/user-avatar.vue'
+import UserAvatar from '@/components/user-avatar.vue'
 export default {
   name: 'MessageItem',
-  components: {UserAvator},
+  components: {UserAvatar},
   props: {
     fromUserId: Number, // 对话目标id
     message: String, // 对话内容

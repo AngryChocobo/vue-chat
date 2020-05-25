@@ -3,7 +3,7 @@
     <my-nav-bar title="用户信息" />
     <template v-if="userInfo">
       <div class="main-info">
-        <UserAvator :user="userInfo" width="64" height="64" />
+        <UserAvatar :avatar="userInfo.avatar" width="64" height="64" />
         <div class="info-content">
           <h3>
             {{ userInfo.nickname || userInfo.username }}
@@ -47,7 +47,7 @@
 <script>
 import MyNavBar from '@components/my-nav-bar.vue'
 import {getUserInfo} from '@/const/api.js'
-import UserAvator from '@/components/user-avatar.vue'
+import UserAvatar from '@/components/user-avatar.vue'
 import {MAKE_FRIEND_REQUEST} from '@store/types/action-types.js'
 import {mapGetters} from 'vuex'
 
@@ -61,7 +61,7 @@ export default {
   },
   components: {
     MyNavBar,
-    UserAvator,
+    UserAvatar,
   },
   computed: {
     ...mapGetters(['loggedInUserId']),
