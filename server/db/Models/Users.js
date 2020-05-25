@@ -13,7 +13,7 @@ const Users = sequelize.define('users', {
   nickname: {
     type: Sequelize.STRING,
   },
-  src: {
+  avatar: {
     type: Sequelize.STRING,
   },
 })

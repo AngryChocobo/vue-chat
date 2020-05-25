@@ -26,3 +26,4 @@ export const getFriendRequestInfo = userId =>
   `${apiPath}/getFriendRequestInfo?userId=${userId}`
 
 export const confirmNickName = `${apiPath}/confirmNickName`
+export const confirmAvatar = `${apiPath}/confirmAvatar`

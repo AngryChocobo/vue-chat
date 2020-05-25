@@ -35,8 +35,8 @@ export default {
       loggedInUserInfo: state => state.loggedInUserModule.loggedInUser,
     }),
     imgSrc() {
-      return this.loggedInUserInfo && this.loggedInUserInfo.src
-        ? require('@assets/head/' + this.loggedInUserInfo.src)
+      return this.loggedInUserInfo && this.loggedInUserInfo.avatar
+        ? require('@assets/head/' + this.loggedInUserInfo.avatar)
         : require('@assets/head/head.jpg')
     },
   },

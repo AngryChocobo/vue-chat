@@ -77,11 +77,6 @@ export default {
         params: {userId: friend.id},
       })
     },
-    getImgSrc(src) {
-      return src
-        ? require('@assets/head/' + src)
-        : require('@assets/head/head.jpg')
-    },
   },
 }
 </script>

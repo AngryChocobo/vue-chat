@@ -66,8 +66,8 @@ export default {
   computed: {
     ...mapGetters(['loggedInUserId']),
     imgSrc() {
-      return this.userInfo && this.userInfo.src
-        ? require('@assets/head/' + this.userInfo.src)
+      return this.userInfo && this.userInfo.avatar
+        ? require('@assets/head/' + this.userInfo.avatar)
         : require('@assets/head/head.jpg')
     },
     isMyFriend() {

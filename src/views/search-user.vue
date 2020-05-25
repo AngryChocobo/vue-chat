@@ -13,7 +13,11 @@
         :key="user.id"
         @click="checkUserInfo(user)"
       >
-        <img :src="getImgSrc(user.src)" :alt="user.name" @click="goTalkView" />
+        <img
+          :src="getImgSrc(user.avatar)"
+          :alt="user.name"
+          @click="goTalkView"
+        />
         <span class="username">{{ user.username }}</span>
       </van-cell>
     </van-list>
