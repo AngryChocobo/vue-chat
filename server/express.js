@@ -158,6 +158,37 @@ app.post('/confirmNickName', authMiddleWare, (req, res) => {
   })
 })
 
+// 修改头像
+app.post('/confirmAvatar', authMiddleWare, (req, res) => {
+  const {avatar} = req.body
+  console.log(req.body)
+  const loggedInUserId = req.loggedInUser.id
+  Users.update(
+    {
+      avatar,
+    },
+    {
+      where: {
+        id: {
+          [Op.eq]: loggedInUserId,
+        },
+      },
+    },
+  ).then(() => {
+    // 重新获取用户信息，并返回
+    Users.findOne({
+      attributes: {
+        exclude: ['password'],
+      },
+      where: {
+        id: loggedInUserId,
+      },
+    }).then(user => {
+      res.send(user)
+    })
+  })
+})
+
 // 查看搜索用户详细信息及是否是好友
 app.get('/getUserInfo', authMiddleWare, (req, res) => {
   const {targetUserId} = req.query // 查询目标id

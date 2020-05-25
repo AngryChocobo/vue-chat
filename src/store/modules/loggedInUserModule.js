@@ -5,6 +5,7 @@ import {
   UPDATE_LOGGEDINUSER,
   CLEAR_TOKEN,
   UPDATE_LOGGEDINUSER_NICKNAME,
+  UPDATE_LOGGEDINUSER_AVATAR,
 } from '@store/types/mutation-types.js'
 import {
   CONNECT_SOCKET_IO,
@@ -12,8 +13,9 @@ import {
   LOGIN,
   REGISTER,
   CONFIRM_NICK_NAME,
+  CONFIRM_AVATAR,
 } from '@store/types/action-types.js'
-import {register, login, confirmNickName} from '@const/api'
+import {register, login, confirmNickName, confirmAvatar} from '@const/api'
 
 export default {
   state: {
@@ -38,6 +40,9 @@ export default {
     [UPDATE_LOGGEDINUSER_NICKNAME](state, nickname) {
       state.loggedInUser.nickname = nickname
     },
+    [UPDATE_LOGGEDINUSER_AVATAR](state, avatar) {
+      state.loggedInUser.avatar = avatar
+    },
   },
   actions: {
     [LOGIN](context, payload) {
@@ -57,9 +62,16 @@ export default {
     },
     [CONFIRM_NICK_NAME](context, {nickname}) {
       axios.post(confirmNickName, {nickname}).then(res => {
-        Toast('修改用户名成功！')
-        console.log('修改用户名成功！', res)
+        Toast('修改昵称成功！')
+        console.log('修改昵称成功！', res)
         context.commit(UPDATE_LOGGEDINUSER_NICKNAME, res.data.nickname)
+      })
+    },
+    [CONFIRM_AVATAR](context, {avatar}) {
+      axios.post(confirmAvatar, {avatar}).then(res => {
+        Toast('修改头像成功！')
+        console.log('修改头像成功！')
+        context.commit(UPDATE_LOGGEDINUSER_AVATAR, res.data.avatar)
       })
     },
   },

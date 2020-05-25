@@ -65,7 +65,7 @@ import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
 import AvatarSelect from '@components/avatar-select.vue'
 import UserAvator from '@/components/user-avatar.vue'
-import {CONFIRM_NICK_NAME} from '@store/types/action-types.js'
+import {CONFIRM_NICK_NAME, CONFIRM_AVATAR} from '@store/types/action-types.js'
 
 export default {
   name: 'MySettings',
@@ -109,6 +109,7 @@ export default {
     },
     onConfirmAvatar() {
       console.log('修改了头像' + this.selectAvatar)
+      this.$store.dispatch(CONFIRM_AVATAR, {avatar: this.selectAvatar})
     },
   },
 }
