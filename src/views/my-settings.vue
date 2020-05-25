@@ -10,17 +10,17 @@
           @click="showAvatarSelect"
         >
           <template slot="input">
-            <img :src="imgSrc" alt="" class="user-img" />
+            <UserAvator :user="loggedInUser" width="48" height="48" />
           </template>
         </van-field>
       </van-cell-group>
       <van-cell-group>
         <van-field
-          v-model="nickname"
+          :value="loggedInUser.nickname"
           label="昵称"
           class="nickname"
           readonly
-          @click="nickNamePopupVisible = true"
+          @click.native="onShowNamePopup"
         />
       </van-cell-group>
     </div>
@@ -42,7 +42,7 @@
         placeholder="请输入昵称"
         class="nickname"
       />
-      <van-button type="primary" size="large" @click="onSaveNickName">
+      <van-button type="primary" size="large" @click="onConfirmNickName">
         保存
       </van-button>
     </van-popup>
@@ -51,7 +51,7 @@
       v-model="avatarSelectVisible"
       title="选择头像"
       show-cancel-button
-      @confirm="onChangeAvatar"
+      @confirm="onConfirmAvatar"
     >
       <avatar-select class="content" @select="onSelectAvatar" />
     </van-dialog>
@@ -60,39 +60,41 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapGetters} from 'vuex'
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
 import AvatarSelect from '@components/avatar-select.vue'
+import UserAvator from '@/components/user-avatar.vue'
+import {CONFIRM_NICK_NAME} from '@store/types/action-types.js'
+
 export default {
   name: 'MySettings',
   components: {
     MyTabBar,
     MyNavBar,
     AvatarSelect,
+    UserAvator,
   },
   data() {
-    const nickname = this.$store.state.loggedInUserModule.loggedInUser.nickname
     return {
-      nickname,
+      nickname: '', // 编辑中的昵称
       nickNamePopupVisible: false,
       avatarSelectVisible: false,
       selectAvatar: '',
     }
   },
   computed: {
-    ...mapState({
-      loggedInUserInfo: state => state.loggedInUserModule.loggedInUser,
-    }),
-    imgSrc() {
-      return this.loggedInUserInfo && this.loggedInUserInfo.src
-        ? require('@assets/head/' + this.loggedInUserInfo.src)
-        : require('@assets/head/head.jpg')
-    },
+    ...mapGetters(['loggedInUser']),
   },
   methods: {
-    onSaveNickName() {
+    onShowNamePopup() {
+      this.nickname = this.loggedInUser.nickname
+      this.nickNamePopupVisible = true
+    },
+    onConfirmNickName() {
       console.log(this.nickname)
+      this.$store.dispatch(CONFIRM_NICK_NAME, {nickname: this.nickname})
+      this.nickNamePopupVisible = false
     },
     focusInput() {
       console.log(this.$refs.nickname)
@@ -103,10 +105,9 @@ export default {
     },
     onSelectAvatar(src) {
       console.log('选择了头像： ' + src)
-
       this.selectAvatar = src
     },
-    onChangeAvatar() {
+    onConfirmAvatar() {
       console.log('修改了头像' + this.selectAvatar)
     },
   },
@@ -122,9 +123,6 @@ export default {
       /deep/ .van-field__control {
         display: flex;
         justify-content: flex-end;
-      }
-      .user-img {
-        width: 48px;
       }
     }
   }

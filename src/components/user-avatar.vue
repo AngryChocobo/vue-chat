@@ -26,7 +26,7 @@ export default {
       }
     },
     isMine() {
-      return this.user.id === this.loggedInUser.id
+      return this.user && this.user.id === this.loggedInUser.id
     },
   },
   methods: {

@@ -114,9 +114,6 @@ app.get('/searchUsers', authMiddleWare, (req, res) => {
   const loggedInUserId = req.loggedInUser.id
 
   Users.findAll({
-    attributes: {
-      exclude: ['password'],
-    },
     where: {
       username: {
         [Op.substring]: keyword,
@@ -127,6 +124,37 @@ app.get('/searchUsers', authMiddleWare, (req, res) => {
     },
   }).then(users => {
     res.send(users)
+  })
+})
+
+// 修改昵称
+app.post('/confirmNickName', authMiddleWare, (req, res) => {
+  const {nickname} = req.body
+  console.log(req.body)
+  const loggedInUserId = req.loggedInUser.id
+  Users.update(
+    {
+      nickname,
+    },
+    {
+      where: {
+        id: {
+          [Op.eq]: loggedInUserId,
+        },
+      },
+    },
+  ).then(() => {
+    // 重新获取用户信息，并返回
+    Users.findOne({
+      attributes: {
+        exclude: ['password'],
+      },
+      where: {
+        id: loggedInUserId,
+      },
+    }).then(user => {
+      res.send(user)
+    })
   })
 })
 

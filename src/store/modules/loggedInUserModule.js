@@ -1,14 +1,19 @@
 import {Toast} from 'vant'
 import axios from '@/plugins/axios.js'
 import router from '@/router/index.js'
-import {UPDATE_LOGGEDINUSER, CLEAR_TOKEN} from '@store/types/mutation-types.js'
+import {
+  UPDATE_LOGGEDINUSER,
+  CLEAR_TOKEN,
+  UPDATE_LOGGEDINUSER_NICKNAME,
+} from '@store/types/mutation-types.js'
 import {
   CONNECT_SOCKET_IO,
   GET_USER_FRIEND_LIST,
   LOGIN,
   REGISTER,
+  CONFIRM_NICK_NAME,
 } from '@store/types/action-types.js'
-import {register, login} from '@const/api'
+import {register, login, confirmNickName} from '@const/api'
 
 export default {
   state: {
@@ -30,6 +35,9 @@ export default {
         JSON.stringify(payload.loggedInUser),
       )
     },
+    [UPDATE_LOGGEDINUSER_NICKNAME](state, nickname) {
+      state.loggedInUser.nickname = nickname
+    },
   },
   actions: {
     [LOGIN](context, payload) {
@@ -45,6 +53,13 @@ export default {
       const {username, password} = payload
       axios.post(register, {username, password}).then(() => {
         router.push('/login')
+      })
+    },
+    [CONFIRM_NICK_NAME](context, {nickname}) {
+      axios.post(confirmNickName, {nickname}).then(res => {
+        Toast('修改用户名成功！')
+        console.log('修改用户名成功！', res)
+        context.commit(UPDATE_LOGGEDINUSER_NICKNAME, res.data.nickname)
       })
     },
   },
