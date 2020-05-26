@@ -23,7 +23,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    // redirect: '/login',
+    redirect: '/login',
     component: Home,
   },
   {
@@ -107,6 +107,9 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
+    if (store.getters.token && to.name === 'Login') {
+      router.replace('/talk-list')
+    }
     if (!store.getters.token) {
       Toast('登陆失效，请重新登录')
       router.replace('/login')
