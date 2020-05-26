@@ -22,23 +22,8 @@
 import {mapGetters} from 'vuex'
 export default {
   name: 'MyTabBar',
-  data() {
-    return {}
-  },
-  props: {
-    onSend: {
-      type: Function,
-    },
-  },
   computed: {
     ...mapGetters(['totalUnReadMessageCount', 'friendRequestUnReadCount']),
-  },
-  methods: {
-    // onChange(index) {},
-    clearInputValue() {
-      this.value = ''
-    },
-    sendMessage() {},
   },
 }
 </script>
