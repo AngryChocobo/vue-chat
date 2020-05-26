@@ -108,6 +108,14 @@ app.post('/login', function(req, res) {
   })
 })
 
+// 获取当前用户的基本信息
+app.get('/getLoggedInUserInfo', authMiddleWare, (req, res) => {
+  const {loggedInUser} = req
+  const noPasswordloggedInUser = Object.assign({}, loggedInUser)
+  delete noPasswordloggedInUser.password
+  res.send(noPasswordloggedInUser.dataValues)
+})
+
 // 搜索用户
 app.get('/searchUsers', authMiddleWare, (req, res) => {
   const {keyword} = req.query
