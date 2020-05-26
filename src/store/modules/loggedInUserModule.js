@@ -1,11 +1,11 @@
 import {Toast} from 'vant'
-import axios from '@/plugins/axios.js'
 import router from '@/router/index.js'
 import {
   UPDATE_LOGGEDINUSER,
   CLEAR_TOKEN,
   UPDATE_LOGGEDINUSER_NICKNAME,
   UPDATE_LOGGEDINUSER_AVATAR,
+  UPDATE_TOKEN,
 } from '@store/types/mutation-types.js'
 import {
   CONNECT_SOCKET_IO,
@@ -14,12 +14,19 @@ import {
   REGISTER,
   CONFIRM_NICK_NAME,
   CONFIRM_AVATAR,
+  GET_LOGGEDINUSER_INFO,
 } from '@store/types/action-types.js'
-import {register, login, confirmNickName, confirmAvatar} from '@const/api'
+import {
+  register,
+  login,
+  getLoggedInUserInfo,
+  confirmNickName,
+  confirmAvatar,
+} from '@/api/user'
 
 export default {
   state: {
-    loggedInUser: JSON.parse(window.localStorage.getItem('loggedInUser')),
+    loggedInUser: {},
     token: window.localStorage.getItem('token'),
   },
   mutations: {
@@ -27,15 +34,12 @@ export default {
       state.token = null
       router.replace('/login')
     },
-    [UPDATE_LOGGEDINUSER](state, payload) {
-      state.loggedInUser = payload.loggedInUser
-      state.token = payload.token
-      router.push('/talk-list')
-      window.localStorage.setItem('token', payload.token)
-      window.localStorage.setItem(
-        'loggedInUser',
-        JSON.stringify(payload.loggedInUser),
-      )
+    [UPDATE_TOKEN](state, token) {
+      state.token = token
+      window.localStorage.setItem('token', token)
+    },
+    [UPDATE_LOGGEDINUSER](state, loggedInUser) {
+      state.loggedInUser = loggedInUser
     },
     [UPDATE_LOGGEDINUSER_NICKNAME](state, nickname) {
       state.loggedInUser.nickname = nickname
@@ -47,28 +51,35 @@ export default {
   actions: {
     [LOGIN](context, payload) {
       const {username, password} = payload
-      axios.post(login, {username, password}).then(res => {
+      login({username, password}).then(res => {
         Toast('登陆成功！')
-        context.commit(UPDATE_LOGGEDINUSER, res.data)
-        context.dispatch(CONNECT_SOCKET_IO)
-        context.dispatch(GET_USER_FRIEND_LIST)
+        context.commit(UPDATE_LOGGEDINUSER, res.data.loggedInUser)
+        context.commit(UPDATE_TOKEN, res.data.token)
+        // context.dispatch(CONNECT_SOCKET_IO)
+        // context.dispatch(GET_USER_FRIEND_LIST)
+        router.push('/talk-list')
       })
     },
     [REGISTER](context, payload) {
       const {username, password} = payload
-      axios.post(register, {username, password}).then(() => {
+      register({username, password}).then(() => {
         router.push('/login')
       })
     },
+    [GET_LOGGEDINUSER_INFO](context) {
+      getLoggedInUserInfo().then(res => {
+        context.commit(UPDATE_LOGGEDINUSER, res.data)
+      })
+    },
     [CONFIRM_NICK_NAME](context, {nickname}) {
-      axios.post(confirmNickName, {nickname}).then(res => {
+      confirmNickName({nickname}).then(res => {
         Toast('修改昵称成功！')
         console.log('修改昵称成功！', res)
         context.commit(UPDATE_LOGGEDINUSER_NICKNAME, res.data.nickname)
       })
     },
     [CONFIRM_AVATAR](context, {avatar}) {
-      axios.post(confirmAvatar, {avatar}).then(res => {
+      confirmAvatar({avatar}).then(res => {
         Toast('修改头像成功！')
         console.log('修改头像成功！')
         context.commit(UPDATE_LOGGEDINUSER_AVATAR, res.data.avatar)

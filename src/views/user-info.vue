@@ -46,7 +46,7 @@
 
 <script>
 import MyNavBar from '@components/my-nav-bar.vue'
-import {getUserInfo} from '@/const/api.js'
+import {getUserInfoAndFriendRelation} from '@/api/user'
 import UserAvatar from '@/components/user-avatar.vue'
 import {MAKE_FRIEND_REQUEST} from '@store/types/action-types.js'
 import {mapGetters} from 'vuex'
@@ -81,7 +81,7 @@ export default {
     },
   },
   mounted() {
-    this.getUserInfo()
+    this.getUserInfoAndFriendRelation()
   },
   methods: {
     talkTo() {
@@ -90,13 +90,13 @@ export default {
         params: {id: this.userInfo.id},
       })
     },
-    getUserInfo() {
+    getUserInfoAndFriendRelation() {
       const {userId} = this.$route.params
       if (!userId) {
         this.$toast('无效的用户id')
         return
       }
-      this.$axios.get(getUserInfo(userId)).then(res => {
+      getUserInfoAndFriendRelation(userId).then(res => {
         this.userInfo = res.data
         this.say =
           (res.data.makeFriendRecord && res.data.makeFriendRecord.say) || ''

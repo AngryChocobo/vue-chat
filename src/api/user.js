@@ -32,3 +32,26 @@ export function confirmNickName(data) {
     data,
   })
 }
+
+export function confirmAvatar(data) {
+  return axios({
+    url: `${apiPath}/confirmAvatar`,
+    method: 'post',
+    data,
+  })
+}
+export function getUserInfo(data) {
+  return axios({
+    url: `${apiPath}/getUserInfo`,
+    method: 'get',
+    data,
+  })
+}
+
+export function getUserInfoAndFriendRelation(data) {
+  return axios({
+    url: `${apiPath}/getUserInfoAndFriendRelation`,
+    method: 'get',
+    data,
+  })
+}

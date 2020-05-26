@@ -198,7 +198,7 @@ app.post('/confirmAvatar', authMiddleWare, (req, res) => {
 })
 
 // 查看搜索用户详细信息及是否是好友
-app.get('/getUserInfo', authMiddleWare, (req, res) => {
+app.get('/getUserInfoAndFriendRelation', authMiddleWare, (req, res) => {
   const {targetUserId} = req.query // 查询目标id
   const loggedInUserId = req.loggedInUser.id
   Users.findOne({
@@ -326,7 +326,7 @@ app.post('/agreeMakeFriendRequest', authMiddleWare, (req, res) => {
 })
 
 // 会话目标信息
-app.get('/getTalkTargetInfo', authMiddleWare, function(req, res) {
+app.get('/getUserInfo', authMiddleWare, function(req, res) {
   const {userId} = req.query
   Users.findOne({
     where: {

@@ -24,7 +24,7 @@ import {mapGetters} from 'vuex'
 import MyNavBar from '@components/my-nav-bar.vue'
 import MessageItem from '@components/message-item.vue'
 import TalkInput from '@components/talk-input.vue'
-import {getTalkTargetInfo} from '@const/api'
+import {getUserInfo} from '@const/api'
 import {
   GET_MESSAGE_LIST,
   SEND_MESSAGE,
@@ -57,7 +57,7 @@ export default {
     ...mapGetters(['totalUnReadMessage']),
   },
   mounted() {
-    this.getTalkTargetInfo(this.targetId)
+    this.getUserInfo(this.targetId)
     this.getMessageList()
     this.clearUnReadMessages()
   },
@@ -72,8 +72,8 @@ export default {
         })
       }
     },
-    getTalkTargetInfo(targetId) {
-      this.$axios(getTalkTargetInfo(targetId)).then(res => {
+    getUserInfo(targetId) {
+      getUserInfo(targetId).then(res => {
         this.targetInfo = res.data
         this.$nextTick(() => {
           this.initScrollTimer = setTimeout(() => {

@@ -9,8 +9,7 @@ export const getMessageList = (fromUserId, targetId) =>
 // export const sendNewMessage = `${apiPath}/sendNewMessage`
 export const getUserFriendList = `${apiPath}/getUserFriendList`
 
-export const getTalkTargetInfo = userId =>
-  `${apiPath}/getTalkTargetInfo?userId=${userId}`
+export const getUserInfo = userId => `${apiPath}/getUserInfo?userId=${userId}`
 
 export const searchUsers = keyword =>
   `${apiPath}/searchUsers?keyword=${keyword}`
@@ -19,8 +18,10 @@ export const register = `${apiPath}/register`
 
 export const login = `${apiPath}/login`
 
-export const getUserInfo = targetUserId =>
-  `${apiPath}/getUserInfo?targetUserId=${targetUserId}`
+export const getLoggedInUserInfo = `${apiPath}/getLoggedInUserInfo`
+
+export const getUserInfoAndFriendRelation = targetUserId =>
+  `${apiPath}/getUserInfoAndFriendRelation?targetUserId=${targetUserId}`
 
 export const getFriendRequestInfo = userId =>
   `${apiPath}/getFriendRequestInfo?userId=${userId}`
