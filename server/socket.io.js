@@ -119,7 +119,6 @@ module.exports = http => {
         targetUserId: targetId,
         message,
       }).then(newMessage => {
-        // todo 返回新消息
         socket.emit('sendMessageSuccess', {
           targetUserId: targetId,
           message: newMessage,
@@ -178,6 +177,7 @@ module.exports = http => {
                   getTalkList(targetId, talkList => {
                     targetToken.emit('updateTalkList', talkList)
                   })
+                  targetToken.emit('receiveMessage', newMessage)
                 }
               })
           } else {
