@@ -11,7 +11,6 @@ const service = axios.create({
   timeout: 5000, // request timeout
 })
 service.interceptors.request.use(config => {
-  console.log(11, store)
   const token = store.getters.token
   if (token) {
     config.headers.authorization = `Bearer ${token}`

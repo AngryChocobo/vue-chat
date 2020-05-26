@@ -63,8 +63,8 @@ export default {
   },
   actions: {
     [CONNECT_SOCKET_IO](context) {
-      const {loggedInUser} = context.rootState.loggedInUserModule
-      if (!loggedInUser) {
+      const {loggedInUser} = context.getters
+      if (!loggedInUser.id) {
         console.log('没登录，拒接连接socket')
         return
       }

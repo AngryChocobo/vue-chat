@@ -40,18 +40,26 @@ export function confirmAvatar(data) {
     data,
   })
 }
-export function getUserInfo(data) {
+export function getUserInfo(userId) {
   return axios({
     url: `${apiPath}/getUserInfo`,
     method: 'get',
-    data,
+    params: {userId},
   })
 }
 
-export function getUserInfoAndFriendRelation(data) {
+export function getUserInfoAndFriendRelation(targetUserId) {
   return axios({
     url: `${apiPath}/getUserInfoAndFriendRelation`,
     method: 'get',
-    data,
+    params: {targetUserId},
+  })
+}
+
+export function getMessageList(targetId) {
+  return axios({
+    url: `${apiPath}/getMessageList`,
+    method: 'get',
+    params: {targetId},
   })
 }

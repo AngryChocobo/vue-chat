@@ -111,9 +111,9 @@ app.post('/login', function(req, res) {
 // 获取当前用户的基本信息
 app.get('/getLoggedInUserInfo', authMiddleWare, (req, res) => {
   const {loggedInUser} = req
-  const noPasswordloggedInUser = Object.assign({}, loggedInUser)
+  const noPasswordloggedInUser = Object.assign({}, loggedInUser.dataValues)
   delete noPasswordloggedInUser.password
-  res.send(noPasswordloggedInUser.dataValues)
+  res.send(noPasswordloggedInUser)
 })
 
 // 搜索用户
@@ -346,7 +346,9 @@ app.get('/getUserInfo', authMiddleWare, function(req, res) {
 
 // 会话页
 app.get('/getMessageList', authMiddleWare, function(req, res) {
-  const {fromUserId, targetId} = req.query
+  console.error(req.loggedInUser)
+  const fromUserId = req.loggedInUser.id
+  const {targetId} = req.query
   Messages.findAll({
     where: {
       [Op.or]: [

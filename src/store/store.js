@@ -23,9 +23,11 @@ const store = new Vuex.Store({
 })
 
 if (store.getters.token) {
-  store.dispatch(GET_LOGGEDINUSER_INFO)
-  // store.dispatch(CONNECT_SOCKET_IO)
-  // store.dispatch(GET_USER_FRIEND_LIST)
+  store.dispatch(GET_LOGGEDINUSER_INFO).then(() => {
+    store.dispatch(CONNECT_SOCKET_IO).then(() => {
+      store.dispatch(GET_USER_FRIEND_LIST)
+    })
+  })
 } else {
   console.log('没有token')
 }

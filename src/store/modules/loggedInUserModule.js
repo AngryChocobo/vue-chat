@@ -32,6 +32,7 @@ export default {
   mutations: {
     [CLEAR_TOKEN](state) {
       state.token = null
+      window.localStorage.setItem('token', '')
       router.replace('/login')
     },
     [UPDATE_TOKEN](state, token) {
@@ -55,8 +56,8 @@ export default {
         Toast('登陆成功！')
         context.commit(UPDATE_LOGGEDINUSER, res.data.loggedInUser)
         context.commit(UPDATE_TOKEN, res.data.token)
-        // context.dispatch(CONNECT_SOCKET_IO)
-        // context.dispatch(GET_USER_FRIEND_LIST)
+        context.dispatch(CONNECT_SOCKET_IO)
+        context.dispatch(GET_USER_FRIEND_LIST)
         router.push('/talk-list')
       })
     },
@@ -67,7 +68,7 @@ export default {
       })
     },
     [GET_LOGGEDINUSER_INFO](context) {
-      getLoggedInUserInfo().then(res => {
+      return getLoggedInUserInfo().then(res => {
         context.commit(UPDATE_LOGGEDINUSER, res.data)
       })
     },

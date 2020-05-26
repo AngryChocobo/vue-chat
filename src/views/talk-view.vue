@@ -24,7 +24,7 @@ import {mapGetters} from 'vuex'
 import MyNavBar from '@components/my-nav-bar.vue'
 import MessageItem from '@components/message-item.vue'
 import TalkInput from '@components/talk-input.vue'
-import {getUserInfo} from '@const/api'
+import {getUserInfo} from '@/api/user'
 import {
   GET_MESSAGE_LIST,
   SEND_MESSAGE,
