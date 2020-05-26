@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import axios from '@/plugins/axios.js'
-import {getMessageList} from '@const/api'
+// import {getMessageList} from '@const/api'
 import {
   UPDATE_TALK_LIST,
   UPDATE_MESSAGE_LIST,
@@ -59,9 +59,9 @@ export default {
     },
     [GET_MESSAGE_LIST](context, payload) {
       const {loggedInUser} = context.rootState.loggedInUserModule
-      axios.get(getMessageList(loggedInUser.id, payload.targetId)).then(res => {
-        context.commit(UPDATE_MESSAGE_LIST, res.data)
-      })
+      // axios.get(getMessageList(loggedInUser.id, payload.targetId)).then(res => {
+      //   context.commit(UPDATE_MESSAGE_LIST, res.data)
+      // })
     },
   },
 }

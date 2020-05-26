@@ -4,15 +4,22 @@ import axios from 'axios'
 import store from '../store/store.js'
 import {CLEAR_TOKEN} from '@store/types/mutation-types.js'
 
-axios.interceptors.request.use(config => {
-  const token = store.state.loggedInUserModule.token
+// create an axios instance
+const service = axios.create({
+  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  // withCredentials: true, // send cookies when cross-domain requests
+  timeout: 5000, // request timeout
+})
+service.interceptors.request.use(config => {
+  console.log(11, store)
+  const token = store.getters.token
   if (token) {
     config.headers.authorization = `Bearer ${token}`
   }
   return config
 })
 
-axios.interceptors.response.use(
+service.interceptors.response.use(
   response => {
     return response
   },
@@ -37,6 +44,6 @@ axios.interceptors.response.use(
   },
 )
 
-Vue.prototype.$axios = axios
+Vue.prototype.$axios = service
 
-export default axios
+export default service

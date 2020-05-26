@@ -27,11 +27,6 @@ export default {
     MyNavBar,
     UserAvatar,
   },
-  data() {
-    return {
-      userInfo1: null,
-    }
-  },
   computed: {
     ...mapGetters(['loggedInUser']),
   },

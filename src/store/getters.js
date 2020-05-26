@@ -1,6 +1,7 @@
 export default {
   loggedInUser: state => state.loggedInUserModule.loggedInUser,
   loggedInUserId: (state, getters) => getters.loggedInUser.id,
+  token: state => state.loggedInUserModule.token,
   friendRequestUnReadCount: state =>
     state.socketModule.friendRequestList.filter(v => !v.read).length,
   totalUnReadMessage: state =>
