@@ -13,6 +13,7 @@ const sequelize = new Sequelize(
       min: 0,
       idle: 3000,
     },
+    logging: false,
     define: {
       // timestamps: false,
       freezeTableName: true, // 阻止自动改为复数形式
