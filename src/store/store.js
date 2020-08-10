@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import loggedInUserModule from './modules/loggedInUserModule.js'
 import socketModule from './modules/socketModule.js'
 import talkModule from './modules/talkModule.js'
-// import router from '../router'
+
 import {
   CONNECT_SOCKET_IO,
   GET_USER_FRIEND_LIST,

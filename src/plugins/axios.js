@@ -29,7 +29,7 @@ service.interceptors.response.use(
   },
   error => {
     if (!error.response) {
-      Toast('服务器不想服务了')
+      Toast('服务器不想服务了', JSON.stringify(error))
     } else {
       switch (error.response.status) {
         case 401: // token失效

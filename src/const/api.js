@@ -14,10 +14,6 @@ export const getUserInfo = userId => `${apiPath}/getUserInfo?userId=${userId}`
 export const searchUsers = keyword =>
   `${apiPath}/searchUsers?keyword=${keyword}`
 
-export const register = `${apiPath}/register`
-
-export const login = `${apiPath}/login`
-
 export const getLoggedInUserInfo = `${apiPath}/getLoggedInUserInfo`
 
 export const getUserInfoAndFriendRelation = targetUserId =>

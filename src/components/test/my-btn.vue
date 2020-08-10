@@ -1,5 +1,11 @@
 <template>
-  <button class="my-btn" @click="handleClick"><slot></slot></button>
+  <form action="">
+    <div @click="handleDivClick" id="father-div" class="button-wrapper">
+      <button class="my-btn" @click="handleClick">
+        <slot></slot>
+      </button>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -14,12 +20,26 @@ export default {
     console.log('my-btn destroyed')
   },
   methods: {
+    handleDivClick(event) {
+      // if (event.target === event.currentTarget) {
+      console.log('div 被点击了')
+      // }
+      // event.preventDefault()
+    },
     handleClick(event) {
       console.log('组件收到了click事件：', event)
-      this.$emit('clicked', event)
+      // this.$emit('clicked', event)
+      // event.stopPropagation()
+      // event.prevent()
+      // debugger
+      // event.preventDefault()
     },
   },
 }
 </script>
 
-<style></style>
+<style>
+.button-wrapper {
+  padding: 40px;
+}
+</style>
