@@ -90,16 +90,16 @@ export default {
         params: {id: this.userInfo.id},
       })
     },
-    getUserInfoAndFriendRelation() {
+    async getUserInfoAndFriendRelation() {
       const {userId} = this.$route.params
       if (!userId) {
         this.$toast('无效的用户id')
         return
       }
-      getUserInfoAndFriendRelation(userId).then(res => {
-        this.userInfo = res
-        this.say = (res.makeFriendRecord && res.makeFriendRecord.say) || ''
-      })
+      const userInfo = await getUserInfoAndFriendRelation(userId)
+      this.userInfo = userInfo
+      this.say =
+        (userInfo.makeFriendRecord && userInfo.makeFriendRecord.say) || ''
     },
     makeFriendRequest() {
       this.$store.dispatch(MAKE_FRIEND_REQUEST, {

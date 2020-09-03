@@ -72,14 +72,13 @@ export default {
         })
       }
     },
-    getUserInfo(targetId) {
-      getUserInfo(targetId).then(res => {
-        this.targetInfo = res
-        this.$nextTick(() => {
-          this.initScrollTimer = setTimeout(() => {
-            this.scrollToBottom()
-          }, 100)
-        })
+    async getUserInfo(targetId) {
+      const userInfo = await getUserInfo(targetId)
+      this.targetInfo = userInfo
+      this.$nextTick(() => {
+        this.initScrollTimer = setTimeout(() => {
+          this.scrollToBottom()
+        }, 100)
       })
     },
     getMessageList() {

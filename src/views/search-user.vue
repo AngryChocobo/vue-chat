@@ -55,14 +55,13 @@ export default {
         },
       })
     },
-    searchUsers() {
-      getSearchUserResult(this.keyword).then(res => {
-        if (res.length == 0) {
-          this.$toast('无查询结果')
-        } else {
-          this.userList = res
-        }
-      })
+    async searchUsers() {
+      const userList = await getSearchUserResult(this.keyword)
+      if (userList.length == 0) {
+        this.$toast('无查询结果')
+      } else {
+        this.userList = userList
+      }
     },
     getImgSrc(src) {
       return src
