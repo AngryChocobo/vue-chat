@@ -63,11 +63,6 @@ export default {
         this.userList = userList
       }
     },
-    getImgSrc(src) {
-      return src
-        ? require('@assets/head/' + src)
-        : require('@assets/head/head.jpg')
-    },
     goTalkView() {},
   },
 }
