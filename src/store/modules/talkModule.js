@@ -57,7 +57,7 @@ export default {
     },
     [GET_MESSAGE_LIST](context, payload) {
       getMessageList(payload.targetId).then(res => {
-        context.commit(UPDATE_MESSAGE_LIST, res.data)
+        context.commit(UPDATE_MESSAGE_LIST, res)
       })
     },
   },

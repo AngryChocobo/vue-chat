@@ -54,14 +54,6 @@ export function getUserInfoAndFriendRelation(targetUserId) {
   })
 }
 
-export function getMessageList(targetId) {
-  return axios({
-    url: '/getMessageList',
-    method: 'get',
-    params: {targetId},
-  })
-}
-
 export function getSearchUserResult(keyword) {
   return axios({
     url: '/searchUsers',

@@ -69,15 +69,14 @@ export default {
     this.getFriendRequestInfo()
   },
   methods: {
-    getFriendRequestInfo() {
+    async getFriendRequestInfo() {
       const {userId} = this.$route.params
       if (!userId) {
         this.$toast('无效的用户id')
         return
       }
-      getFriendRequestInfo(userId).then(res => {
-        this.requestInfo = res.data
-      })
+      const data = await getFriendRequestInfo(userId)
+      this.requestInfo = data
     },
     agree() {
       this.$store.dispatch(AGREE_MAKE_FRIEND_REQUEST, {

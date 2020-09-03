@@ -57,9 +57,10 @@ export default {
     },
     searchUsers() {
       getSearchUserResult(this.keyword).then(res => {
-        this.userList = res.data
-        if (res.data.length == 0) {
+        if (res.length == 0) {
           this.$toast('无查询结果')
+        } else {
+          this.userList = res
         }
       })
     },

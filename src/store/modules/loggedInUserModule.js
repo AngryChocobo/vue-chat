@@ -54,8 +54,8 @@ export default {
       const {username, password} = payload
       login({username, password}).then(res => {
         Toast('登陆成功！')
-        context.commit(UPDATE_LOGGEDINUSER, res.data.loggedInUser)
-        context.commit(UPDATE_TOKEN, res.data.token)
+        context.commit(UPDATE_LOGGEDINUSER, res.loggedInUser)
+        context.commit(UPDATE_TOKEN, res.token)
         context.dispatch(CONNECT_SOCKET_IO)
         context.dispatch(GET_USER_FRIEND_LIST)
         router.push('/talk-list')
@@ -69,21 +69,21 @@ export default {
     },
     [GET_LOGGEDINUSER_INFO](context) {
       return getLoggedInUserInfo().then(res => {
-        context.commit(UPDATE_LOGGEDINUSER, res.data)
+        context.commit(UPDATE_LOGGEDINUSER, res)
       })
     },
     [CONFIRM_NICK_NAME](context, {nickname}) {
       confirmNickName({nickname}).then(res => {
         Toast('修改昵称成功！')
         console.log('修改昵称成功！', res)
-        context.commit(UPDATE_LOGGEDINUSER_NICKNAME, res.data.nickname)
+        context.commit(UPDATE_LOGGEDINUSER_NICKNAME, res.nickname)
       })
     },
     [CONFIRM_AVATAR](context, {avatar}) {
       confirmAvatar({avatar}).then(res => {
         Toast('修改头像成功！')
         console.log('修改头像成功！')
-        context.commit(UPDATE_LOGGEDINUSER_AVATAR, res.data.avatar)
+        context.commit(UPDATE_LOGGEDINUSER_AVATAR, res.avatar)
       })
     },
   },

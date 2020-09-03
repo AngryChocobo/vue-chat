@@ -97,9 +97,8 @@ export default {
         return
       }
       getUserInfoAndFriendRelation(userId).then(res => {
-        this.userInfo = res.data
-        this.say =
-          (res.data.makeFriendRecord && res.data.makeFriendRecord.say) || ''
+        this.userInfo = res
+        this.say = (res.makeFriendRecord && res.makeFriendRecord.say) || ''
       })
     },
     makeFriendRequest() {

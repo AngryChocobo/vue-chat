@@ -74,7 +74,7 @@ export default {
     },
     getUserInfo(targetId) {
       getUserInfo(targetId).then(res => {
-        this.targetInfo = res.data
+        this.targetInfo = res
         this.$nextTick(() => {
           this.initScrollTimer = setTimeout(() => {
             this.scrollToBottom()
