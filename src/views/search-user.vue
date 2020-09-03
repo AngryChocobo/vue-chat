@@ -28,7 +28,8 @@
 <script>
 import MyNavBar from '@components/my-nav-bar.vue'
 import UserAvatar from '@/components/user-avatar.vue'
-import {searchUsers} from '@const/api'
+import {getSearchUserResult} from '@/api/user'
+
 export default {
   name: 'SearchUser',
   components: {
@@ -60,7 +61,7 @@ export default {
       })
     },
     searchUsers() {
-      this.$axios.get(searchUsers(this.keyword)).then(res => {
+      getSearchUserResult(this.keyword).then(res => {
         this.userList = res.data
         if (res.data.length == 0) {
           this.$toast('无查询结果')

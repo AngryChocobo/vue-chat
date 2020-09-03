@@ -61,3 +61,19 @@ export function getMessageList(targetId) {
     params: {targetId},
   })
 }
+
+export function getSearchUserResult(keyword) {
+  return axios({
+    url: '/searchUsers',
+    method: 'get',
+    params: {keyword},
+  })
+}
+
+export function getFriendRequestInfo(userId) {
+  return axios({
+    url: '/getFriendRequestInfo',
+    method: 'get',
+    params: {userId},
+  })
+}

@@ -52,7 +52,7 @@
 <script>
 import MyNavBar from '@components/my-nav-bar.vue'
 import UserAvatar from '@/components/user-avatar.vue'
-import {getFriendRequestInfo} from '@/const/api.js'
+import {getFriendRequestInfo} from '@/api/user'
 import {AGREE_MAKE_FRIEND_REQUEST} from '@store/types/action-types.js'
 export default {
   name: 'FriendRequestInfo',
@@ -75,7 +75,7 @@ export default {
         this.$toast('无效的用户id')
         return
       }
-      this.$axios.get(getFriendRequestInfo(userId)).then(res => {
+      getFriendRequestInfo(userId).then(res => {
         this.requestInfo = res.data
       })
     },

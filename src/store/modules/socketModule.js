@@ -1,7 +1,6 @@
 import {Toast} from 'vant'
 import router from '@/router/index'
 import io from 'socket.io-client'
-import {SOCKETIO_PATH} from '@const/api.js'
 import {
   UPDATE_TALK_LIST,
   SEND_MESSAGE_SUCCESS,
@@ -26,6 +25,8 @@ import {
   AGREE_MAKE_FRIEND_REQUEST,
   GET_USER_FRIEND_LIST,
 } from '@store/types/action-types.js'
+
+export const SOCKETIO_PATH = 'http://localhost:3000'
 
 export default {
   state: {
