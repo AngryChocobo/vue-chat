@@ -2,7 +2,7 @@
   <div class="search-user">
     <my-nav-bar title="搜索用户" />
     <van-search
-      v-model="keyword"
+      v-model.trim="keyword"
       placeholder="请输入搜索关键词"
       @search="searchUsers"
     />
@@ -42,11 +42,6 @@ export default {
       userList: [],
       activeName: 'all',
     }
-  },
-  watch: {
-    keyword(value) {
-      this.keyword = value.trim()
-    },
   },
   mounted() {
     this.searchUsers()
