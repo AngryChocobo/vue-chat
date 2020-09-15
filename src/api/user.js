@@ -69,3 +69,10 @@ export function getFriendRequestInfo(userId) {
     params: {userId},
   })
 }
+
+export function fetchUserEmojiList() {
+  return axios({
+    url: '/fetchUserEmojiList',
+    method: 'get',
+  })
+}

@@ -6,7 +6,7 @@
       </template>
     </my-nav-bar>
     <van-field
-      class="newFriend"
+      class="new-friend"
       readonly
       label="新朋友"
       is-link
@@ -20,16 +20,17 @@
       <van-collapse-item title="全部好友" name="all">
         <van-list>
           <van-cell
-            class="friend"
             v-for="friend in friendList"
             :key="friend.id"
             @click="checkFriendInfo(friend.friendUserInfo)"
           >
-            <UserAvatar
-              :avatar="friend.friendUserInfo.avatar"
-              style="margin-right: 8px"
-            />
-            <span class="username">{{ friend.friendUserInfo.username }}</span>
+            <div class="friend">
+              <UserAvatar
+                :avatar="friend.friendUserInfo.avatar"
+                style="margin-right: 8px"
+              />
+              <span class="username">{{ friend.friendUserInfo.username }}</span>
+            </div>
           </van-cell>
         </van-list>
       </van-collapse-item>
@@ -83,8 +84,8 @@ export default {
 
 <style lang="less" scoped>
 .friend-list {
-  .newFriend {
-    /deep/ .van-field__right-icon {
+  .new-friend {
+    ::v-deep .van-field__right-icon {
       position: relative;
       .dot {
         position: absolute;
@@ -107,10 +108,14 @@ export default {
     }
   }
 
-  /deep/ .van-collapse-item__content {
-    padding: 0;
+  .van-collapse-item__content {
+    .van-cell {
+      padding: 0;
+    }
     .friend {
-      /deep/ .van-cell__value {
+      padding-left: 0;
+      padding-right: 0;
+      .van-cell__value {
         display: flex;
         align-items: center;
       }
