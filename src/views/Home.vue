@@ -1,7 +1,5 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <br />
     <svg
       class="checkmark"
       xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +25,6 @@ export default {
 <style lang="less">
 .home {
   text-align: center;
-
   .checkmark__circle {
     stroke-dasharray: 166;
     stroke-dashoffset: 166;

@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <img class="logo" alt="Vue logo" src="../assets/logo.png" />
-    <van-form @submit="onSubmit">
+    <van-form @submit="onSubmit" style="padding: 0 30px">
       <van-field
         v-model="username"
         name="username"
