@@ -1,7 +1,7 @@
 <template>
   <div class="register">
     <img class="logo" alt="Vue logo" src="../assets/logo.png" />
-    <van-form @submit="onSubmit">
+    <van-form @submit="onSubmit" style="padding: 0 30px">
       <van-field
         v-model="username"
         name="username"
@@ -60,10 +60,19 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  // background-image: url('../assets/timg.jpeg');
+  // background-repeat: no-repeat;
+  // background-size: 100% 100%;
   .logo {
     display: block;
     width: 60%;
     margin: 0 auto;
+  }
+  .van-cell {
+    background: transparent;
+  }
+  /deep/ .van-field__label {
+    color: black;
   }
 }
 </style>
