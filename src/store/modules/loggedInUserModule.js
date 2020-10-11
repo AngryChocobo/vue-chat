@@ -1,4 +1,5 @@
 import {Toast} from 'vant'
+import {JSEncrypt} from 'jsencrypt'
 import router from '@/router/index.js'
 import {
   UPDATE_LOGGEDINUSER,
@@ -23,7 +24,8 @@ import {
   confirmNickName,
   confirmAvatar,
 } from '@/api/user'
-
+const encrypt = new JSEncrypt()
+encrypt.setPublicKey(process.env.VUE_APP_RSA_PUBLIC_KEY)
 export default {
   state: {
     loggedInUser: {},
@@ -52,7 +54,8 @@ export default {
   actions: {
     [LOGIN](context, payload) {
       const {username, password} = payload
-      login({username, password}).then(res => {
+      const encryptedPassword = encrypt.encrypt(password) // RSA算法对密码进行加密
+      login({username, password: encryptedPassword}).then(res => {
         Toast('登陆成功！')
         context.commit(UPDATE_LOGGEDINUSER, res.loggedInUser)
         context.commit(UPDATE_TOKEN, res.token)
@@ -63,7 +66,8 @@ export default {
     },
     [REGISTER](context, payload) {
       const {username, password} = payload
-      register({username, password}).then(() => {
+      const encryptedPassword = encrypt.encrypt(password) // RSA算法对密码进行加密
+      register({username, password: encryptedPassword}).then(() => {
         router.push('/login')
       })
     },
