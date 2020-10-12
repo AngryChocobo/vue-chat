@@ -9,6 +9,8 @@ import './plugins/icon.js'
 import './plugins/notification.js'
 Vue.config.productionTip = false
 
+console.log('env: ', process.env)
+
 Vue.prototype.$moment = moment
 
 new Vue({
