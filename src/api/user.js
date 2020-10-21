@@ -16,6 +16,13 @@ export function register(data) {
   })
 }
 
+export function guestLogin() {
+  return axios({
+    url: '/guestLogin',
+    method: 'post',
+  })
+}
+
 export function getLoggedInUserInfo() {
   return axios({
     url: '/getLoggedInUserInfo',

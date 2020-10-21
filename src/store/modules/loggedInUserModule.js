@@ -16,10 +16,12 @@ import {
   CONFIRM_NICK_NAME,
   CONFIRM_AVATAR,
   GET_LOGGEDINUSER_INFO,
+  GUEST_LOGIN,
 } from '@store/types/action-types.js'
 import {
   register,
   login,
+  guestLogin,
   getLoggedInUserInfo,
   confirmNickName,
   confirmAvatar,
@@ -69,6 +71,13 @@ export default {
       const encryptedPassword = encrypt.encrypt(password) // RSA算法对密码进行加密
       register({username, password: encryptedPassword}).then(() => {
         router.push('/login')
+      })
+    },
+    [GUEST_LOGIN](context) {
+      console.log('游客登录', context)
+      // 请求接口 获取临时token
+      guestLogin().then(res => {
+        console.log('游客获取到了token', res)
       })
     },
     [GET_LOGGEDINUSER_INFO](context) {

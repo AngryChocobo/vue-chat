@@ -53,10 +53,7 @@ export default {
 
 <style lang="less" scoped>
 .register {
-  position: absolute;
-  width: 100%;
-  top: 0;
-  bottom: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

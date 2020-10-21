@@ -61,5 +61,10 @@ export default {
 <style lang="less" scoped>
 .my-nav-bar {
   margin-bottom: 46px;
+  /deep/ .van-nav-bar--fixed {
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 600px;
+  }
 }
 </style>

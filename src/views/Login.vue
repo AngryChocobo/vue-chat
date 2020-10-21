@@ -17,24 +17,33 @@
         placeholder="密码"
         :rules="[{required: true, message: '请填写密码'}]"
       />
-      <div style="margin: 16px;">
+      <div style="margin: 16px 16px 32px 16px; ">
         <van-button round block type="info" native-type="submit">
           登陆
         </van-button>
+      </div>
+      <div
+        class="guest"
+        style="text-align: center; color: gray"
+        @click="guestLogin"
+      >
+        <span>
+          游客登录
+        </span>
       </div>
     </van-form>
   </div>
 </template>
 
 <script>
-import {LOGIN} from '@store/types/action-types.js'
+import {LOGIN, GUEST_LOGIN} from '@store/types/action-types.js'
 
 export default {
   name: 'Login',
   data() {
     return {
       username: '',
-      password: '1',
+      password: '',
     }
   },
   methods: {
@@ -45,16 +54,16 @@ export default {
         password,
       })
     },
+    guestLogin() {
+      this.$store.dispatch(GUEST_LOGIN)
+    },
   },
 }
 </script>
 
 <style lang="less" scoped>
 .login {
-  position: absolute;
-  width: 100%;
-  top: 0;
-  bottom: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

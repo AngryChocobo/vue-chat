@@ -16,9 +16,20 @@ export default {
 </script>
 
 <style>
+body {
+  background-image: url('./assets/timg.jpeg');
+}
+html,
+body,
+#app {
+  height: 100%;
+}
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  max-width: 600px;
+  margin: auto;
+  background: white;
 }
 /* 引入第三方或自定义的字体图标样式 */
 @font-face {

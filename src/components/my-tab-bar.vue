@@ -31,5 +31,10 @@ export default {
 <style lang="less" scoped>
 .my-tab-bar {
   margin-top: 50px;
+  /deep/ .van-tabbar--fixed {
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 600px;
+  }
 }
 </style>
