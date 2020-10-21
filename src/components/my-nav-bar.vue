@@ -46,13 +46,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    onClickRight: {
+      type: Function,
+      default: () => {},
+    },
   },
   methods: {
     onClickLeft() {
       this.$router.back()
-    },
-    onClickRight() {
-      // this.$toast('右按钮')
     },
   },
 }

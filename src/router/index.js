@@ -12,6 +12,8 @@ import FriendRequestList from '../views/FriendRequestList.vue'
 import FriendRequestInfo from '../views/FriendRequestInfo.vue'
 import SearchUser from '../views/SearchUser.vue'
 import UserInfo from '../views/UserInfo.vue'
+import CreateGroup from '../views/CreateGroup.vue'
+
 import store from '../store/store.js'
 import {Toast} from 'vant'
 
@@ -88,6 +90,12 @@ const routes = [
     path: '/my-settings',
     name: 'MySettings',
     component: MySettings,
+    meta: {requireAuth: true},
+  },
+  {
+    path: '/create-group',
+    name: 'CreateGroup',
+    component: CreateGroup,
     meta: {requireAuth: true},
   },
   {

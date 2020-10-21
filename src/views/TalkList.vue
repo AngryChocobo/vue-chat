@@ -1,6 +1,11 @@
 <template>
   <div class="talk-list">
-    <my-nav-bar title="聊天" :left-arrow="false" />
+    <my-nav-bar
+      title="聊天"
+      :left-arrow="false"
+      right-text="建群"
+      :onClickRight="toCreateGroupPage"
+    />
     <van-list>
       <van-cell :border="false" v-for="talk in talkList" :key="talk.id">
         <talk-list-item
@@ -30,6 +35,13 @@ export default {
   computed: {
     talkList() {
       return this.$store.state.talkModule.talkList
+    },
+  },
+  methods: {
+    toCreateGroupPage() {
+      this.$router.push({
+        name: 'CreateGroup',
+      })
     },
   },
 }

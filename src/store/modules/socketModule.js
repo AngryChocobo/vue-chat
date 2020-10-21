@@ -24,6 +24,7 @@ import {
   RECEIVE_FRIEND_REQUEST,
   AGREE_MAKE_FRIEND_REQUEST,
   GET_USER_FRIEND_LIST,
+  CREATE_GROUP,
 } from '@store/types/action-types.js'
 
 export const SOCKETIO_PATH = 'http://localhost:3000'
@@ -132,6 +133,10 @@ export default {
         console.log('reconnect')
         context.commit(RESET_RECONNECT_OVERLAY)
       })
+
+      socket.on('creaetGroupSuccess', res => {
+        console.log('res: ', res)
+      })
     },
     [AGREE_MAKE_FRIEND_REQUEST](context, payload) {
       context.state.socket.emit('agreeMakeFriendRequest', payload)
@@ -160,6 +165,11 @@ export default {
     },
     [RECEIVE_FRIEND_REQUEST](context) {
       context.dispatch(GET_FRIEND_REQUEST_LIST)
+    },
+    // 创建群
+    [CREATE_GROUP](context, {groupName}) {
+      console.log(groupName)
+      context.state.socket.emit('createGroup', {groupName})
     },
   },
 }
