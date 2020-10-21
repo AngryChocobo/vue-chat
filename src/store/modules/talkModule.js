@@ -1,14 +1,16 @@
 import Vue from 'vue'
-import {getMessageList} from '@/api/message'
+import {getMessageList, getGroupMessageList} from '@/api/message'
 import {
   UPDATE_TALK_LIST,
   UPDATE_MESSAGE_LIST,
   SEND_MESSAGE_SUCCESS,
   RECEIVE_MESSAGE,
   ALLOW_NOTIFICATION,
+  UPDATE_GROUP_MESSAGE_LIST,
 } from '@store/types/mutation-types.js'
 import {
   GET_MESSAGE_LIST,
+  GET_GROUP_MESSAGE_LIST,
   NOTIFICATION_GRANTED,
 } from '@store/types/action-types.js'
 
@@ -17,6 +19,7 @@ export default {
     allowNotification: false,
     talkList: [],
     messageLists: {},
+    groupMessageLists: {},
   },
   mutations: {
     [ALLOW_NOTIFICATION](state) {
@@ -29,6 +32,14 @@ export default {
     [UPDATE_MESSAGE_LIST](state, payload) {
       console.log('talk模块 准备更新消息列表', payload)
       Vue.set(state.messageLists, payload.targetId, payload.messageList)
+    },
+    [UPDATE_GROUP_MESSAGE_LIST](state, payload) {
+      console.log('talk模块 准备更新群聊消息列表', payload)
+      Vue.set(
+        state.groupMessageLists,
+        payload.groupId,
+        payload.groupMessageList,
+      )
     },
     [SEND_MESSAGE_SUCCESS](state, payload) {
       if (!state.messageLists[payload.targetUserId]) {
@@ -58,6 +69,12 @@ export default {
     [GET_MESSAGE_LIST](context, payload) {
       getMessageList(payload.targetId).then(res => {
         context.commit(UPDATE_MESSAGE_LIST, res)
+      })
+    },
+    [GET_GROUP_MESSAGE_LIST](context, payload) {
+      getGroupMessageList(payload.id).then(res => {
+        console.log('获取到群消息列表：', res)
+        context.commit(UPDATE_GROUP_MESSAGE_LIST, res)
       })
     },
   },

@@ -7,6 +7,7 @@ import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import TalkList from '../views/TalkList.vue'
 import TalkView from '../views/TalkView.vue'
+import GroupTalkView from '../views/GroupTalkView.vue'
 import FriendList from '../views/FriendList.vue'
 import FriendRequestList from '../views/FriendRequestList.vue'
 import FriendRequestInfo from '../views/FriendRequestInfo.vue'
@@ -48,6 +49,12 @@ const routes = [
     path: '/talk-view/:id',
     name: 'TalkView',
     component: TalkView,
+    meta: {requireAuth: true},
+  },
+  {
+    path: '/group-talk-view/:id',
+    name: 'GroupTalkView',
+    component: GroupTalkView,
     meta: {requireAuth: true},
   },
   {

@@ -34,7 +34,23 @@
           </van-cell>
         </van-list>
       </van-collapse-item>
-      <van-collapse-item title="标题2" name="2">内容</van-collapse-item>
+      <van-collapse-item title="全部群组" name="2">
+        <van-list>
+          <van-cell
+            v-for="group in groupList"
+            :key="group.id"
+            @click="goToGroupTalkView(group.id)"
+          >
+            <div class="friend">
+              <!-- <UserAvatar
+                :avatar="friend.friendUserInfo.avatar"
+                style="margin-right: 8px"
+              /> -->
+              <span class="groupName">{{ group.groupName }}</span>
+            </div>
+          </van-cell>
+        </van-list>
+      </van-collapse-item>
       <van-collapse-item title="标题3" name="3">内容</van-collapse-item>
     </van-collapse>
     <my-tab-bar />
@@ -65,6 +81,14 @@ export default {
     ...mapState({
       friendList: state => state.socketModule.friendList,
     }),
+    groupList() {
+      return [
+        {
+          id: 1,
+          groupName: '123',
+        },
+      ]
+    },
   },
   methods: {
     toFriendRequestList() {
@@ -76,6 +100,12 @@ export default {
       this.$router.push({
         name: 'UserInfo',
         params: {userId: friend.id},
+      })
+    },
+    goToGroupTalkView(id) {
+      this.$router.push({
+        name: 'GroupTalkView',
+        params: {id},
       })
     },
   },

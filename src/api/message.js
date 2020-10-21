@@ -7,3 +7,11 @@ export function getMessageList(targetId) {
     params: {targetId},
   })
 }
+
+export function getGroupMessageList(groupId) {
+  return axios({
+    url: '/getGroupMessageList',
+    method: 'get',
+    params: {groupId},
+  })
+}
