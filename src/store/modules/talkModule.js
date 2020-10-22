@@ -7,6 +7,7 @@ import {
   RECEIVE_MESSAGE,
   ALLOW_NOTIFICATION,
   UPDATE_GROUP_MESSAGE_LIST,
+  RECEIVE_GROUP_MESSAGE,
 } from '@store/types/mutation-types.js'
 import {
   GET_MESSAGE_LIST,
@@ -60,6 +61,15 @@ export default {
         body: payload.message,
         // icon: 'https://image.zhangxinxu.com/image/blog/zxx_240_0818.jpg',
       })
+    },
+    // 收到群消息
+    [RECEIVE_GROUP_MESSAGE](state, payload) {
+      console.log('收到群消息: ', payload)
+      if (!state.groupMessageLists[payload.groupId]) {
+        Vue.set(state.groupMessageLists, payload.groupId, [payload])
+      } else {
+        state.groupMessageLists[payload.groupId].push(payload)
+      }
     },
   },
   actions: {

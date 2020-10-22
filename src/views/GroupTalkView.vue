@@ -8,8 +8,7 @@
         :key="message.id"
       >
         <group-message-item
-          :targetUserInfo="message.userInfo"
-          :from-user-id="message.fromUserId"
+          :targetUserInfo="message.sendMessageUserInfo"
           :send-date="message.sendDate"
           :message="message.message"
         />
@@ -27,7 +26,8 @@ import TalkInput from '@components/talk-input.vue'
 import {getGroupInfo} from '@/api/group'
 import {
   GET_GROUP_MESSAGE_LIST,
-  SEND_MESSAGE,
+  SEND_GROUP_MESSAGE,
+  ENTER_GROUP_ROOM,
   // CLEAR_UN_READ_MESSAGES,
 } from '@store/types/action-types.js'
 
@@ -44,12 +44,20 @@ export default {
       initScrollTimer: null,
     }
   },
+  watch: {
+    '$store.state.socketModule.socket'(socket) {
+      if (socket) {
+        console.log('有socket了，准备进入群聊room')
+        this.enterGroupRoom()
+      }
+    },
+  },
   computed: {
     navTitle() {
       return this.groupInfo && this.groupInfo.groupName
     },
     messageList() {
-      return this.$store.state.talkModule.messageLists[this.targetId]
+      return this.$store.state.talkModule.groupMessageLists[this.groupId]
     },
     groupId() {
       return Number(this.$route.params.id)
@@ -86,13 +94,20 @@ export default {
         id: this.groupId,
       })
     },
+    enterGroupRoom() {
+      this.$store.dispatch(ENTER_GROUP_ROOM, {
+        groupId: this.groupId,
+      })
+      // TODO 似乎需要一个进群的SUCCESS 响应
+    },
     scrollToBottom() {
       const dom = this.$refs.talkList
       dom.scrollIntoView(false)
     },
     sendMessage(message) {
-      this.$store.dispatch(SEND_MESSAGE, {
-        targetId: this.targetId,
+      // 发送消息到群
+      this.$store.dispatch(SEND_GROUP_MESSAGE, {
+        groupId: this.groupId,
         message,
       })
     },

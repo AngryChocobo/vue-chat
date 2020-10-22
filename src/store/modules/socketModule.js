@@ -7,6 +7,7 @@ import {
   UPDATE_FRIEND_REQUEST_LIST,
   SET_SOCKET,
   RECEIVE_MESSAGE,
+  RECEIVE_GROUP_MESSAGE,
   RECONNECT_ATTEMPT,
   RECONNECT_FAILED,
   UPDATE_USER_FRIEND_LIST,
@@ -20,11 +21,13 @@ import {
   GET_FRIEND_REQUEST_LIST,
   MAKE_FRIEND_REQUEST,
   SEND_MESSAGE,
+  SEND_GROUP_MESSAGE,
   CLEAR_UN_READ_MESSAGES,
   RECEIVE_FRIEND_REQUEST,
   AGREE_MAKE_FRIEND_REQUEST,
   GET_USER_FRIEND_LIST,
   CREATE_GROUP,
+  ENTER_GROUP_ROOM,
 } from '@store/types/action-types.js'
 
 export const SOCKETIO_PATH = 'http://localhost:3000'
@@ -79,6 +82,13 @@ export default {
         console.log('收到了新消息', JSON.stringify(data))
         context.commit(RECEIVE_MESSAGE, data, {root: true})
       })
+
+      socket.on('boradcastGroupMessage', data => {
+        console.log('boradcastGroupMessage', JSON.stringify(data))
+        context.commit(RECEIVE_GROUP_MESSAGE, data)
+        // context.commit(RECEIVE_MESSAGE, data, {root: true})
+      })
+
       socket.on('receiveFriendRequest', data => {
         console.log('收到了新的好友请求', JSON.stringify(data))
         context.dispatch(RECEIVE_FRIEND_REQUEST)
@@ -148,6 +158,10 @@ export default {
       context.state.sendingMessage = payload.message
       context.state.socket.emit('sendMessage', payload)
     },
+    [SEND_GROUP_MESSAGE](context, payload) {
+      context.state.sendingMessage = payload.message
+      context.state.socket.emit('sendGroupMessage', payload)
+    },
     [MAKE_FRIEND_REQUEST](context, payload) {
       context.state.socket.emit('makeFriendRequest', payload)
     },
@@ -170,6 +184,9 @@ export default {
     [CREATE_GROUP](context, {groupName}) {
       console.log(groupName)
       context.state.socket.emit('createGroup', {groupName})
+    },
+    [ENTER_GROUP_ROOM](context, {groupId}) {
+      context.state.socket.emit('enterGroupRoom', {groupId})
     },
   },
 }

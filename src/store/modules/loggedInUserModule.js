@@ -80,10 +80,9 @@ export default {
         console.log('游客获取到了token', res)
       })
     },
-    [GET_LOGGEDINUSER_INFO](context) {
-      return getLoggedInUserInfo().then(res => {
-        context.commit(UPDATE_LOGGEDINUSER, res)
-      })
+    async [GET_LOGGEDINUSER_INFO](context) {
+      const res = await getLoggedInUserInfo()
+      context.commit(UPDATE_LOGGEDINUSER, res)
     },
     [CONFIRM_NICK_NAME](context, {nickname}) {
       confirmNickName({nickname}).then(res => {
