@@ -1,11 +1,10 @@
 <template>
   <div class="talk-list">
-    <my-nav-bar
-      title="聊天"
-      :left-arrow="false"
-      right-text="建群"
-      :onClickRight="toCreateGroupPage"
-    />
+    <my-nav-bar title="聊天" :left-arrow="false">
+      <template v-slot:right>
+        <home-popup />
+      </template>
+    </my-nav-bar>
     <van-list>
       <van-cell :border="false" v-for="talk in talkList" :key="talk.id">
         <talk-list-item
@@ -25,25 +24,21 @@
 import MyNavBar from '@components/my-nav-bar.vue'
 import MyTabBar from '@components/my-tab-bar.vue'
 import TalkListItem from '@components/talk-list-item.vue'
+import HomePopup from '@components/home-popup.vue'
 export default {
   name: 'TalkList',
   components: {
     TalkListItem,
     MyTabBar,
     MyNavBar,
+    HomePopup,
   },
   computed: {
     talkList() {
       return this.$store.state.talkModule.talkList
     },
   },
-  methods: {
-    toCreateGroupPage() {
-      this.$router.push({
-        name: 'CreateGroup',
-      })
-    },
-  },
+  methods: {},
 }
 </script>
 

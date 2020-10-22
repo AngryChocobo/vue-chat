@@ -11,7 +11,7 @@ import GroupTalkView from '../views/GroupTalkView.vue'
 import FriendList from '../views/FriendList.vue'
 import FriendRequestList from '../views/FriendRequestList.vue'
 import FriendRequestInfo from '../views/FriendRequestInfo.vue'
-import SearchUser from '../views/SearchUser.vue'
+import SearchUserAndGroup from '../views/SearchUserAndGroup.vue'
 import UserInfo from '../views/UserInfo.vue'
 import CreateGroup from '../views/CreateGroup.vue'
 
@@ -76,9 +76,9 @@ const routes = [
     meta: {requireAuth: true},
   },
   {
-    path: '/search-user',
-    name: 'SearchUser',
-    component: SearchUser,
+    path: '/search',
+    name: 'SearchUserAndGroup',
+    component: SearchUserAndGroup,
     meta: {requireAuth: true},
   },
   {

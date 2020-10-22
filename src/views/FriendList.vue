@@ -1,8 +1,8 @@
 <template>
   <div class="friend-list">
     <my-nav-bar title="好友列表" :left-arrow="false">
-      <template slot="right">
-        <router-link to="/search-user">添加好友</router-link>
+      <template v-slot:right>
+        <home-popup />
       </template>
     </my-nav-bar>
     <van-field
@@ -62,7 +62,7 @@
 import {mapGetters, mapState} from 'vuex'
 import UserAvatar from '@/components/user-avatar.vue'
 import GroupAvatar from '@/components/group-avatar.vue'
-
+import HomePopup from '@components/home-popup.vue'
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
 
@@ -73,6 +73,7 @@ export default {
     MyNavBar,
     UserAvatar,
     GroupAvatar,
+    HomePopup,
   },
   data() {
     return {

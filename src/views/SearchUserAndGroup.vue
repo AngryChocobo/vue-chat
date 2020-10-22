@@ -1,6 +1,6 @@
 <template>
-  <div class="search-user">
-    <my-nav-bar title="搜索用户" />
+  <div class="search-user-and-group">
+    <my-nav-bar title="搜索" />
     <van-search
       v-model.trim="keyword"
       placeholder="请输入搜索关键词"
@@ -31,7 +31,7 @@ import UserAvatar from '@/components/user-avatar.vue'
 import {getSearchUserResult} from '@/api/user'
 
 export default {
-  name: 'SearchUser',
+  name: 'SearchUserAndGroup',
   components: {
     MyNavBar,
     UserAvatar,
@@ -69,7 +69,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.search-user {
+.search-user-and-group {
   padding: 0;
   .user {
     .van-cell__value {
