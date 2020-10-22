@@ -140,7 +140,7 @@ export default {
       socket.on('creaetGroupSuccess', res => {
         console.log('res: ', res)
         Toast('建群成功！')
-        router.push({
+        router.replace({
           name: 'GroupTalkView',
           params: {id: res.id},
         })

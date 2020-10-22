@@ -24,10 +24,11 @@
             :key="friend.id"
             @click="checkFriendInfo(friend.friendUserInfo)"
           >
-            <div class="friend">
+            <div class="list-item friend">
               <UserAvatar
                 :avatar="friend.friendUserInfo.avatar"
                 style="margin-right: 8px"
+                round
               />
               <span class="username">{{ friend.friendUserInfo.username }}</span>
             </div>
@@ -41,11 +42,11 @@
             :key="group.groupId"
             @click="goToGroupTalkView(group.groupId)"
           >
-            <div class="friend">
-              <!-- <UserAvatar
-                :avatar="friend.friendUserInfo.avatar"
+            <div class="list-item group">
+              <GroupAvatar
+                :avatar="group.groupInfo.avatar"
                 style="margin-right: 8px"
-              /> -->
+              />
               <span class="groupName">{{ group.groupInfo.groupName }}</span>
             </div>
           </van-cell>
@@ -60,6 +61,7 @@
 <script>
 import {mapGetters, mapState} from 'vuex'
 import UserAvatar from '@/components/user-avatar.vue'
+import GroupAvatar from '@/components/group-avatar.vue'
 
 import MyTabBar from '@components/my-tab-bar.vue'
 import MyNavBar from '@components/my-nav-bar.vue'
@@ -70,6 +72,7 @@ export default {
     MyTabBar,
     MyNavBar,
     UserAvatar,
+    GroupAvatar,
   },
   data() {
     return {
@@ -134,8 +137,11 @@ export default {
   .van-collapse-item__content {
     .van-cell {
       padding: 0;
+      margin-bottom: 16px;
     }
-    .friend {
+    .list-item {
+      display: flex;
+      align-items: center;
       padding-left: 0;
       padding-right: 0;
       .van-cell__value {
