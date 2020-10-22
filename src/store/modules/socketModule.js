@@ -11,6 +11,7 @@ import {
   RECONNECT_ATTEMPT,
   RECONNECT_FAILED,
   UPDATE_USER_FRIEND_LIST,
+  UPDATE_USER_GROUP_LIST,
   RESET_RECONNECT_OVERLAY,
 } from '@store/types/mutation-types.js'
 
@@ -26,6 +27,7 @@ import {
   RECEIVE_FRIEND_REQUEST,
   AGREE_MAKE_FRIEND_REQUEST,
   GET_USER_FRIEND_LIST,
+  GET_USER_GROUP_LIST,
   CREATE_GROUP,
   ENTER_GROUP_ROOM,
 } from '@store/types/action-types.js'
@@ -38,7 +40,8 @@ export default {
     reconnectAttempt: 0, // socket尝试重连次数
     reconnectFailed: false, // socket尝试重连失败
     friendRequestList: [],
-    friendList: [],
+    friendList: [], // 我的好友列表
+    groupList: [], // 我的群列表
   },
 
   mutations: {
@@ -52,6 +55,10 @@ export default {
     [UPDATE_USER_FRIEND_LIST](state, payload) {
       console.log('用户的好友列表： ', payload)
       state.friendList = payload
+    },
+    [UPDATE_USER_GROUP_LIST](state, payload) {
+      console.log('用户的群列表： ', payload)
+      state.groupList = payload
     },
     [RECONNECT_ATTEMPT](state, payload) {
       console.log('重联次数: ', payload)
@@ -113,6 +120,11 @@ export default {
         context.commit(UPDATE_USER_FRIEND_LIST, data)
       })
 
+      socket.on('updateUserGroupList', data => {
+        console.log('updateUserGroupList', data)
+        context.commit(UPDATE_USER_GROUP_LIST, data)
+      })
+
       socket.on('agreeMakeFriendRequestFaild', data => {
         console.log('同意好友请求失败', data)
         Toast(data)
@@ -124,6 +136,15 @@ export default {
         router.back()
       })
 
+      // 建群成功
+      socket.on('creaetGroupSuccess', res => {
+        console.log('res: ', res)
+        Toast('建群成功！')
+        router.push({
+          name: 'GroupTalkView',
+          params: {id: res.id},
+        })
+      })
       // socket.on('connect_error', error => {
       //   console.log('connect_error', error)
       // })
@@ -142,10 +163,6 @@ export default {
       socket.on('reconnect', () => {
         console.log('reconnect')
         context.commit(RESET_RECONNECT_OVERLAY)
-      })
-
-      socket.on('creaetGroupSuccess', res => {
-        console.log('res: ', res)
       })
     },
     [AGREE_MAKE_FRIEND_REQUEST](context, payload) {
@@ -170,6 +187,9 @@ export default {
     },
     [GET_USER_FRIEND_LIST](context) {
       context.state.socket.emit('getUserFriendList')
+    },
+    [GET_USER_GROUP_LIST](context) {
+      context.state.socket.emit('getUserGroupList')
     },
     [CLEAR_UN_READ_MESSAGES](context, payload) {
       context.state.socket.emit('clearUnReadMessages', payload.targetId)

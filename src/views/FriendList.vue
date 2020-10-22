@@ -34,19 +34,19 @@
           </van-cell>
         </van-list>
       </van-collapse-item>
-      <van-collapse-item title="全部群组" name="2">
+      <van-collapse-item title="全部群组" name="groups">
         <van-list>
           <van-cell
             v-for="group in groupList"
-            :key="group.id"
-            @click="goToGroupTalkView(group.id)"
+            :key="group.groupId"
+            @click="goToGroupTalkView(group.groupId)"
           >
             <div class="friend">
               <!-- <UserAvatar
                 :avatar="friend.friendUserInfo.avatar"
                 style="margin-right: 8px"
               /> -->
-              <span class="groupName">{{ group.groupName }}</span>
+              <span class="groupName">{{ group.groupInfo.groupName }}</span>
             </div>
           </van-cell>
         </van-list>
@@ -73,22 +73,15 @@ export default {
   },
   data() {
     return {
-      activeName: 'all',
+      activeName: 'groups',
     }
   },
   computed: {
     ...mapGetters(['friendRequestUnReadCount']),
     ...mapState({
       friendList: state => state.socketModule.friendList,
+      groupList: state => state.socketModule.groupList,
     }),
-    groupList() {
-      return [
-        {
-          id: 1,
-          groupName: '123',
-        },
-      ]
-    },
   },
   methods: {
     toFriendRequestList() {
