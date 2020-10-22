@@ -7,7 +7,7 @@
     />
     <div class="content">
       <div class="content-header">
-        <!-- <p v-if="!isMine" class="username">{{ targetUserInfo.username }}</p> -->
+        <p v-if="!isMine" class="username">{{ targetUserInfo.username }}</p>
         <!-- <p class="send-date">{{ formatedSendDate }}</p> -->
       </div>
       <p class="message">{{ message }}</p>
@@ -31,7 +31,7 @@ export default {
     ...mapGetters(['loggedInUser']),
     isMine() {
       // 是否是自己的发言
-      return this.fromUserId === this.loggedInUser.id
+      return this.targetUserInfo.id === this.loggedInUser.id
     },
     formatedSendDate() {
       return this.$moment(this.sendDate).format('MM/DD HH:mm:ss')
@@ -41,7 +41,7 @@ export default {
     goUserInfo() {
       this.$router.push({
         name: 'UserInfo',
-        params: {userId: this.fromUserId},
+        params: {userId: this.targetUserInfo.id},
       })
     },
   },
