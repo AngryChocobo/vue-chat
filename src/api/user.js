@@ -18,7 +18,7 @@ export function register(data) {
 
 export function guestLogin() {
   return axios({
-    url: '/guestLogin',
+    url: '/user/guestLogin',
     method: 'post',
   })
 }
@@ -32,22 +32,22 @@ export function getLoggedInUserInfo() {
 
 export function confirmNickName(data) {
   return axios({
-    url: '/confirmNickName',
-    method: 'post',
+    url: '/setting/nickname',
+    method: 'put',
     data,
   })
 }
 
 export function confirmAvatar(data) {
   return axios({
-    url: '/confirmAvatar',
-    method: 'post',
+    url: '/setting/avatar',
+    method: 'put',
     data,
   })
 }
 export function getUserInfo(userId) {
   return axios({
-    url: '/getUserInfo',
+    url: '/user/getUserInfo',
     method: 'get',
     params: {userId},
   })
@@ -55,7 +55,7 @@ export function getUserInfo(userId) {
 
 export function getUserInfoAndFriendRelation(targetUserId) {
   return axios({
-    url: '/getUserInfoAndFriendRelation',
+    url: '/user/getUserInfoAndFriendRelation',
     method: 'get',
     params: {targetUserId},
   })
@@ -71,7 +71,7 @@ export function getSearchUserResult(keyword) {
 
 export function getFriendRequestInfo(userId) {
   return axios({
-    url: '/getFriendRequestInfo',
+    url: '/user/getFriendRequestInfo',
     method: 'get',
     params: {userId},
   })

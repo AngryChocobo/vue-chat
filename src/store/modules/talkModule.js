@@ -1,5 +1,6 @@
 import Vue from 'vue'
-import {getMessageList, getGroupMessageList} from '@/api/message'
+import {getMessageList} from '@/api/talk'
+import {getGroupMessageList} from '@/api/group'
 import {
   UPDATE_TALK_LIST,
   UPDATE_MESSAGE_LIST,
