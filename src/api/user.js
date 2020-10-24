@@ -2,7 +2,7 @@ import axios from '@/plugins/axios.js'
 
 export function login(data) {
   return axios({
-    url: '/login',
+    url: '/user/login',
     method: 'post',
     data,
   })
@@ -10,7 +10,7 @@ export function login(data) {
 
 export function register(data) {
   return axios({
-    url: '/register',
+    url: '/user/register',
     method: 'post',
     data,
   })
@@ -25,7 +25,7 @@ export function guestLogin() {
 
 export function getLoggedInUserInfo() {
   return axios({
-    url: '/getLoggedInUserInfo',
+    url: '/user/getLoggedInUserInfo',
     method: 'get',
   })
 }
