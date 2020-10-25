@@ -140,6 +140,16 @@ export default {
     .van-cell {
       padding: 0;
       margin-bottom: 16px;
+      &:nth-last-child(2) {
+        margin: 0;
+        &::after {
+          border: none;
+        }
+      }
+
+      &::after {
+        left: 50px;
+      }
     }
     .list-item {
       display: flex;
