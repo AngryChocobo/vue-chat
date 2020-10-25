@@ -42,4 +42,8 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.talk-list {
+  padding-top: 46px;
+}
+</style>

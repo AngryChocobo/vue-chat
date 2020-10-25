@@ -103,7 +103,8 @@ export default {
 <style lang="less" scoped>
 .talk-view {
   .talk-list {
-    padding-bottom: 60px;
+    padding-bottom: 52px;
+    padding-top: 46px;
   }
 }
 </style>

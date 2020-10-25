@@ -1,10 +1,6 @@
 <template>
   <div class="friend-request-list">
-    <my-nav-bar title="新朋友">
-      <template slot="right">
-        <router-link to="/search-user">添加好友</router-link>
-      </template>
-    </my-nav-bar>
+    <my-nav-bar title="新朋友" />
     <van-list>
       <van-cell
         class="friend"
@@ -81,7 +77,7 @@ export default {
 
 <style lang="less" scoped>
 .friend-request-list {
-  padding: 0;
+  padding-top: 46px;
   /deep/.friend {
     .van-cell__value {
       display: flex;

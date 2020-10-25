@@ -70,7 +70,7 @@ export default {
 
 <style lang="less" scoped>
 .search-user-and-group {
-  padding: 0;
+  padding-top: 46px;
   .user {
     .van-cell__value {
       display: flex;

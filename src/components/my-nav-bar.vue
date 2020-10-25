@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     onClickLeft() {
-      this.$router.back()
+      this.leftArrow && this.$router.back()
     },
   },
 }
@@ -61,7 +61,6 @@ export default {
 
 <style lang="less" scoped>
 .my-nav-bar {
-  margin-bottom: 46px;
   /deep/ .van-nav-bar--fixed {
     left: 50%;
     transform: translateX(-50%);

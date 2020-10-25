@@ -40,6 +40,7 @@ export default {
 
 <style lang="less" scoped>
 .my {
+  padding-top: 46px;
   .main-info {
     display: flex;
     align-items: flex-start;

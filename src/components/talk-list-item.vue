@@ -79,6 +79,7 @@ export default {
   .content {
     flex: 1;
     margin-left: 12px;
+    min-width: 0; // 解决内容中text-overflow: ellipsis;没有生效的bug
     p {
       margin: 0;
     }

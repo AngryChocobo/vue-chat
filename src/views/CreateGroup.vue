@@ -59,6 +59,6 @@ export default {
 
 <style lang="less" scoped>
 .create-group {
-  //
+  padding-top: 46px;
 }
 </style>
