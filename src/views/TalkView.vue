@@ -38,6 +38,15 @@ export default {
     MessageItem,
     TalkInput,
   },
+  watch: {
+    // 收到新的消息时，滚动到底部
+    messageList() {
+      this.$nextTick(this.scrollToBottom)
+    },
+    fuck(val) {
+      console.log(val)
+    },
+  },
   data() {
     return {
       targetInfo: null,
