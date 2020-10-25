@@ -55,7 +55,7 @@ export function getUserInfo(userId) {
 
 export function getUserInfoAndFriendRelation(targetUserId) {
   return axios({
-    url: '/user/getUserInfoAndFriendRelation',
+    url: '/friend/getUserInfoAndFriendRelation',
     method: 'get',
     params: {targetUserId},
   })
@@ -71,7 +71,7 @@ export function getSearchUserResult(keyword) {
 
 export function getFriendRequestInfo(userId) {
   return axios({
-    url: '/user/getFriendRequestInfo',
+    url: '/friend/getFriendRequestInfo',
     method: 'get',
     params: {userId},
   })
