@@ -90,7 +90,6 @@ export default {
 
 <style lang="less" scoped>
 .friend-request-info {
-  padding-top: 46px;
   .main-info {
     display: flex;
     align-items: flex-start;

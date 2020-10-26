@@ -5,7 +5,7 @@
         <home-popup />
       </template>
     </my-nav-bar>
-    <van-list>
+    <van-list class="list-body">
       <van-cell :border="false" v-for="talk in talkList" :key="talk.id">
         <talk-list-item
           :userInfo="talk.targetUserInfo"
@@ -44,6 +44,7 @@ export default {
 
 <style lang="less" scoped>
 .talk-list {
-  padding-top: 46px;
+  height: calc(100% - 50px);
+  overflow-y: auto;
 }
 </style>

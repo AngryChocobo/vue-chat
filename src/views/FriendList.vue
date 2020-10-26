@@ -111,7 +111,8 @@ export default {
 
 <style lang="less" scoped>
 .friend-list {
-  padding-top: 46px;
+  height: calc(100% - 50px);
+  overflow-y: auto;
   .new-friend {
     ::v-deep .van-field__right-icon {
       position: relative;

@@ -37,8 +37,7 @@ export default {
   data() {
     return {
       value: '',
-      // showEmojiPicker: false,
-      showEmojiPicker: true,
+      showEmojiPicker: false,
     }
   },
   props: {

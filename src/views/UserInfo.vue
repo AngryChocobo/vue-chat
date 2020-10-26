@@ -108,7 +108,8 @@ export default {
 
 <style lang="less" scoped>
 .user-info {
-  padding-top: 46px;
+  height: calc(100% - 50px);
+  overflow-y: auto;
   .main-info {
     display: flex;
     align-items: flex-start;

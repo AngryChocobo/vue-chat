@@ -16,15 +16,17 @@ export default {
 </script>
 
 <style>
-body {
+/* body {
   background-image: url('./assets/timg.jpeg');
-}
-html,
+} */
+/* html,
 body,
 #app {
   height: 100%;
-}
+} */
+
 #app {
+  height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   max-width: 600px;

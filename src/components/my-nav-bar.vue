@@ -61,6 +61,7 @@ export default {
 
 <style lang="less" scoped>
 .my-nav-bar {
+  height: 46px; // 起到占位置的作用
   /deep/ .van-nav-bar--fixed {
     left: 50%;
     transform: translateX(-50%);

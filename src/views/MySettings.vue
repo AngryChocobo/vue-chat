@@ -117,7 +117,6 @@ export default {
 
 <style lang="less" scoped>
 .my-settings {
-  padding-top: 46px;
   .setting-fields {
     .user-img-field {
       display: flex;

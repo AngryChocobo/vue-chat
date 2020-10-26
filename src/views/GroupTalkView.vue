@@ -119,7 +119,6 @@ export default {
 .group-talk-view {
   .talk-list {
     padding-bottom: 60px;
-    padding-top: 46px;
   }
 }
 </style>

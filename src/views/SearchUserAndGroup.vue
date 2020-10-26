@@ -6,7 +6,7 @@
       placeholder="请输入搜索关键词"
       @search="searchUsers"
     />
-    <van-list>
+    <van-list class="list">
       <van-cell
         class="user"
         v-for="user in userList"
@@ -70,7 +70,11 @@ export default {
 
 <style lang="less" scoped>
 .search-user-and-group {
-  padding-top: 46px;
+  height: 100%;
+  .list {
+    height: calc(100% - 100px);
+    overflow-y: auto;
+  }
   .user {
     .van-cell__value {
       display: flex;

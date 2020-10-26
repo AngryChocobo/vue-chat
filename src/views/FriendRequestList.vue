@@ -77,7 +77,8 @@ export default {
 
 <style lang="less" scoped>
 .friend-request-list {
-  padding-top: 46px;
+  height: calc(100% - 50px);
+  overflow-y: auto;
   /deep/.friend {
     .van-cell__value {
       display: flex;

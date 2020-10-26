@@ -111,9 +111,7 @@ export default {
 
 <style lang="less" scoped>
 .talk-view {
-  .talk-list {
-    padding-bottom: 52px;
-    padding-top: 46px;
-  }
+  height: calc(100% - 50px);
+  overflow-y: auto;
 }
 </style>
