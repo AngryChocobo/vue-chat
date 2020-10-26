@@ -5,7 +5,6 @@ import store from '../store/store.js'
 import {CLEAR_TOKEN} from '@store/types/mutation-types.js'
 
 const env = process.env.NODE_ENV
-console.log({env})
 // create an axios instance
 const service = axios.create({
   baseURL:

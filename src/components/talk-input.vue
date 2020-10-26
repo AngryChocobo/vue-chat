@@ -1,7 +1,5 @@
 <template>
   <div class="talk-input-wrapper">
-    <emoji-picker ref="emojiPicker" @select="onPickEmoji" />
-
     <div class="talk-input">
       <van-icon class-prefix="my-icon" name="keyboard" size="28" />
       <!-- <van-icon name="icon-font icon-yuyin" /> -->
@@ -24,6 +22,11 @@
         >
       </div>
     </div>
+    <emoji-picker
+      ref="emojiPicker"
+      @select="appendEmoji"
+      :show.sync="showEmojiPicker"
+    />
   </div>
 </template>
 
@@ -34,6 +37,8 @@ export default {
   data() {
     return {
       value: '',
+      // showEmojiPicker: false,
+      showEmojiPicker: true,
     }
   },
   props: {
@@ -53,10 +58,10 @@ export default {
       this.clearInputValue()
     },
     openEmojiPicker() {
-      this.$refs.emojiPicker.open()
+      this.showEmojiPicker = !this.showEmojiPicker
     },
-    onPickEmoji(url) {
-      this.onSend(url)
+    appendEmoji(emoji) {
+      this.value = this.value + emoji
     },
   },
   destroyed() {
@@ -67,10 +72,11 @@ export default {
 
 <style lang="less" scoped>
 .talk-input-wrapper {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+
   .talk-input {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
     box-sizing: border-box;
     padding: 10px 16px;
     background-color: #ccc;
