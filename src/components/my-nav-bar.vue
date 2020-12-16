@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import {useRouter} from 'vue-router'
+
 export default {
   name: 'MyNavBar',
   data() {
@@ -53,7 +55,9 @@ export default {
   },
   methods: {
     onClickLeft() {
-      this.leftArrow && this.$router.back()
+      const router = useRouter()
+
+      this.leftArrow && router.back()
     },
   },
 }

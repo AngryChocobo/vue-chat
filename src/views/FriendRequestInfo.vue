@@ -50,10 +50,11 @@
 </template>
 
 <script>
-import MyNavBar from '@components/my-nav-bar.vue'
+import MyNavBar from '@/components/my-nav-bar.vue'
 import UserAvatar from '@/components/user-avatar.vue'
 import {getFriendRequestInfo} from '@/api/user'
-import {AGREE_MAKE_FRIEND_REQUEST} from '@store/types/action-types.js'
+import {AGREE_MAKE_FRIEND_REQUEST} from '@/store/types/action-types'
+import {useStore} from 'vuex'
 export default {
   name: 'FriendRequestInfo',
   data() {
@@ -79,7 +80,8 @@ export default {
       this.requestInfo = data
     },
     agree() {
-      this.$store.dispatch(AGREE_MAKE_FRIEND_REQUEST, {
+      const store = useStore()
+      store.dispatch(AGREE_MAKE_FRIEND_REQUEST, {
         targetUserId: this.$route.params.userId,
         recordId: this.requestInfo.id,
       })

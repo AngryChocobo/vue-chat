@@ -20,16 +20,17 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import MyNavBar from '@components/my-nav-bar.vue'
-import GroupMessageItem from '@components/group-message-item.vue'
-import TalkInput from '@components/talk-input.vue'
+import MyNavBar from '@/components/my-nav-bar.vue'
+import GroupMessageItem from '@/components/group-message-item.vue'
+import TalkInput from '@/components/talk-input.vue'
 import {getGroupInfo} from '@/api/group'
 import {
   GET_GROUP_MESSAGE_LIST,
   SEND_GROUP_MESSAGE,
   ENTER_GROUP_ROOM,
   // CLEAR_UN_READ_MESSAGES,
-} from '@store/types/action-types.js'
+} from '@/store/types/action-types'
+import {useStore} from 'vuex'
 
 export default {
   name: 'GroupTalkView',
@@ -57,7 +58,9 @@ export default {
       return this.groupInfo && this.groupInfo.groupName
     },
     messageList() {
-      return this.$store.state.talkModule.groupMessageLists[this.groupId]
+      const store = useStore()
+
+      return store.state.talkModule.groupMessageLists[this.groupId]
     },
     groupId() {
       return Number(this.$route.params.id)
@@ -90,12 +93,16 @@ export default {
       })
     },
     getGroupMessageList() {
-      this.$store.dispatch(GET_GROUP_MESSAGE_LIST, {
+      const store = useStore()
+
+      store.dispatch(GET_GROUP_MESSAGE_LIST, {
         id: this.groupId,
       })
     },
     enterGroupRoom() {
-      this.$store.dispatch(ENTER_GROUP_ROOM, {
+      const store = useStore()
+
+      store.dispatch(ENTER_GROUP_ROOM, {
         groupId: this.groupId,
       })
       // TODO 似乎需要一个进群的SUCCESS 响应
@@ -105,8 +112,10 @@ export default {
       dom.scrollIntoView(false)
     },
     sendMessage(message) {
+      const store = useStore()
+
       // 发送消息到群
-      this.$store.dispatch(SEND_GROUP_MESSAGE, {
+      store.dispatch(SEND_GROUP_MESSAGE, {
         groupId: this.groupId,
         message,
       })

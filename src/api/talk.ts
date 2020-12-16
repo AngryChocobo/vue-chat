@@ -1,6 +1,6 @@
-import axios from '@/plugins/axios.js'
+import axios from '@/plugins/axios'
 
-export function getMessageList(targetId) {
+export function getMessageList(targetId: any) {
   return axios({
     url: '/talk/getMessageList',
     method: 'get',

@@ -24,9 +24,11 @@
   </div>
 </template>
 
-<script>
-import MyNavBar from '@components/my-nav-bar.vue'
-import {CREATE_GROUP} from '@store/types/action-types'
+<script lang="ts">
+import MyNavBar from '@/components/my-nav-bar.vue'
+import {CREATE_GROUP} from '@/store/types/action-types'
+import {useStore} from 'vuex'
+import {useRouter} from 'vue-router'
 
 export default {
   name: 'FriendList',
@@ -40,18 +42,24 @@ export default {
   },
   methods: {
     toFriendRequestList() {
-      this.$router.push({
+      const router = useRouter()
+
+      router.push({
         path: 'friend-request-list',
       })
     },
     checkFriendInfo(friend) {
-      this.$router.push({
+      const router = useRouter()
+
+      router.push({
         name: 'UserInfo',
         params: {userId: friend.id},
       })
     },
     createGroup() {
-      this.$store.dispatch(CREATE_GROUP, {groupName: this.groupName})
+      const store = useStore()
+      // store.dispatch(CREATE_GROUP, {groupName: this.groupName})
+      store.dispatch(CREATE_GROUP, {groupName: ''})
     },
   },
 }

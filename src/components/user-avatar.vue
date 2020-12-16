@@ -19,7 +19,7 @@ export default {
   },
   computed: {
     imgSrc() {
-      return require('@assets/head/' + (this.avatar || 'head.jpg'))
+      return require('@/assets/head/' + (this.avatar || 'head.jpg'))
     },
   },
 }

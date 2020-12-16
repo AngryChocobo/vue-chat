@@ -26,9 +26,10 @@
 </template>
 
 <script>
-import MyNavBar from '@components/my-nav-bar.vue'
+import MyNavBar from '@/components/my-nav-bar.vue'
 import UserAvatar from '@/components/user-avatar.vue'
 import {getSearchUserResult} from '@/api/user'
+import {useRouter} from 'vue-router'
 
 export default {
   name: 'SearchUserAndGroup',
@@ -48,7 +49,9 @@ export default {
   },
   methods: {
     checkUserInfo(user) {
-      this.$router.push({
+      const router = useRouter()
+
+      router.push({
         name: 'UserInfo',
         params: {
           userId: user.id,

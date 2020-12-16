@@ -16,7 +16,7 @@ export default {
   },
   computed: {
     imgSrc() {
-      return require('@assets/head/default-group-avatar.svg')
+      return require('@/assets/head/default-group-avatar.svg')
     },
   },
 }

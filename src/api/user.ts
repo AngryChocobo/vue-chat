@@ -1,6 +1,6 @@
-import axios from '@/plugins/axios.js'
+import axios from '@/plugins/axios'
 
-export function login(data) {
+export function login(data: any) {
   return axios({
     url: '/user/login',
     method: 'post',
@@ -8,7 +8,7 @@ export function login(data) {
   })
 }
 
-export function register(data) {
+export function register(data: any) {
   return axios({
     url: '/user/register',
     method: 'post',
@@ -30,7 +30,7 @@ export function getLoggedInUserInfo() {
   })
 }
 
-export function confirmNickName(data) {
+export function confirmNickName(data: any) {
   return axios({
     url: '/setting/nickname',
     method: 'put',
@@ -38,14 +38,14 @@ export function confirmNickName(data) {
   })
 }
 
-export function confirmAvatar(data) {
+export function confirmAvatar(data: any) {
   return axios({
     url: '/setting/avatar',
     method: 'put',
     data,
   })
 }
-export function getUserInfo(userId) {
+export function getUserInfo(userId: any) {
   return axios({
     url: '/user/getUserInfo',
     method: 'get',
@@ -53,7 +53,7 @@ export function getUserInfo(userId) {
   })
 }
 
-export function getUserInfoAndFriendRelation(targetUserId) {
+export function getUserInfoAndFriendRelation(targetUserId: any) {
   return axios({
     url: '/friend/getUserInfoAndFriendRelation',
     method: 'get',
@@ -61,7 +61,7 @@ export function getUserInfoAndFriendRelation(targetUserId) {
   })
 }
 
-export function getSearchUserResult(keyword) {
+export function getSearchUserResult(keyword: any) {
   return axios({
     url: '/searchUsers',
     method: 'get',
@@ -69,7 +69,7 @@ export function getSearchUserResult(keyword) {
   })
 }
 
-export function getFriendRequestInfo(userId) {
+export function getFriendRequestInfo(userId: any) {
   return axios({
     url: '/friend/getFriendRequestInfo',
     method: 'get',

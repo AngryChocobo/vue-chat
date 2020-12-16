@@ -21,15 +21,14 @@ module.exports = {
   },
   lintOnSave: true,
   chainWebpack: config => {
-    config.resolve.alias
-      .set('@$', resolve('src'))
-      .set('@assets', resolve('src/assets'))
-      .set('@components', resolve('src/components'))
-      .set('@views', resolve('src/views'))
-      .set('@plugins', resolve('src/plugins'))
-      .set('@const', resolve('src/const'))
-      .set('@store', resolve('src/store'))
-      .set('static', resolve('src/static'))
+    // config.resolve.alias
+    //   .set('@$', resolve('src'))
+    //   .set('@/assets', resolve('src/assets'))
+    //   .set('@/components', resolve('src/components'))
+    //   .set('@views', resolve('src/views'))
+    //   .set('@plugins', resolve('src/plugins'))
+    //   .set('@const', resolve('src/const'))
+    //   .set('static', resolve('src/static'))
     config.module.rule('')
   },
   configureWebpack: {

@@ -1,14 +1,14 @@
 import {createStore} from 'vuex'
-import loggedInUserModule from './modules/loggedInUserModule.js'
-import socketModule from './modules/socketModule.js'
-import talkModule from './modules/talkModule.js'
+import loggedInUserModule from './modules/loggedInUserModule'
+import socketModule from './modules/socketModule'
+import talkModule from './modules/talkModule'
 
 import {
   CONNECT_SOCKET_IO,
   GET_USER_FRIEND_LIST,
   GET_USER_GROUP_LIST,
   GET_LOGGEDINUSER_INFO,
-} from '@store/types/action-types.js'
+} from '@/store/types/action-types'
 import getters from './getters'
 
 const store = createStore({
@@ -17,7 +17,7 @@ const store = createStore({
     socketModule,
     talkModule,
   },
-  getters,
+  getters: getters,
 })
 
 if (store.getters.token) {
@@ -31,5 +31,5 @@ if (store.getters.token) {
   console.log('没有token')
 }
 
-window.store = store
+// window.store = store
 export default store

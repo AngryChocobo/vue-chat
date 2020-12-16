@@ -21,10 +21,12 @@
 </template>
 
 <script>
-import MyNavBar from '@components/my-nav-bar.vue'
-import MyTabBar from '@components/my-tab-bar.vue'
-import TalkListItem from '@components/talk-list-item.vue'
-import HomePopup from '@components/home-popup.vue'
+import MyNavBar from '@/components/my-nav-bar.vue'
+import MyTabBar from '@/components/my-tab-bar.vue'
+import TalkListItem from '@/components/talk-list-item.vue'
+import HomePopup from '@/components/home-popup.vue'
+import {useStore} from 'vuex'
+
 export default {
   name: 'TalkList',
   components: {
@@ -35,7 +37,8 @@ export default {
   },
   computed: {
     talkList() {
-      return this.$store.state.talkModule.talkList
+      const store = useStore()
+      return store.state.talkModule.talkList
     },
   },
   methods: {},

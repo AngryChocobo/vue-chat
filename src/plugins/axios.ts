@@ -1,7 +1,7 @@
 import {Toast} from 'vant'
 import axios from 'axios'
-import store from '../store/store.js'
-import {CLEAR_TOKEN} from '@store/types/mutation-types.js'
+import store from '../store/store'
+import {CLEAR_TOKEN} from '@/store/types/mutation-types'
 
 const env = process.env.NODE_ENV
 // create an axios instance
@@ -27,7 +27,8 @@ service.interceptors.response.use(
   },
   error => {
     if (!error.response) {
-      Toast('服务器不想服务了', JSON.stringify(error))
+      // Toast('服务器不想服务了', JSON.stringify(error))
+      Toast('服务器不想服务了')
     } else {
       switch (error.response.status) {
         case 401: // token失效

@@ -1,6 +1,6 @@
-import axios from '@/plugins/axios.js'
+import axios from '@/plugins/axios'
 
-export function getGroupInfo(id) {
+export function getGroupInfo(id: any) {
   return axios({
     url: '/group/getGroupInfo',
     method: 'get',
@@ -8,7 +8,7 @@ export function getGroupInfo(id) {
   })
 }
 
-export function getGroupMessageList(groupId) {
+export function getGroupMessageList(groupId: any) {
   return axios({
     url: '/group/getGroupMessageList',
     method: 'get',

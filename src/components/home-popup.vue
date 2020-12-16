@@ -4,6 +4,8 @@
 
 <script>
 import BasePopup from './base-popup.vue'
+import {useRouter} from 'vue-router'
+
 export default {
   data() {
     return {}
@@ -32,12 +34,16 @@ export default {
       console.log('show')
     },
     goToCreateGroupPage() {
-      this.$router.push({
+      const router = useRouter()
+
+      router.push({
         name: 'CreateGroup',
       })
     },
     goToSearchUserAngGroupPage() {
-      this.$router.push({
+      const router = useRouter()
+
+      router.push({
         name: 'SearchUserAndGroup',
       })
     },

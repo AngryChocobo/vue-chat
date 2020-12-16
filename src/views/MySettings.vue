@@ -61,11 +61,12 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import MyTabBar from '@components/my-tab-bar.vue'
-import MyNavBar from '@components/my-nav-bar.vue'
-import AvatarSelect from '@components/avatar-select.vue'
+import MyTabBar from '@/components/my-tab-bar.vue'
+import MyNavBar from '@/components/my-nav-bar.vue'
+import AvatarSelect from '@/components/avatar-select.vue'
 import UserAvatar from '@/components/user-avatar.vue'
-import {CONFIRM_NICK_NAME, CONFIRM_AVATAR} from '@store/types/action-types.js'
+import {CONFIRM_NICK_NAME, CONFIRM_AVATAR} from '@/store/types/action-types'
+import {useStore} from 'vuex'
 
 export default {
   name: 'MySettings',
@@ -93,7 +94,8 @@ export default {
     },
     onConfirmNickName() {
       console.log(this.nickname)
-      this.$store.dispatch(CONFIRM_NICK_NAME, {nickname: this.nickname})
+      const store = useStore()
+      store.dispatch(CONFIRM_NICK_NAME, {nickname: this.nickname})
       this.nickNamePopupVisible = false
     },
     focusInput() {
@@ -109,7 +111,8 @@ export default {
     },
     onConfirmAvatar() {
       console.log('修改了头像' + this.selectAvatar)
-      this.$store.dispatch(CONFIRM_AVATAR, {avatar: this.selectAvatar})
+      const store = useStore()
+      store.dispatch(CONFIRM_AVATAR, {avatar: this.selectAvatar})
     },
   },
 }

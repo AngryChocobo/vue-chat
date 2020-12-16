@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import {createRouter, createWebHashHistory} from 'vue-router'
 import Home from '../views/Home.vue'
 import My from '../views/My.vue'
 import MySettings from '../views/MySettings.vue'
@@ -14,10 +14,10 @@ import SearchUserAndGroup from '../views/SearchUserAndGroup.vue'
 import UserInfo from '../views/UserInfo.vue'
 import CreateGroup from '../views/CreateGroup.vue'
 
-import store from '../store/store.js'
+import store from '../store/store'
 import {Toast} from 'vant'
 
-import {RESET_RECONNECT_OVERLAY} from '@store/types/mutation-types.js'
+import {RESET_RECONNECT_OVERLAY} from '@/store/types/mutation-types'
 
 const routes = [
   {
@@ -115,7 +115,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
 })
 
 router.beforeEach((to, from, next) => {

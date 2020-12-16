@@ -1,18 +1,16 @@
 import {createApp} from 'vue'
 // import moment from 'moment'
 import App from './App.vue'
-import store from './store/store.js'
-import router from './router/index.js'
-import Vant, {AddressEdit} from 'vant'
+import store from './store/store'
+import router from './router/index'
+import Vant from 'vant'
 import 'vant/lib/index.css'
 
-// import './plugins/vant.js'
-// import './plugins/icon.js'
-// import './plugins/notification.js'
+// import './plugins/vant'
+// import './plugins/icon'
+// import './plugins/notification'
 
 console.log('env: ', process.env)
-console.log('env: ', AddressEdit)
-console.log('vant: ', Vant)
 
 // Vue.prototype.$moment = moment
 

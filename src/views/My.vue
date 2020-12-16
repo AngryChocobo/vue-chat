@@ -18,8 +18,10 @@
 <script>
 import {mapGetters} from 'vuex'
 import UserAvatar from '@/components/user-avatar.vue'
-import MyTabBar from '@components/my-tab-bar.vue'
-import MyNavBar from '@components/my-nav-bar.vue'
+import MyTabBar from '@/components/my-tab-bar.vue'
+import MyNavBar from '@/components/my-nav-bar.vue'
+import {useRouter} from 'vue-router'
+
 export default {
   name: 'My',
   components: {
@@ -32,7 +34,9 @@ export default {
   },
   methods: {
     goMySettings() {
-      this.$router.push('my-settings')
+      const router = useRouter()
+
+      router.push('my-settings')
     },
   },
 }

@@ -13,7 +13,7 @@ import {
   UPDATE_USER_FRIEND_LIST,
   UPDATE_USER_GROUP_LIST,
   RESET_RECONNECT_OVERLAY,
-} from '@store/types/mutation-types.js'
+} from '@/store/types/mutation-types'
 
 import {
   CONNECT_SOCKET_IO,
@@ -30,7 +30,7 @@ import {
   GET_USER_GROUP_LIST,
   CREATE_GROUP,
   ENTER_GROUP_ROOM,
-} from '@store/types/action-types.js'
+} from '@/store/types/action-types'
 
 export const SOCKETIO_PATH = 'http://localhost:3000'
 

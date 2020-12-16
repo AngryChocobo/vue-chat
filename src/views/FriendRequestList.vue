@@ -32,10 +32,12 @@
 </template>
 
 <script>
-import {CLEAR_UN_READ_FRIEND_REQUEST} from '@store/types/action-types.js'
-import MyTabBar from '@components/my-tab-bar.vue'
-import MyNavBar from '@components/my-nav-bar.vue'
+import {CLEAR_UN_READ_FRIEND_REQUEST} from '@/store/types/action-types'
+import MyTabBar from '@/components/my-tab-bar.vue'
+import MyNavBar from '@/components/my-nav-bar.vue'
 import UserAvatar from '@/components/user-avatar.vue'
+import {useStore} from 'vuex'
+import {useRouter} from 'vue-router'
 
 export default {
   name: 'FriendRequestList',
@@ -51,7 +53,8 @@ export default {
   },
   computed: {
     friendRequestList() {
-      return this.$store.state.socketModule.friendRequestList
+      const store = useStore()
+      return store.state.socketModule.friendRequestList
     },
   },
   mounted() {
@@ -60,11 +63,14 @@ export default {
   methods: {
     clearUnReadFriendRequest() {
       if (this.friendRequestList.length) {
-        this.$store.dispatch(CLEAR_UN_READ_FRIEND_REQUEST)
+        const store = useStore()
+        store.dispatch(CLEAR_UN_READ_FRIEND_REQUEST)
       }
     },
     checkFriendRequestInfo(friend) {
-      this.$router.push({
+      const router = useRouter()
+
+      router.push({
         name: 'FriendRequestInfo',
         params: {
           userId: friend.id,

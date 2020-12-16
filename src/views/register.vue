@@ -3,7 +3,7 @@
     <img class="logo" alt="Vue logo" src="../assets/logo.png" />
     <van-form @submit="onSubmit" style="padding: 0 30px">
       <van-field
-        v-model="username"
+        v-model="form.username"
         name="username"
         label="用户名"
         placeholder="用户名"
@@ -11,7 +11,7 @@
         :rules="[{required: true, message: '请填写用户名'}]"
       />
       <van-field
-        v-model="password"
+        v-model="form.password"
         type="password"
         name="password"
         label="密码"
@@ -28,25 +28,27 @@
   </div>
 </template>
 
-<script>
-import {REGISTER} from '@store/types/action-types.js'
+<script lang="ts">
+import {REGISTER} from '@/store/types/action-types'
+import {useStore} from 'vuex'
+import {ref} from 'vue'
 
 export default {
   name: 'Register',
-  data() {
-    return {
+  setup() {
+    const store = useStore()
+
+    const form = ref({
       username: '',
       password: '',
+    })
+    function onSubmit() {
+      store.dispatch(REGISTER, form)
     }
-  },
-  methods: {
-    onSubmit(values) {
-      const {username, password} = values
-      this.$store.dispatch(REGISTER, {
-        username,
-        password,
-      })
-    },
+    return {
+      form,
+      onSubmit,
+    }
   },
 }
 </script>

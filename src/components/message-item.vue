@@ -17,6 +17,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import {useRouter} from 'vue-router'
 import UserAvatar from '@/components/user-avatar.vue'
 export default {
   name: 'MessageItem',
@@ -39,7 +40,9 @@ export default {
   },
   methods: {
     goUserInfo() {
-      this.$router.push({
+      const router = useRouter()
+
+      router.push({
         name: 'UserInfo',
         params: {userId: this.fromUserId},
       })

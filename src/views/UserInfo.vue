@@ -45,11 +45,13 @@
 </template>
 
 <script>
-import MyNavBar from '@components/my-nav-bar.vue'
+import MyNavBar from '@/components/my-nav-bar.vue'
 import {getUserInfoAndFriendRelation} from '@/api/user'
 import UserAvatar from '@/components/user-avatar.vue'
-import {MAKE_FRIEND_REQUEST} from '@store/types/action-types.js'
+import {MAKE_FRIEND_REQUEST} from '@/store/types/action-types'
 import {mapGetters} from 'vuex'
+import {useStore} from 'vuex'
+import {useRouter} from 'vue-router'
 
 export default {
   name: 'UserInfo',
@@ -80,7 +82,9 @@ export default {
   },
   methods: {
     talkTo() {
-      this.$router.push({
+      const router = useRouter()
+
+      router.push({
         name: 'TalkView',
         params: {id: this.userInfo.id},
       })
@@ -97,6 +101,8 @@ export default {
         (userInfo.makeFriendRecord && userInfo.makeFriendRecord.say) || ''
     },
     makeFriendRequest() {
+      const store = useStore()
+
       this.$store.dispatch(MAKE_FRIEND_REQUEST, {
         targetUserId: this.userInfo.id,
         say: this.say,

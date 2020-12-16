@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import {getMessageList} from '@/api/talk'
 import {getGroupMessageList} from '@/api/group'
 import {
@@ -9,12 +8,12 @@ import {
   ALLOW_NOTIFICATION,
   UPDATE_GROUP_MESSAGE_LIST,
   RECEIVE_GROUP_MESSAGE,
-} from '@store/types/mutation-types.js'
+} from '@/store/types/mutation-types'
 import {
   GET_MESSAGE_LIST,
   GET_GROUP_MESSAGE_LIST,
   NOTIFICATION_GRANTED,
-} from '@store/types/action-types.js'
+} from '@/store/types/action-types'
 
 export default {
   state: {
@@ -33,19 +32,19 @@ export default {
     },
     [UPDATE_MESSAGE_LIST](state, payload) {
       console.log('talk模块 准备更新消息列表', payload)
-      Vue.set(state.messageLists, payload.targetId, payload.messageList)
+      // Vue.set(state.messageLists, payload.targetId, payload.messageList)
     },
     [UPDATE_GROUP_MESSAGE_LIST](state, payload) {
       console.log('talk模块 准备更新群聊消息列表', payload)
-      Vue.set(
-        state.groupMessageLists,
-        payload.groupId,
-        payload.groupMessageList,
-      )
+      // Vue.set(
+      //   state.groupMessageLists,
+      //   payload.groupId,
+      //   payload.groupMessageList,
+      // )
     },
     [SEND_MESSAGE_SUCCESS](state, payload) {
       if (!state.messageLists[payload.targetUserId]) {
-        Vue.set(state.messageLists, payload.targetUserId, payload.message)
+        // Vue.set(state.messageLists, payload.targetUserId, payload.message)
       } else {
         state.messageLists[payload.targetUserId].push(payload.message)
       }
@@ -53,7 +52,7 @@ export default {
     [RECEIVE_MESSAGE](state, payload) {
       console.log('收到消息: ', payload)
       if (!state.messageLists[payload.fromUserId]) {
-        Vue.set(state.messageLists, payload.fromUserId, [payload])
+        // Vue.set(state.messageLists, payload.fromUserId, [payload])
       } else {
         state.messageLists[payload.fromUserId].push(payload)
       }
@@ -67,7 +66,7 @@ export default {
     [RECEIVE_GROUP_MESSAGE](state, payload) {
       console.log('收到群消息: ', payload)
       if (!state.groupMessageLists[payload.groupId]) {
-        Vue.set(state.groupMessageLists, payload.groupId, [payload])
+        // Vue.set(state.groupMessageLists, payload.groupId, [payload])
       } else {
         state.groupMessageLists[payload.groupId].push(payload)
       }

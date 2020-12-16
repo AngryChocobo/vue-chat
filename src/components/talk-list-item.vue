@@ -21,6 +21,8 @@
  * 对话列表的子组件，作为一个用户/群存在
  */
 import UserAvatar from '@/components/user-avatar.vue'
+import {useRouter} from 'vue-router'
+
 export default {
   name: 'TalkListItem',
   components: {
@@ -41,7 +43,9 @@ export default {
   mounted() {},
   methods: {
     goTalkDetail() {
-      this.$router.push({
+      const router = useRouter()
+
+      router.push({
         name: 'TalkView',
         params: {id: this.userInfo.id},
       })

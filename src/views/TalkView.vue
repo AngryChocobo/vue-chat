@@ -21,15 +21,17 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import MyNavBar from '@components/my-nav-bar.vue'
-import MessageItem from '@components/message-item.vue'
-import TalkInput from '@components/talk-input.vue'
+import MyNavBar from '@/components/my-nav-bar.vue'
+import MessageItem from '@/components/message-item.vue'
+import TalkInput from '@/components/talk-input.vue'
 import {getUserInfo} from '@/api/user'
+import {useStore} from 'vuex'
+
 import {
   GET_MESSAGE_LIST,
   SEND_MESSAGE,
   CLEAR_UN_READ_MESSAGES,
-} from '@store/types/action-types.js'
+} from '@/store/types/action-types'
 
 export default {
   name: 'TalkView',
@@ -58,7 +60,9 @@ export default {
       return this.targetInfo && this.targetInfo.username
     },
     messageList() {
-      return this.$store.state.talkModule.messageLists[this.targetId]
+      const store = useStore()
+
+      return store.state.talkModule.messageLists[this.targetId]
     },
     targetId() {
       return Number(this.$route.params.id)
@@ -75,8 +79,10 @@ export default {
   // },
   methods: {
     clearUnReadMessages() {
+      const store = useStore()
+
       if (this.totalUnReadMessage.find(v => v.targetUserId == this.targetId)) {
-        this.$store.dispatch(CLEAR_UN_READ_MESSAGES, {
+        store.dispatch(CLEAR_UN_READ_MESSAGES, {
           targetId: this.targetId,
         })
       }
@@ -91,7 +97,9 @@ export default {
       })
     },
     getMessageList() {
-      this.$store.dispatch(GET_MESSAGE_LIST, {
+      const store = useStore()
+
+      store.dispatch(GET_MESSAGE_LIST, {
         targetId: this.targetId,
       })
     },
@@ -100,7 +108,9 @@ export default {
       dom.scrollIntoView(false)
     },
     sendMessage(message) {
-      this.$store.dispatch(SEND_MESSAGE, {
+      const store = useStore()
+
+      store.dispatch(SEND_MESSAGE, {
         targetId: this.targetId,
         message,
       })

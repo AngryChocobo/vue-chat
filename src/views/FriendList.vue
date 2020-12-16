@@ -64,9 +64,10 @@
 import {mapGetters, mapState} from 'vuex'
 import UserAvatar from '@/components/user-avatar.vue'
 import GroupAvatar from '@/components/group-avatar.vue'
-import HomePopup from '@components/home-popup.vue'
-import MyTabBar from '@components/my-tab-bar.vue'
-import MyNavBar from '@components/my-nav-bar.vue'
+import HomePopup from '@/components/home-popup.vue'
+import MyTabBar from '@/components/my-tab-bar.vue'
+import MyNavBar from '@/components/my-nav-bar.vue'
+import {useRouter} from 'vue-router'
 
 export default {
   name: 'FriendList',
@@ -91,18 +92,22 @@ export default {
   },
   methods: {
     toFriendRequestList() {
-      this.$router.push({
+      const router = useRouter()
+
+      router.push({
         path: 'friend-request-list',
       })
     },
     checkFriendInfo(friend) {
-      this.$router.push({
+      const router = useRouter()
+      router.push({
         name: 'UserInfo',
         params: {userId: friend.id},
       })
     },
     goToGroupTalkView(id) {
-      this.$router.push({
+      const router = useRouter()
+      router.push({
         name: 'GroupTalkView',
         params: {id},
       })
