@@ -9,9 +9,9 @@
       @click-left="onClickLeft"
       @click-right="onClickRight"
     >
-      <template slot="left"> <slot name="left"></slot> </template>
-      <template slot="title"> <slot name="title"></slot></template>
-      <template slot="right"> <slot name="right"></slot></template>
+      <template v-slot:left> <slot name="left"></slot> </template>
+      <template v-slot:title> <slot name="title"></slot></template>
+      <template v-slot:right> <slot name="right"></slot></template>
     </van-nav-bar>
   </div>
 </template>

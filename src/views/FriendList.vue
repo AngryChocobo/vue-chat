@@ -12,9 +12,11 @@
       is-link
       @click="toFriendRequestList"
     >
-      <div v-show="friendRequestUnReadCount" class="dot" slot="right-icon">
-        {{ friendRequestUnReadCount }}
-      </div>
+      <template #right-icon>
+        <div v-show="friendRequestUnReadCount" class="dot">
+          {{ friendRequestUnReadCount }}
+        </div>
+      </template>
     </van-field>
     <van-collapse v-model="activeName" accordion>
       <van-collapse-item title="全部好友" name="all">

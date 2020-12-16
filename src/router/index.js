@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router';
 import Home from '../views/Home.vue'
 import My from '../views/My.vue'
 import MySettings from '../views/MySettings.vue'
@@ -19,8 +18,6 @@ import store from '../store/store.js'
 import {Toast} from 'vant'
 
 import {RESET_RECONNECT_OVERLAY} from '@store/types/mutation-types.js'
-
-Vue.use(VueRouter)
 
 const routes = [
   {
@@ -116,8 +113,9 @@ const routes = [
   },
 ]
 
-const router = new VueRouter({
-  routes,
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes
 })
 
 router.beforeEach((to, from, next) => {

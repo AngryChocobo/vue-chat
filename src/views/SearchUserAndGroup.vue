@@ -16,7 +16,7 @@
         <UserAvatar
           :avatar="user.avatar"
           round
-          @click.native="goTalkView"
+          @click="goTalkView"
           style="margin-right: 8px;"
         />
         <span class="username">{{ user.username }}</span>

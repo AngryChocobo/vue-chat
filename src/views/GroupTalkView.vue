@@ -69,9 +69,9 @@ export default {
     this.getGroupMessageList()
     // this.clearUnReadMessages()
   },
-  destroyed() {
-    clearTimeout(this.initScrollTimer)
-  },
+  // destroyed() {
+  //   clearTimeout(this.initScrollTimer)
+  // },
   methods: {
     // clearUnReadMessages() {
     //   if (this.totalUnReadMessage.find(v => v.targetUserId == this.targetId)) {

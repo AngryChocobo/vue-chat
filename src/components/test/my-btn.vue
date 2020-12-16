@@ -16,9 +16,9 @@ export default {
   mounted() {
     console.log('my-btn mounted')
   },
-  destroyed() {
-    console.log('my-btn destroyed')
-  },
+  // destroyed() {
+  //   console.log('my-btn destroyed')
+  // },
   methods: {
     handleDivClick(event) {
       // if (event.target === event.currentTarget) {

@@ -9,7 +9,7 @@
         placeholder="请输入骚话"
       />
       <div class="right-btns">
-        <van-icon name="smile-o" size="28" @click.native="openEmojiPicker" />
+        <van-icon name="smile-o" size="28" @click="openEmojiPicker" />
         <van-icon v-show="!value" name="add-o" size="28" />
         <van-button
           v-show="value"
@@ -25,7 +25,7 @@
     <emoji-picker
       ref="emojiPicker"
       @select="appendEmoji"
-      :show.sync="showEmojiPicker"
+      v-model:show="showEmojiPicker"
     />
   </div>
 </template>
@@ -63,9 +63,9 @@ export default {
       this.value = this.value + emoji
     },
   },
-  destroyed() {
-    this.clearInputValue()
-  },
+  // destroyed() {
+  //   this.clearInputValue()
+  // },
 }
 </script>
 

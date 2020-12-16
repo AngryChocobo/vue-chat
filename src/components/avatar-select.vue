@@ -8,7 +8,7 @@
       :key="avatar.src"
       :avatar="avatar.src"
       :class="selectedAvatar === avatar.src && 'selected'"
-      @click.native="selectAvatar(avatar.src)"
+      @click="selectAvatar(avatar.src)"
     />
   </div>
 </template>

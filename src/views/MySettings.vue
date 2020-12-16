@@ -9,7 +9,7 @@
           is-link
           @click="showAvatarSelect"
         >
-          <template slot="input">
+          <template v-slot:input>
             <UserAvatar :avatar="loggedInUser.avatar" width="48" height="48" />
           </template>
         </van-field>
@@ -20,7 +20,7 @@
           label="昵称"
           class="nickname"
           readonly
-          @click.native="onShowNamePopup"
+          @click="onShowNamePopup"
         />
       </van-cell-group>
     </div>

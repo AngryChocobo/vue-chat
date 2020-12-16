@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import {Toast} from 'vant'
 import axios from 'axios'
 import store from '../store/store.js'
@@ -47,6 +46,6 @@ service.interceptors.response.use(
   },
 )
 
-Vue.prototype.$axios = service
+// Vue.prototype.$axios = service
 
 export default service

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "set SOURCE_MAP=true &&  vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
@@ -19,12 +19,12 @@
     "moment": "^2.24.0",
     "rxjs": "^6.6.3",
     "socket.io": "^2.3.0",
-    "vant": "^2.5.2",
-    "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
-    "vue-router": "^3.1.5",
     "vue-socket.io": "^3.0.7",
-    "vuex": "^3.1.2"
+    "vant": "^3.0.0-beta.7",
+    "vue": "^3.0.0-0",
+    "vue-router": "^4.0.0-rc.2",
+    "vuex": "^4.0.0-rc.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.2.0",
@@ -32,12 +32,13 @@
     "@vue/cli-plugin-router": "^4.2.2",
     "@vue/cli-plugin-unit-jest": "~4.5.0",
     "@vue/cli-service": "^4.2.0",
+    "@vue/compiler-sfc": "^3.0.0-beta.1",
     "@vue/test-utils": "^2.0.0-beta.12",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.1.2",
+    "eslint-plugin-vue": "^7.0.0-alpha.0",
     "vue-cli-plugin-element": "^1.0.1",
-    "vue-template-compiler": "^2.6.11"
+    "vue-cli-plugin-vue-next": "~0.1.4"
   },
   "eslintConfig": {
     "root": true,
@@ -45,7 +46,7 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/vue3-essential",
       "eslint:recommended"
     ],
     "parserOptions": {

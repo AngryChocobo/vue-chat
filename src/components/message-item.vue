@@ -3,7 +3,7 @@
     <UserAvatar
       :avatar="isMine ? loggedInUser.avatar : targetUserInfo.avatar"
       round
-      @click.native="goUserInfo"
+      @click="goUserInfo"
     />
     <div class="content">
       <div class="content-header">

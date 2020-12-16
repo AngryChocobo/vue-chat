@@ -18,7 +18,7 @@
         :rules="[{required: true, message: '请填写密码'}]"
       />
       <div style="margin: 16px 16px 32px 16px; ">
-        <van-button round block type="info" native-type="submit">
+        <van-button round block type="primary" native-type="submit">
           登陆
         </van-button>
       </div>
