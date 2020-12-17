@@ -6,8 +6,6 @@ import router from './router/index'
 import * as Vant from 'vant'
 import 'vant/lib/index.css'
 
-// import './plugins/vant'
-// import './plugins/icon'
 // import './plugins/notification'
 
 console.log('env: ', process.env)
