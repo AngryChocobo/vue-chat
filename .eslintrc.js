@@ -19,6 +19,19 @@ module.exports = {
     'vue/no-unused-components': 'warn',
     'prefer-const': 'warn',
     'vue/no-deprecated-v-on-native-modifier': 'warn',
+    '@typescript-eslint/member-delimiter-style': [
+      'error',
+      {
+        multiline: {
+          delimiter: 'none', // 'none' or 'semi' or 'comma'
+          requireLast: true,
+        },
+        singleline: {
+          delimiter: 'semi', // 'semi' or 'comma'
+          requireLast: false,
+        },
+      },
+    ],
   },
   overrides: [
     {

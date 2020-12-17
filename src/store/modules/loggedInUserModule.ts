@@ -30,8 +30,8 @@ const encrypt = new JSEncrypt()
 encrypt.setPublicKey(process.env.VUE_APP_RSA_PUBLIC_KEY)
 
 interface State {
-  loggedInUser: Object
-  token: any
+  loggedInUser: object
+  token: string
 }
 
 export default {

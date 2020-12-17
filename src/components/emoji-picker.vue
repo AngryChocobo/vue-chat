@@ -22,6 +22,7 @@
 
 <script>
 // import {fetchUserEmojiList} from '@/api/user'
+import emjFaces from '@/assets/emoji-faces.json'
 export default {
   name: 'EmojiPicker',
   data() {
@@ -36,7 +37,7 @@ export default {
     },
   },
   mounted() {
-    const emoji = require('../assets/emoji-faces.json')
+    const emoji = emjFaces
     this.emojiList = emoji
   },
   methods: {

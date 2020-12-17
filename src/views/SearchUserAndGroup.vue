@@ -66,7 +66,9 @@ export default {
         this.userList = userList
       }
     },
-    goTalkView() {},
+    goTalkView() {
+      //
+    },
   },
 }
 </script>

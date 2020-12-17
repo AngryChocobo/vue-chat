@@ -40,7 +40,6 @@ export default {
       return this.$moment(this.sendDate).format('YYYY/MM/DD')
     },
   },
-  mounted() {},
   methods: {
     goTalkDetail() {
       const router = useRouter()
