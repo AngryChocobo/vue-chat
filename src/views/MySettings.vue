@@ -1,6 +1,6 @@
 <template>
   <div class="my-settings">
-    <my-nav-bar title="我" :left-arrow="false" />
+    <my-nav-bar title="我" left-arrow />
     <div class="setting-fields">
       <van-cell-group>
         <van-field

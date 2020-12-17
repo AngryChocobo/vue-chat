@@ -1,6 +1,6 @@
 <template>
   <div class="group-talk-view" ref="view">
-    <my-nav-bar :title="navTitle" />
+    <my-nav-bar :title="navTitle" left-arrow />
     <div class="talk-list" ref="talkList" v-if="groupInfo">
       <van-cell
         :border="false"

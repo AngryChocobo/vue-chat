@@ -1,59 +1,31 @@
 <template>
   <div class="my-nav-bar">
     <van-nav-bar
-      :title="title"
-      :left-text="leftText"
-      :right-text="rightText"
-      :left-arrow="leftArrow"
-      :fixed="!noFixed"
       @click-left="onClickLeft"
-      @click-right="onClickRight"
+      :left-arrow="leftArrow"
+      v-bind="$attrs"
     >
-      <template v-slot:left> <slot name="left"></slot> </template>
-      <template v-slot:title> <slot name="title"></slot></template>
-      <template v-slot:right> <slot name="right"></slot></template>
+      <slot name="left"></slot>
+      <slot name="title"></slot>
+      <slot name="right"></slot>
     </van-nav-bar>
   </div>
 </template>
 
 <script lang="ts">
 import {useRouter} from 'vue-router'
-
 export default {
   name: 'MyNavBar',
   props: {
-    title: {
-      type: String,
-      default: '',
-    },
-    onSend: {
-      type: Function,
-    },
-    leftText: {
-      type: String,
-      default: '',
-    },
-    rightText: {
-      type: String,
-      default: '',
-    },
-    leftArrow: {
-      type: Boolean,
-      default: true,
-    },
-    noFixed: {
-      type: Boolean,
-      default: false,
-    },
-    onClickRight: {
-      type: Function,
-    },
+    leftArrow: Boolean,
   },
-  setup(props: any) {
+  setup(props) {
     const router = useRouter()
+
     function onClickLeft() {
       props.leftArrow && router.back()
     }
+
     return {
       onClickLeft,
     }

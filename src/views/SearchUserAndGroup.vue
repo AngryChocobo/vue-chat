@@ -1,6 +1,6 @@
 <template>
   <div class="search-user-and-group">
-    <my-nav-bar title="搜索" />
+    <my-nav-bar title="搜索" left-arrow />
     <van-search
       v-model.trim="keyword"
       placeholder="请输入搜索关键词"

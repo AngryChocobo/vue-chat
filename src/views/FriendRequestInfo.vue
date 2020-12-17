@@ -1,6 +1,6 @@
 <template>
   <div class="friend-request-info">
-    <my-nav-bar title="好友申请" />
+    <my-nav-bar title="好友申请" left-arrow />
     <template v-if="requestInfo">
       <div class="main-info">
         <UserAvatar :avatar="requestInfo.makeRecordUserInfo.avatar" />

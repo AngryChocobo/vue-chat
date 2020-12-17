@@ -1,6 +1,6 @@
 <template>
   <div class="user-info">
-    <my-nav-bar title="用户信息" />
+    <my-nav-bar title="用户信息" left-arrow />
     <template v-if="userInfo">
       <div class="main-info">
         <UserAvatar :avatar="userInfo.avatar" width="64" height="64" />
@@ -67,18 +67,15 @@ export default {
     const say = ref('')
     const loggedInUserId = store.getters.loggedInUserId
 
-    let userInfo = reactive({
-      id: 0,
-      makeFriendRecord: null,
-      friendRelation: false,
-    })
+    const userInfo: any = reactive({})
     const isMyFriend = computed(() => {
       return userInfo && userInfo.friendRelation
     })
 
     const canMakeFriend = computed(() => {
-      return !isMyFriend.value && loggedInUserId !== userInfo.id
+      return userInfo.id && !isMyFriend.value && loggedInUserId !== userInfo.id
     })
+
     const isMakedFriendRequest = computed(() => {
       return userInfo && !!userInfo.makeFriendRecord
     })
@@ -96,7 +93,7 @@ export default {
         return
       }
       const result: any = await getUserInfoAndFriendRelation(userId)
-      userInfo = result
+      Object.assign(userInfo, result)
       say.value = (result.makeFriendRecord && result.makeFriendRecord.say) || ''
     }
     function makeFriendRequest() {

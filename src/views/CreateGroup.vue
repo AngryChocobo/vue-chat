@@ -1,6 +1,6 @@
 <template>
   <div class="create-group">
-    <my-nav-bar title="创建群聊" />
+    <my-nav-bar title="创建群聊" left-arrow />
     <van-field
       v-model.trim="groupName"
       rows="2"

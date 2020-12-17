@@ -1,6 +1,6 @@
 <template>
   <div class="friend-request-list">
-    <my-nav-bar title="新朋友" />
+    <my-nav-bar title="新朋友" left-arrow />
     <van-list>
       <van-cell
         class="friend"
@@ -27,13 +27,11 @@
         <!-- todo 根据不同的stats显示通过状态 -->
       </van-cell>
     </van-list>
-    <my-tab-bar />
   </div>
 </template>
 
 <script lang="ts">
 import {CLEAR_UN_READ_FRIEND_REQUEST} from '@/store/types/action-types'
-import MyTabBar from '@/components/my-tab-bar.vue'
 import MyNavBar from '@/components/my-nav-bar.vue'
 import UserAvatar from '@/components/user-avatar.vue'
 import {useStore} from '@/store/store'
@@ -43,7 +41,6 @@ import {computed, onMounted, ref} from 'vue'
 export default {
   name: 'FriendRequestList',
   components: {
-    MyTabBar,
     MyNavBar,
     UserAvatar,
   },

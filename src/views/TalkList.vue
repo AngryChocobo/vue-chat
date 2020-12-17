@@ -1,6 +1,6 @@
 <template>
   <div class="talk-list">
-    <my-nav-bar title="聊天" :left-arrow="false">
+    <my-nav-bar title="聊天">
       <template v-slot:right>
         <home-popup />
       </template>
