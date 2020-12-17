@@ -29,20 +29,22 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import {ref} from 'vue'
+
 export default {
-  data() {
-    return {
-      show: false,
-    }
-  },
   props: {
     items: {
       type: Array,
       default: () => [],
     },
   },
-  methods: {},
+  setup() {
+    const show = ref(false)
+    return {
+      show,
+    }
+  },
 }
 </script>
 

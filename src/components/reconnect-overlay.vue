@@ -17,30 +17,27 @@
   </van-overlay>
 </template>
 
-<script>
-import {mapState} from 'vuex'
+<script lang="ts">
+import {computed, ref} from 'vue'
+import {useStore} from '@/store/store'
 
 export default {
   name: 'ReconnectOverlay',
-  data() {
+  setup() {
+    const value = ref('')
+    const store = useStore()
+    const reconnectAttempt = computed(() => {
+      return store.state.socketModule.reconnectAttempt
+    })
+
+    const reconnectFailed = computed(() => {
+      return store.state.socketModule.reconnectFailed
+    })
     return {
-      value: '',
+      value,
+      reconnectAttempt,
+      reconnectFailed,
     }
-  },
-  computed: {
-    ...mapState({
-      reconnectAttempt: state => state.socketModule.reconnectAttempt,
-      reconnectFailed: state => state.socketModule.reconnectFailed,
-    }),
-  },
-  methods: {
-    clearInputValue() {
-      this.value = ''
-    },
-    sendMessage() {
-      this.onSend(this.value)
-      this.clearInputValue()
-    },
   },
 }
 </script>

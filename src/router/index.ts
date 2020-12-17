@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory} from 'vue-router'
+import {createRouter, createWebHashHistory, RouteRecordRaw} from 'vue-router'
 import Home from '../views/Home.vue'
 import My from '../views/My.vue'
 import MySettings from '../views/MySettings.vue'
@@ -19,7 +19,7 @@ import {Toast} from 'vant'
 
 import {RESET_RECONNECT_OVERLAY} from '@/store/types/mutation-types'
 
-const routes = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',

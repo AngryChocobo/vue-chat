@@ -49,43 +49,48 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import MyNavBar from '@/components/my-nav-bar.vue'
 import UserAvatar from '@/components/user-avatar.vue'
 import {getFriendRequestInfo} from '@/api/user'
 import {AGREE_MAKE_FRIEND_REQUEST} from '@/store/types/action-types'
 import {useStore} from '@/store/store'
+import {onMounted, reactive, ref} from 'vue'
+import {Toast} from 'vant'
+import {useRoute} from 'vue-router'
+
 export default {
   name: 'FriendRequestInfo',
-  data() {
-    return {
-      requestInfo: null,
-    }
-  },
   components: {
     MyNavBar,
     UserAvatar,
   },
-  mounted() {
-    this.getFriendRequestInfo()
-  },
-  methods: {
-    async getFriendRequestInfo() {
-      const {userId} = this.$route.params
+  setup() {
+    const store = useStore()
+    const route = useRoute()
+
+    const requestInfo: any = ref(null)
+
+    async function fetchFriendRequestInfo() {
+      const {userId} = route.params
       if (!userId) {
-        this.$toast('无效的用户id')
+        Toast('无效的用户id')
         return
       }
       const data = await getFriendRequestInfo(userId)
-      this.requestInfo = data
-    },
-    agree() {
-      const store = useStore()
+      requestInfo.value = data
+    }
+    function agree() {
       store.dispatch(AGREE_MAKE_FRIEND_REQUEST, {
-        targetUserId: this.$route.params.userId,
-        recordId: this.requestInfo.id,
+        targetUserId: route.params.userId,
+        recordId: requestInfo.value.id,
       })
-    },
+    }
+    onMounted(fetchFriendRequestInfo)
+    return {
+      requestInfo,
+      agree,
+    }
   },
 }
 </script>

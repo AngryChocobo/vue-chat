@@ -20,36 +20,29 @@
   </transition>
 </template>
 
-<script>
+<script lang="ts">
 // import {fetchUserEmojiList} from '@/api/user'
 import emjFaces from '@/assets/emoji-faces.json'
+import {ref, SetupContext} from 'vue'
+
 export default {
   name: 'EmojiPicker',
-  data() {
-    return {
-      emojiList: [],
-      selectedEmoji: '',
-    }
-  },
   props: {
     show: {
       type: Boolean,
     },
   },
-  mounted() {
-    const emoji = emjFaces
-    this.emojiList = emoji
-  },
-  methods: {
-    selectEmoji(url) {
-      this.selectedEmoji = url
-      this.$emit('select', url)
-      this.visible = false
-    },
-    // async fetchUserEmojiList() {
-    //   const list = await fetchUserEmojiList()
-    //   this.emojiList = list || []
-    // },
+  setup(props, context: SetupContext) {
+    const selectedEmoji = ref('')
+    function selectEmoji(url) {
+      selectedEmoji.value = url
+      context.emit('select', url)
+    }
+    return {
+      selectEmoji,
+      selectedEmoji,
+      emojiList: emjFaces,
+    }
   },
 }
 </script>

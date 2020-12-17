@@ -30,42 +30,45 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import EmojiPicker from '@/components/emoji-picker.vue'
+import {onUnmounted, ref} from 'vue'
+
 export default {
   name: 'TalkInput',
-  data() {
-    return {
-      value: '',
-      showEmojiPicker: false,
-    }
+  components: {
+    EmojiPicker,
   },
   props: {
     onSend: {
       type: Function,
     },
   },
-  components: {
-    EmojiPicker,
+  setup(props: any) {
+    const value = ref('')
+    const showEmojiPicker = ref(false)
+    function clearInputValue() {
+      value.value = ''
+    }
+    function sendMessage() {
+      props.onSend(value.value)
+      clearInputValue()
+    }
+    function openEmojiPicker() {
+      showEmojiPicker.value = !showEmojiPicker.value
+    }
+    function appendEmoji(emoji) {
+      showEmojiPicker.value = false
+      value.value += emoji
+    }
+    onUnmounted(clearInputValue)
+    return {
+      clearInputValue,
+      sendMessage,
+      openEmojiPicker,
+      appendEmoji,
+    }
   },
-  methods: {
-    clearInputValue() {
-      this.value = ''
-    },
-    sendMessage() {
-      this.onSend(this.value)
-      this.clearInputValue()
-    },
-    openEmojiPicker() {
-      this.showEmojiPicker = !this.showEmojiPicker
-    },
-    appendEmoji(emoji) {
-      this.value = this.value + emoji
-    },
-  },
-  // destroyed() {
-  //   this.clearInputValue()
-  // },
 }
 </script>
 

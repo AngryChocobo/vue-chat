@@ -37,7 +37,7 @@
     >
       <van-field
         v-model="nickname"
-        ref="nickname"
+        ref="inputRef"
         label="昵称"
         placeholder="请输入昵称"
         class="nickname"
@@ -59,7 +59,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {mapGetters} from 'vuex'
 import MyTabBar from '@/components/my-tab-bar.vue'
 import MyNavBar from '@/components/my-nav-bar.vue'
@@ -67,6 +67,7 @@ import AvatarSelect from '@/components/avatar-select.vue'
 import UserAvatar from '@/components/user-avatar.vue'
 import {CONFIRM_NICK_NAME, CONFIRM_AVATAR} from '@/store/types/action-types'
 import {useStore} from '@/store/store'
+import {ref} from 'vue'
 
 export default {
   name: 'MySettings',
@@ -76,45 +77,54 @@ export default {
     AvatarSelect,
     UserAvatar,
   },
-  data() {
+  setup() {
+    const store = useStore()
+
+    const nickname = ref('') // 编辑中的昵称
+    const inputRef: any = ref(null)
+    const nickNamePopupVisible = ref(false)
+    const avatarSelectVisible = ref(false)
+    const selectAvatar = ref('')
+    const loggedInUser = store.getters.loggedInUser
+    function onShowNamePopup() {
+      nickname.value = loggedInUser.nickname
+      nickNamePopupVisible.value = true
+    }
+    function onConfirmNickName() {
+      console.log(nickname.value)
+      store.dispatch(CONFIRM_NICK_NAME, {nickname: nickname.value})
+      nickNamePopupVisible.value = false
+    }
+    function focusInput() {
+      inputRef.value && inputRef.value.focus()
+    }
+    function showAvatarSelect() {
+      avatarSelectVisible.value = true
+    }
+    function onSelectAvatar(src) {
+      console.log('选择了头像： ' + src)
+      selectAvatar.value = src
+    }
+    function ConfirmAvatar() {
+      console.log('修改了头像' + selectAvatar.value)
+      store.dispatch(CONFIRM_AVATAR, {avatar: selectAvatar.value})
+    }
     return {
-      nickname: '', // 编辑中的昵称
-      nickNamePopupVisible: false,
-      avatarSelectVisible: false,
-      selectAvatar: '',
+      nickname,
+      nickNamePopupVisible,
+      avatarSelectVisible,
+      selectAvatar,
+      loggedInUser,
+      onShowNamePopup,
+      onConfirmNickName,
+      focusInput,
+      showAvatarSelect,
+      onSelectAvatar,
+      ConfirmAvatar,
+      inputRef,
     }
   },
-  computed: {
-    ...mapGetters(['loggedInUser']),
-  },
-  methods: {
-    onShowNamePopup() {
-      this.nickname = this.loggedInUser.nickname
-      this.nickNamePopupVisible = true
-    },
-    onConfirmNickName() {
-      console.log(this.nickname)
-      const store = useStore()
-      store.dispatch(CONFIRM_NICK_NAME, {nickname: this.nickname})
-      this.nickNamePopupVisible = false
-    },
-    focusInput() {
-      console.log(this.$refs.nickname)
-      this.$refs.nickname.focus()
-    },
-    showAvatarSelect() {
-      this.avatarSelectVisible = true
-    },
-    onSelectAvatar(src) {
-      console.log('选择了头像： ' + src)
-      this.selectAvatar = src
-    },
-    onConfirmAvatar() {
-      console.log('修改了头像' + this.selectAvatar)
-      const store = useStore()
-      store.dispatch(CONFIRM_AVATAR, {avatar: this.selectAvatar})
-    },
-  },
+  methods: {},
 }
 </script>
 

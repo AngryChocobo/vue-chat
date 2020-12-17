@@ -24,7 +24,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import MyNavBar from '@/components/my-nav-bar.vue'
 import {CREATE_GROUP} from '@/store/types/action-types'
 import {useStore} from '@/store/store'

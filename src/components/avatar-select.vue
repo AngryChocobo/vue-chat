@@ -13,60 +13,63 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import UserAvatar from '@/components/user-avatar.vue'
+import {ref, SetupContext} from 'vue'
+
+const avatarList = [
+  {
+    name: '头1',
+    src: 'head-1.jpg',
+  },
+  {
+    name: '头2',
+    src: 'head-2.jpg',
+  },
+  {
+    name: '头3',
+    src: 'head-3.jpg',
+  },
+  {
+    name: '头4',
+    src: 'head-4.jpg',
+  },
+  {
+    name: '头5',
+    src: 'head-5.jpg',
+  },
+  {
+    name: '头6',
+    src: 'head-6.jpg',
+  },
+  {
+    name: '头7',
+    src: 'head-7.jpg',
+  },
+  {
+    name: '头8',
+    src: 'head-8.jpg',
+  },
+  {
+    name: '头9',
+    src: 'head-9.jpg',
+  },
+]
 
 export default {
   name: 'AvatarSelect',
   components: {UserAvatar},
-  data() {
-    return {
-      avatarList: [
-        {
-          name: '头1',
-          src: 'head-1.jpg',
-        },
-        {
-          name: '头2',
-          src: 'head-2.jpg',
-        },
-        {
-          name: '头3',
-          src: 'head-3.jpg',
-        },
-        {
-          name: '头4',
-          src: 'head-4.jpg',
-        },
-        {
-          name: '头5',
-          src: 'head-5.jpg',
-        },
-        {
-          name: '头6',
-          src: 'head-6.jpg',
-        },
-        {
-          name: '头7',
-          src: 'head-7.jpg',
-        },
-        {
-          name: '头8',
-          src: 'head-8.jpg',
-        },
-        {
-          name: '头9',
-          src: 'head-9.jpg',
-        },
-      ],
-      selectedAvatar: '',
+  setup(props, context: SetupContext) {
+    const selectedAvatar = ref('')
+    function selectAvatar(src) {
+      selectedAvatar.value = src
+      context.emit('select', src)
     }
-  },
-  methods: {
-    selectAvatar(src) {
-      this.selectedAvatar = src
-      this.$emit('select', src)
-    },
+    return {
+      avatarList,
+      selectAvatar,
+      selectedAvatar,
+    }
   },
 }
 </script>

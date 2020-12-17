@@ -1,7 +1,7 @@
 <template>
   <div class="talk-view" ref="view">
     <my-nav-bar :title="navTitle" />
-    <div class="talk-list" ref="talkList" v-if="targetInfo">
+    <div class="talk-list" ref="talkListRef" v-if="targetInfo">
       <van-cell
         :border="false"
         v-for="message in messageList"
@@ -19,8 +19,7 @@
   </div>
 </template>
 
-<script>
-import {mapGetters} from 'vuex'
+<script lang="ts">
 import MyNavBar from '@/components/my-nav-bar.vue'
 import MessageItem from '@/components/message-item.vue'
 import TalkInput from '@/components/talk-input.vue'
@@ -32,6 +31,8 @@ import {
   SEND_MESSAGE,
   CLEAR_UN_READ_MESSAGES,
 } from '@/store/types/action-types'
+import {computed, nextTick, onMounted, ref, watch, watchEffect} from 'vue'
+import {useRoute} from 'vue-router'
 
 export default {
   name: 'TalkView',
@@ -40,82 +41,82 @@ export default {
     MessageItem,
     TalkInput,
   },
-  watch: {
-    // 收到新的消息时，滚动到底部
-    messageList() {
-      this.$nextTick(this.scrollToBottom)
-    },
-    fuck(val) {
-      console.log(val)
-    },
-  },
-  data() {
+
+  setup() {
+    const route = useRoute()
+    const store = useStore()
+    const talkListRef: any = ref(null)
+    const targetInfo: any = ref(null)
+    const initScrollTimer: any = ref(null)
+    const navTitle = computed(() => {
+      return targetInfo.value && targetInfo.value.username
+    })
+
+    const targetId = computed(() => {
+      return Number(route.params.id)
+    })
+    const messageList = computed(() => {
+      return store.state.talkModule.messageLists[targetId.value]
+    })
+    const totalUnReadMessage = computed(() => {
+      return store.getters.totalUnReadMessage
+    })
+    function clearUnReadMessages() {
+      if (
+        totalUnReadMessage.value.find(v => v.targetUserId == targetId.value)
+      ) {
+        store.dispatch(CLEAR_UN_READ_MESSAGES, {
+          targetId: targetId.value,
+        })
+      }
+    }
+    function scrollToBottom() {
+      talkListRef.value.scrollIntoView(false)
+    }
+    async function fetchUserInfo(id) {
+      const userInfo = await getUserInfo(id)
+      targetInfo.value = userInfo
+      nextTick(() => {
+        initScrollTimer.value = setTimeout(() => {
+          scrollToBottom()
+        }, 100)
+      })
+    }
+    function getMessageList() {
+      store.dispatch(GET_MESSAGE_LIST, {
+        targetId: targetId.value,
+      })
+    }
+
+    function sendMessage(message) {
+      store.dispatch(SEND_MESSAGE, {
+        targetId: targetId.value,
+        message,
+      })
+    }
+    watch(messageList, () => {
+      nextTick(scrollToBottom)
+    })
+    onMounted(() => {
+      fetchUserInfo(targetId.value)
+      getMessageList()
+      clearUnReadMessages()
+    })
     return {
-      targetInfo: null,
-      initScrollTimer: null,
+      targetInfo,
+      initScrollTimer,
+      totalUnReadMessage,
+      targetId,
+      messageList,
+      navTitle,
+      sendMessage,
+      talkListRef,
     }
   },
-  computed: {
-    navTitle() {
-      return this.targetInfo && this.targetInfo.username
-    },
-    messageList() {
-      const store = useStore()
 
-      return store.state.talkModule.messageLists[this.targetId]
-    },
-    targetId() {
-      return Number(this.$route.params.id)
-    },
-    ...mapGetters(['totalUnReadMessage']),
-  },
-  mounted() {
-    this.getUserInfo(this.targetId)
-    this.getMessageList()
-    this.clearUnReadMessages()
-  },
   // destroyed() {
   //   clearTimeout(this.initScrollTimer)
   // },
-  methods: {
-    clearUnReadMessages() {
-      const store = useStore()
-
-      if (this.totalUnReadMessage.find(v => v.targetUserId == this.targetId)) {
-        store.dispatch(CLEAR_UN_READ_MESSAGES, {
-          targetId: this.targetId,
-        })
-      }
-    },
-    async getUserInfo(targetId) {
-      const userInfo = await getUserInfo(targetId)
-      this.targetInfo = userInfo
-      this.$nextTick(() => {
-        this.initScrollTimer = setTimeout(() => {
-          this.scrollToBottom()
-        }, 100)
-      })
-    },
-    getMessageList() {
-      const store = useStore()
-
-      store.dispatch(GET_MESSAGE_LIST, {
-        targetId: this.targetId,
-      })
-    },
-    scrollToBottom() {
-      const dom = this.$refs.talkList
-      dom.scrollIntoView(false)
-    },
-    sendMessage(message) {
-      const store = useStore()
-
-      store.dispatch(SEND_MESSAGE, {
-        targetId: this.targetId,
-        message,
-      })
-    },
-  },
 }
 </script>
 
