@@ -54,7 +54,7 @@ import MyNavBar from '@/components/my-nav-bar.vue'
 import UserAvatar from '@/components/user-avatar.vue'
 import {getFriendRequestInfo} from '@/api/user'
 import {AGREE_MAKE_FRIEND_REQUEST} from '@/store/types/action-types'
-import {useStore} from 'vuex'
+import {useStore} from '@/store/store'
 export default {
   name: 'FriendRequestInfo',
   data() {

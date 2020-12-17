@@ -27,7 +27,7 @@
 <script>
 import MyNavBar from '@/components/my-nav-bar.vue'
 import {CREATE_GROUP} from '@/store/types/action-types'
-import {useStore} from 'vuex'
+import {useStore} from '@/store/store'
 import {useRouter} from 'vue-router'
 
 export default {

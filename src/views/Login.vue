@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import {LOGIN, GUEST_LOGIN} from '@/store/types/action-types'
-import {useStore} from 'vuex'
+import {useStore} from '@/store/store'
 import {reactive} from 'vue'
 export default {
   name: 'Login',

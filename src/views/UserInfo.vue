@@ -50,7 +50,7 @@ import {getUserInfoAndFriendRelation} from '@/api/user'
 import UserAvatar from '@/components/user-avatar.vue'
 import {MAKE_FRIEND_REQUEST} from '@/store/types/action-types'
 import {mapGetters} from 'vuex'
-import {useStore} from 'vuex'
+import {useStore} from '@/store/store'
 import {useRouter} from 'vue-router'
 
 export default {

@@ -25,7 +25,7 @@ import MyNavBar from '@/components/my-nav-bar.vue'
 import MessageItem from '@/components/message-item.vue'
 import TalkInput from '@/components/talk-input.vue'
 import {getUserInfo} from '@/api/user'
-import {useStore} from 'vuex'
+import {useStore} from '@/store/store'
 
 import {
   GET_MESSAGE_LIST,

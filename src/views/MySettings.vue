@@ -66,7 +66,7 @@ import MyNavBar from '@/components/my-nav-bar.vue'
 import AvatarSelect from '@/components/avatar-select.vue'
 import UserAvatar from '@/components/user-avatar.vue'
 import {CONFIRM_NICK_NAME, CONFIRM_AVATAR} from '@/store/types/action-types'
-import {useStore} from 'vuex'
+import {useStore} from '@/store/store'
 
 export default {
   name: 'MySettings',

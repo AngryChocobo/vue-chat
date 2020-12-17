@@ -25,7 +25,7 @@ import MyNavBar from '@/components/my-nav-bar.vue'
 import MyTabBar from '@/components/my-tab-bar.vue'
 import TalkListItem from '@/components/talk-list-item.vue'
 import HomePopup from '@/components/home-popup.vue'
-import {useStore} from 'vuex'
+import {useStore} from '@/store/store'
 
 export default {
   name: 'TalkList',

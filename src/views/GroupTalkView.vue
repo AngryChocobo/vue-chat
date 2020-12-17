@@ -30,7 +30,7 @@ import {
   ENTER_GROUP_ROOM,
   // CLEAR_UN_READ_MESSAGES,
 } from '@/store/types/action-types'
-import {useStore} from 'vuex'
+import {useStore} from '@/store/store'
 
 export default {
   name: 'GroupTalkView',
