@@ -1,12 +1,8 @@
-const path = require('path')
-function resolve(dir) {
-  return path.join(__dirname, dir)
-}
 module.exports = {
   pages: {
     index: {
       // page 的入口
-      entry: 'src/main.js',
+      entry: 'src/main.ts',
       // 模板来源
       template: 'public/index.html',
       // 在 dist/index.html 的输出
@@ -20,17 +16,6 @@ module.exports = {
     },
   },
   lintOnSave: true,
-  chainWebpack: config => {
-    // config.resolve.alias
-    //   .set('@$', resolve('src'))
-    //   .set('@/assets', resolve('src/assets'))
-    //   .set('@/components', resolve('src/components'))
-    //   .set('@views', resolve('src/views'))
-    //   .set('@plugins', resolve('src/plugins'))
-    //   .set('@const', resolve('src/const'))
-    //   .set('static', resolve('src/static'))
-    config.module.rule('')
-  },
   configureWebpack: {
     module: {
       rules: [
