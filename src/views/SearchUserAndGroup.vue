@@ -25,7 +25,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import MyNavBar from '@/components/my-nav-bar.vue'
 import UserAvatar from '@/components/user-avatar.vue'
 import {getSearchUserResult} from '@/api/user'

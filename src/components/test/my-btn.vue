@@ -8,7 +8,7 @@
   </form>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   created() {
     console.log('my-btn created')

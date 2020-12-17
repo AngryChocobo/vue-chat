@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 /**
  * 对话列表的子组件，作为一个用户/群存在
  */

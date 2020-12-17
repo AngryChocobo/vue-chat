@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import {mapGetters} from 'vuex'
 import MyNavBar from '@/components/my-nav-bar.vue'
 import MessageItem from '@/components/message-item.vue'

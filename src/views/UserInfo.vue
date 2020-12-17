@@ -44,7 +44,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import MyNavBar from '@/components/my-nav-bar.vue'
 import {getUserInfoAndFriendRelation} from '@/api/user'
 import UserAvatar from '@/components/user-avatar.vue'

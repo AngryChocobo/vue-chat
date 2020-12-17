@@ -30,7 +30,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import EmojiPicker from '@/components/emoji-picker.vue'
 export default {
   name: 'TalkInput',

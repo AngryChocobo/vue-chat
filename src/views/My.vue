@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import {mapGetters} from 'vuex'
 import UserAvatar from '@/components/user-avatar.vue'
 import MyTabBar from '@/components/my-tab-bar.vue'

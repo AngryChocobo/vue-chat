@@ -2,7 +2,7 @@
   <base-popup :items="items" />
 </template>
 
-<script lang="ts">
+<script>
 import BasePopup from './base-popup.vue'
 import {useRouter} from 'vue-router'
 

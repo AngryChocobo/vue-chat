@@ -59,7 +59,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import {mapGetters} from 'vuex'
 import MyTabBar from '@/components/my-tab-bar.vue'
 import MyNavBar from '@/components/my-nav-bar.vue'

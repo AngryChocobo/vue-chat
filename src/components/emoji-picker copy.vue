@@ -18,7 +18,7 @@
   </van-dialog>
 </template>
 
-<script lang="ts">
+<script>
 import {fetchUserEmojiList} from '@/api/user'
 export default {
   name: 'EmojiPicker',

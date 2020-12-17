@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 // @ is an alias to /src
 export default {
   name: 'Home',

@@ -60,7 +60,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import {mapGetters, mapState} from 'vuex'
 import UserAvatar from '@/components/user-avatar.vue'
 import GroupAvatar from '@/components/group-avatar.vue'

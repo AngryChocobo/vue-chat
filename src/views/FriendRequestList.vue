@@ -31,7 +31,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import {CLEAR_UN_READ_FRIEND_REQUEST} from '@/store/types/action-types'
 import MyTabBar from '@/components/my-tab-bar.vue'
 import MyNavBar from '@/components/my-nav-bar.vue'
