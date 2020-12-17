@@ -2,9 +2,10 @@
   <div class="base-popup">
     <van-icon name="add-o" size="30" @click="show = true" />
     <van-popup
-      v-model="show"
+      v-model:show="show"
       position="right"
       class="popup-body"
+      teleport="body"
       :style="{
         width: '50%',
         top: '46px',
@@ -12,14 +13,13 @@
         borderRadius: '8px',
         transform: 'translate3d(0, 0, 0)',
       }"
-      :get-container="getContainer"
     >
       <div class="content">
         <div
           class="popup-item"
           v-for="item in items"
           :key="item.text"
-          @click="item.callback"
+          @click="item.callback()"
         >
           <van-icon :name="item.iconName" size="30" />
           <span>{{ item.text }}</span>
@@ -42,11 +42,7 @@ export default {
       default: () => [],
     },
   },
-  methods: {
-    getContainer() {
-      return document.querySelector('#app')
-    },
-  },
+  methods: {},
 }
 </script>
 
