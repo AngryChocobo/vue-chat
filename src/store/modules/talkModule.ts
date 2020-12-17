@@ -40,6 +40,7 @@ export default {
     [UPDATE_MESSAGE_LIST](state, payload) {
       console.log('talk模块 准备更新消息列表', payload)
       // Vue.set(state.messageLists, payload.targetId, payload.messageList)
+      state.messageLists[payload.targetId] = payload.messageList
     },
     [UPDATE_GROUP_MESSAGE_LIST](state, payload) {
       console.log('talk模块 准备更新群聊消息列表', payload)
@@ -48,10 +49,12 @@ export default {
       //   payload.groupId,
       //   payload.groupMessageList,
       // )
+      state.groupMessageLists[payload.groupId] = payload.groupMessageList
     },
     [SEND_MESSAGE_SUCCESS](state, payload) {
       if (!state.messageLists[payload.targetUserId]) {
         // Vue.set(state.messageLists, payload.targetUserId, payload.message)
+        state.messageLists[payload.targetUserId] = payload.message
       } else {
         state.messageLists[payload.targetUserId].push(payload.message)
       }
@@ -60,6 +63,7 @@ export default {
       console.log('收到消息: ', payload)
       if (!state.messageLists[payload.fromUserId]) {
         // Vue.set(state.messageLists, payload.fromUserId, [payload])
+        state.messageLists[payload.fromUserId] = [payload]
       } else {
         state.messageLists[payload.fromUserId].push(payload)
       }

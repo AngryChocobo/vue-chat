@@ -185,11 +185,11 @@ export default {
       context.state.socket.emit('getTalkList')
     },
     [SEND_MESSAGE](context, payload) {
-      context.state.sendingMessage = payload.message
+      // context.state.sendingMessage = payload.message
       context.state.socket.emit('sendMessage', payload)
     },
     [SEND_GROUP_MESSAGE](context, payload) {
-      context.state.sendingMessage = payload.message
+      // context.state.sendingMessage = payload.message
       context.state.socket.emit('sendGroupMessage', payload)
     },
     [MAKE_FRIEND_REQUEST](context, payload) {

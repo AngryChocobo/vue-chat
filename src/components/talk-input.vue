@@ -5,14 +5,14 @@
       <!-- <van-icon name="icon-font icon-yuyin" /> -->
       <van-field
         class="message-input"
-        v-model="value"
+        v-model="message"
         placeholder="请输入骚话"
       />
       <div class="right-btns">
         <van-icon name="smile-o" size="28" @click="openEmojiPicker" />
-        <van-icon v-show="!value" name="add-o" size="28" />
+        <!-- <van-icon v-show="!value" name="add-o" size="28" /> -->
         <van-button
-          v-show="value"
+          v-show="message.length > 0"
           class="send-btn"
           type="primary"
           size="small"
@@ -45,13 +45,13 @@ export default {
     },
   },
   setup(props: any) {
-    const value = ref('')
+    const message = ref('')
     const showEmojiPicker = ref(false)
     function clearInputValue() {
-      value.value = ''
+      message.value = ''
     }
     function sendMessage() {
-      props.onSend(value.value)
+      props.onSend(message.value)
       clearInputValue()
     }
     function openEmojiPicker() {
@@ -59,10 +59,11 @@ export default {
     }
     function appendEmoji(emoji) {
       showEmojiPicker.value = false
-      value.value += emoji
+      message.value += emoji
     }
     onUnmounted(clearInputValue)
     return {
+      message,
       clearInputValue,
       sendMessage,
       openEmojiPicker,
