@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import UserAvatar from '@/components/user-avatar.vue'
 
 export default {

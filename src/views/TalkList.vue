@@ -20,7 +20,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import MyNavBar from '@/components/my-nav-bar.vue'
 import MyTabBar from '@/components/my-tab-bar.vue'
 import TalkListItem from '@/components/talk-list-item.vue'

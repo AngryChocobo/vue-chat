@@ -20,7 +20,7 @@
   </transition>
 </template>
 
-<script>
+<script lang="ts">
 // import {fetchUserEmojiList} from '@/api/user'
 export default {
   name: 'EmojiPicker',

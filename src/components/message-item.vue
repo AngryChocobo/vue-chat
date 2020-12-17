@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {mapGetters} from 'vuex'
 import {useRouter} from 'vue-router'
 import UserAvatar from '@/components/user-avatar.vue'

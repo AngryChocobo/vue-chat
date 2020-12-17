@@ -5,14 +5,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {RouterView} from 'vue-router'
 import ReconnectOverlay from '@/components/reconnect-overlay.vue'
 export default {
   name: 'app',
   components: {
     ReconnectOverlay,
-
     RouterView,
   },
 }

@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {mapGetters} from 'vuex'
 import MyNavBar from '@/components/my-nav-bar.vue'
 import GroupMessageItem from '@/components/group-message-item.vue'

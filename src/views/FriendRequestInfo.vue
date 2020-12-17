@@ -49,7 +49,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import MyNavBar from '@/components/my-nav-bar.vue'
 import UserAvatar from '@/components/user-avatar.vue'
 import {getFriendRequestInfo} from '@/api/user'
