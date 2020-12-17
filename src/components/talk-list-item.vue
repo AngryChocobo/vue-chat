@@ -16,12 +16,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 /**
  * 对话列表的子组件，作为一个用户/群存在
  */
 import UserAvatar from '@/components/user-avatar.vue'
 import {useRouter} from 'vue-router'
+import {computed} from 'vue'
+import dayjs from 'dayjs'
 
 export default {
   name: 'TalkListItem',
@@ -35,20 +37,21 @@ export default {
     lastMessageUserName: String, // 最后发言用户名
     unReadCount: Number,
   },
-  computed: {
-    formatedDate() {
-      return this.$moment(this.sendDate).format('YYYY/MM/DD')
-    },
-  },
-  methods: {
-    goTalkDetail() {
-      const router = useRouter()
-
+  setup(props: any) {
+    const router = useRouter()
+    const formatedDate = computed(() => {
+      return dayjs(props.sendDate).format('YYYY/MM/DD')
+    })
+    function goTalkDetail() {
       router.push({
         name: 'TalkView',
-        params: {id: this.userInfo.id},
+        params: {id: props.userInfo.id},
       })
-    },
+    }
+    return {
+      formatedDate,
+      goTalkDetail,
+    }
   },
 }
 </script>

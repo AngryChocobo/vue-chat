@@ -1,7 +1,13 @@
+import {RootState} from '@/store/store'
+export interface Getters {
+  loggedInUser: any
+  loggedInUserId: any
+}
+
 export default {
-  loggedInUser: state => state.loggedInUserModule.loggedInUser,
-  loggedInUserId: (state, getters) => getters.loggedInUser.id,
-  token: state => state.loggedInUserModule.token,
+  loggedInUser: (state: RootState) => state.loggedInUserModule.loggedInUser,
+  loggedInUserId: (state: RootState, getters) => getters.loggedInUser.id,
+  token: (state: RootState) => state.loggedInUserModule.token,
   friendRequestUnReadCount: state =>
     state.socketModule.friendRequestList.filter(v => !v.read).length,
   totalUnReadMessage: state =>

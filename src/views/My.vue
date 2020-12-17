@@ -15,12 +15,12 @@
   </div>
 </template>
 
-<script>
-import {mapGetters} from 'vuex'
+<script lang="ts">
 import UserAvatar from '@/components/user-avatar.vue'
 import MyTabBar from '@/components/my-tab-bar.vue'
 import MyNavBar from '@/components/my-nav-bar.vue'
 import {useRouter} from 'vue-router'
+import {useStore} from '@/store/store'
 
 export default {
   name: 'My',
@@ -29,15 +29,17 @@ export default {
     MyNavBar,
     UserAvatar,
   },
-  computed: {
-    ...mapGetters(['loggedInUser']),
-  },
-  methods: {
-    goMySettings() {
-      const router = useRouter()
-
+  setup() {
+    const router = useRouter()
+    const store = useStore()
+    const loggedInUser = store.getters.loggedInUser
+    function goMySettings() {
       router.push('my-settings')
-    },
+    }
+    return {
+      goMySettings,
+      loggedInUser,
+    }
   },
 }
 </script>

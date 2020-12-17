@@ -31,13 +31,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {CLEAR_UN_READ_FRIEND_REQUEST} from '@/store/types/action-types'
 import MyTabBar from '@/components/my-tab-bar.vue'
 import MyNavBar from '@/components/my-nav-bar.vue'
 import UserAvatar from '@/components/user-avatar.vue'
 import {useStore} from '@/store/store'
 import {useRouter} from 'vue-router'
+import {computed, onMounted, ref} from 'vue'
 
 export default {
   name: 'FriendRequestList',
@@ -46,37 +47,35 @@ export default {
     MyNavBar,
     UserAvatar,
   },
-  data() {
-    return {
-      activeName: 'all',
-    }
-  },
-  computed: {
-    friendRequestList() {
-      const store = useStore()
+  setup() {
+    const router = useRouter()
+    const store = useStore()
+    const activeName = ref('all')
+    const friendRequestList = computed(() => {
       return store.state.socketModule.friendRequestList
-    },
-  },
-  mounted() {
-    this.clearUnReadFriendRequest()
-  },
-  methods: {
-    clearUnReadFriendRequest() {
-      if (this.friendRequestList.length) {
-        const store = useStore()
+    })
+
+    function clearUnReadFriendRequest() {
+      if (friendRequestList.value.length > 0) {
         store.dispatch(CLEAR_UN_READ_FRIEND_REQUEST)
       }
-    },
-    checkFriendRequestInfo(friend) {
-      const router = useRouter()
-
+    }
+    function checkFriendRequestInfo(friend) {
       router.push({
         name: 'FriendRequestInfo',
         params: {
           userId: friend.id,
         },
       })
-    },
+    }
+
+    onMounted(clearUnReadFriendRequest)
+    return {
+      activeName,
+      friendRequestList,
+      clearUnReadFriendRequest,
+      checkFriendRequestInfo,
+    }
   },
 }
 </script>

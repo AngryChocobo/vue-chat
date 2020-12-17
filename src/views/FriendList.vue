@@ -60,14 +60,15 @@
   </div>
 </template>
 
-<script>
-import {mapGetters, mapState} from 'vuex'
+<script lang="ts">
 import UserAvatar from '@/components/user-avatar.vue'
 import GroupAvatar from '@/components/group-avatar.vue'
 import HomePopup from '@/components/home-popup.vue'
 import MyTabBar from '@/components/my-tab-bar.vue'
 import MyNavBar from '@/components/my-nav-bar.vue'
 import {useRouter} from 'vue-router'
+import {useStore} from '@/store/store'
+import {computed, ref} from 'vue'
 
 export default {
   name: 'FriendList',
@@ -78,40 +79,45 @@ export default {
     GroupAvatar,
     HomePopup,
   },
-  data() {
-    return {
-      activeName: 'groups',
-    }
-  },
-  computed: {
-    ...mapGetters(['friendRequestUnReadCount']),
-    ...mapState({
-      friendList: state => state.socketModule.friendList,
-      groupList: state => state.socketModule.groupList,
-    }),
-  },
-  methods: {
-    toFriendRequestList() {
-      const router = useRouter()
-
+  setup() {
+    const router = useRouter()
+    const store = useStore()
+    const activeName = ref('groups')
+    const friendRequestUnReadCount = computed(() => {
+      return store.getters.friendRequestUnReadCount
+    })
+    const friendList = computed(() => {
+      return store.state.socketModule.friendList
+    })
+    const groupList = computed(() => {
+      return store.state.socketModule.groupList
+    })
+    function toFriendRequestList() {
       router.push({
         path: 'friend-request-list',
       })
-    },
-    checkFriendInfo(friend) {
-      const router = useRouter()
+    }
+    function checkFriendInfo(friend) {
       router.push({
         name: 'UserInfo',
         params: {userId: friend.id},
       })
-    },
-    goToGroupTalkView(id) {
-      const router = useRouter()
+    }
+    function goToGroupTalkView(id) {
       router.push({
         name: 'GroupTalkView',
         params: {id},
       })
-    },
+    }
+    return {
+      activeName,
+      friendRequestUnReadCount,
+      friendList,
+      groupList,
+      toFriendRequestList,
+      checkFriendInfo,
+      goToGroupTalkView,
+    }
   },
 }
 </script>

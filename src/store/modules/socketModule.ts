@@ -43,8 +43,8 @@ export interface SocketState {
   reconnectAttempt: number
   reconnectFailed: boolean
   friendRequestList: []
-  friendList: []
-  groupList: []
+  friendList: any[]
+  groupList: any[]
 }
 
 export default {

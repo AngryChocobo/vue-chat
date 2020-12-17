@@ -15,10 +15,13 @@
   </div>
 </template>
 
-<script>
-import {mapGetters} from 'vuex'
+<script lang="ts">
+import dayjs from 'dayjs'
 import {useRouter} from 'vue-router'
 import UserAvatar from '@/components/user-avatar.vue'
+import {useStore} from '@/store/store'
+import {computed} from 'vue'
+
 export default {
   name: 'MessageItem',
   components: {UserAvatar},
@@ -28,25 +31,30 @@ export default {
     targetUserInfo: Object,
     sendDate: Number, // 对话时间
   },
-  computed: {
-    ...mapGetters(['loggedInUser']),
-    isMine() {
-      // 是否是自己的发言
-      return this.fromUserId === this.loggedInUser.id
-    },
-    formatedSendDate() {
-      return this.$moment(this.sendDate).format('MM/DD HH:mm:ss')
-    },
-  },
-  methods: {
-    goUserInfo() {
-      const router = useRouter()
+  setup(props: any) {
+    const router = useRouter()
+    const store = useStore()
 
+    const loggedInUser = store.getters.loggedInUser
+    const isMine = computed(() => {
+      // 是否是自己的发言
+      return props.targetUserInfo.id === loggedInUser.id
+    })
+    const formatedSendDate = computed(() => {
+      return dayjs(props.sendDate).format('MM/DD HH:mm:ss')
+    })
+    function goUserInfo() {
       router.push({
         name: 'UserInfo',
-        params: {userId: this.fromUserId},
+        params: {userId: props.fromUserId},
       })
-    },
+    }
+
+    return {
+      goUserInfo,
+      isMine,
+      formatedSendDate,
+    }
   },
 }
 </script>

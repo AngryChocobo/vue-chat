@@ -44,69 +44,73 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import MyNavBar from '@/components/my-nav-bar.vue'
 import {getUserInfoAndFriendRelation} from '@/api/user'
 import UserAvatar from '@/components/user-avatar.vue'
 import {MAKE_FRIEND_REQUEST} from '@/store/types/action-types'
-import {mapGetters} from 'vuex'
 import {useStore} from '@/store/store'
-import {useRouter} from 'vue-router'
+import {useRouter, useRoute} from 'vue-router'
+import {computed, onMounted, reactive, ref} from 'vue'
+import {Toast} from 'vant'
 
 export default {
   name: 'UserInfo',
-  data() {
-    return {
-      say: '',
-      userInfo: null,
-    }
-  },
   components: {
     MyNavBar,
     UserAvatar,
   },
-  computed: {
-    ...mapGetters(['loggedInUserId']),
-    isMyFriend() {
-      return this.userInfo && !!this.userInfo.friendRelation
-    },
-    canMakeFriend() {
-      return !this.isMyFriend && this.loggedInUserId !== this.userInfo.id
-    },
-    isMakedFriendRequest() {
-      return this.userInfo && !!this.userInfo.makeFriendRecord
-    },
-  },
-  mounted() {
-    this.getUserInfoAndFriendRelation()
-  },
-  methods: {
-    talkTo() {
-      const router = useRouter()
+  setup() {
+    const router = useRouter()
+    const route = useRoute()
+    const store = useStore()
+    const say = ref('')
+    const loggedInUserId = store.getters.loggedInUserId
 
+    let userInfo = reactive({})
+    const isMyFriend = computed(() => {
+      return userInfo.friendRelation
+    })
+
+    const canMakeFriend = computed(() => {
+      return !isMyFriend.value && loggedInUserId !== userInfo.id
+    })
+    const isMakedFriendRequest = computed(() => {
+      return userInfo && !!userInfo.makeFriendRecord
+    })
+
+    function talkTo() {
       router.push({
         name: 'TalkView',
-        params: {id: this.userInfo.id},
+        params: {id: userInfo.id},
       })
-    },
-    async getUserInfoAndFriendRelation() {
-      const {userId} = this.$route.params
+    }
+    async function fetchUserInfoAndFriendRelation() {
+      const {userId} = route.params
       if (!userId) {
-        this.$toast('无效的用户id')
+        Toast('无效的用户id')
         return
       }
-      const userInfo = await getUserInfoAndFriendRelation(userId)
-      this.userInfo = userInfo
-      this.say =
-        (userInfo.makeFriendRecord && userInfo.makeFriendRecord.say) || ''
-    },
-    makeFriendRequest() {
-      const store = useStore()
+      const result = await getUserInfoAndFriendRelation(userId)
+      userInfo = result
+      say.value = (result.makeFriendRecord && result.makeFriendRecord.say) || ''
+    }
+    function makeFriendRequest() {
       store.dispatch(MAKE_FRIEND_REQUEST, {
-        targetUserId: this.userInfo.id,
-        say: this.say,
+        targetUserId: userInfo.id,
+        say: say.value,
       })
-    },
+    }
+    onMounted(fetchUserInfoAndFriendRelation)
+    return {
+      say,
+      isMyFriend,
+      userInfo,
+      canMakeFriend,
+      isMakedFriendRequest,
+      makeFriendRequest,
+      talkTo,
+    }
   },
 }
 </script>

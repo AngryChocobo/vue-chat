@@ -29,38 +29,37 @@ import MyNavBar from '@/components/my-nav-bar.vue'
 import {CREATE_GROUP} from '@/store/types/action-types'
 import {useStore} from '@/store/store'
 import {useRouter} from 'vue-router'
+import {ref} from 'vue'
 
 export default {
   name: 'FriendList',
   components: {
     MyNavBar,
   },
-  data() {
-    return {
-      groupName: '',
-    }
-  },
-  methods: {
-    toFriendRequestList() {
-      const router = useRouter()
-
+  setup() {
+    const groupName = ref('')
+    const store = useStore()
+    const router = useRouter()
+    function toFriendRequestList() {
       router.push({
         path: 'friend-request-list',
       })
-    },
-    checkFriendInfo(friend) {
-      const router = useRouter()
-
+    }
+    function checkFriendInfo(friend) {
       router.push({
         name: 'UserInfo',
         params: {userId: friend.id},
       })
-    },
-    createGroup() {
-      const store = useStore()
-      // store.dispatch(CREATE_GROUP, {groupName: this.groupName})
-      store.dispatch(CREATE_GROUP, {groupName: ''})
-    },
+    }
+    function createGroup() {
+      store.dispatch(CREATE_GROUP, {groupName: groupName.value})
+    }
+    return {
+      groupName,
+      toFriendRequestList,
+      checkFriendInfo,
+      createGroup,
+    }
   },
 }
 </script>

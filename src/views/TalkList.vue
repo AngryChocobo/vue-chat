@@ -20,12 +20,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import MyNavBar from '@/components/my-nav-bar.vue'
 import MyTabBar from '@/components/my-tab-bar.vue'
 import TalkListItem from '@/components/talk-list-item.vue'
 import HomePopup from '@/components/home-popup.vue'
 import {useStore} from '@/store/store'
+import {computed} from 'vue'
 
 export default {
   name: 'TalkList',
@@ -35,13 +36,16 @@ export default {
     MyNavBar,
     HomePopup,
   },
-  computed: {
-    talkList() {
-      const store = useStore()
+
+  setup() {
+    const store = useStore()
+    const talkList = computed(() => {
       return store.state.talkModule.talkList
-    },
+    })
+    return {
+      talkList,
+    }
   },
-  methods: {},
 }
 </script>
 

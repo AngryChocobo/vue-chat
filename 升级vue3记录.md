@@ -16,6 +16,8 @@ const store = useStore()
 store.dispatch('xxx')
 ```
 
-但是 useStore 只能用在 setUp 中，所以～
+但是 useStore 只能用在 setup 中，所以～
+
+- router 同理，必须改造完 setup 才能使用 useRouter
 
 - `Vue.set` 修改

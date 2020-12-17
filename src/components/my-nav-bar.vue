@@ -16,14 +16,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {useRouter} from 'vue-router'
 
 export default {
   name: 'MyNavBar',
-  data() {
-    return {}
-  },
   props: {
     title: {
       type: String,
@@ -52,12 +49,14 @@ export default {
       type: Function,
     },
   },
-  methods: {
-    onClickLeft() {
-      const router = useRouter()
-
-      this.leftArrow && router.back()
-    },
+  setup(props: any) {
+    const router = useRouter()
+    function onClickLeft() {
+      props.leftArrow && router.back()
+    }
+    return {
+      onClickLeft,
+    }
   },
 }
 </script>

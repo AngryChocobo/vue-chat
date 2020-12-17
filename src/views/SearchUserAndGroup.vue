@@ -25,11 +25,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import MyNavBar from '@/components/my-nav-bar.vue'
 import UserAvatar from '@/components/user-avatar.vue'
 import {getSearchUserResult} from '@/api/user'
 import {useRouter} from 'vue-router'
+import {onMounted, ref} from 'vue'
+import {Toast} from 'vant'
 
 export default {
   name: 'SearchUserAndGroup',
@@ -37,38 +39,39 @@ export default {
     MyNavBar,
     UserAvatar,
   },
-  data() {
-    return {
-      keyword: '',
-      userList: [],
-      activeName: 'all',
-    }
-  },
-  mounted() {
-    this.searchUsers()
-  },
-  methods: {
-    checkUserInfo(user) {
-      const router = useRouter()
-
+  setup() {
+    const router = useRouter()
+    const keyword = ref('')
+    const userList = ref([])
+    const activeName = ref('all')
+    function checkUserInfo(user) {
       router.push({
         name: 'UserInfo',
         params: {
           userId: user.id,
         },
       })
-    },
-    async searchUsers() {
-      const userList = await getSearchUserResult(this.keyword)
-      if (userList.length == 0) {
-        this.$toast('无查询结果')
+    }
+    async function searchUsers() {
+      const result: any = await getSearchUserResult(keyword.value)
+      if (result.length == 0) {
+        Toast('无查询结果')
       } else {
-        this.userList = userList
+        userList.value = result
       }
-    },
-    goTalkView() {
+    }
+    function goTalkView() {
       //
-    },
+    }
+    onMounted(searchUsers)
+    return {
+      keyword,
+      userList,
+      activeName,
+      goTalkView,
+      searchUsers,
+      checkUserInfo,
+    }
   },
 }
 </script>
