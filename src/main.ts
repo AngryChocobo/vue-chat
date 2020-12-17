@@ -1,8 +1,8 @@
 import {createApp} from 'vue'
 // import moment from 'moment'
 import App from './App.vue'
-import store from './store/store'
-import router from './router/index'
+import store, {key} from './store/store'
+import router from './router'
 import * as Vant from 'vant'
 import 'vant/lib/index.css'
 
@@ -14,6 +14,6 @@ console.log('env: ', process.env)
 
 createApp(App)
   .use(router)
-  .use(store)
+  .use(store, key)
   .use(Vant)
   .mount('#app')

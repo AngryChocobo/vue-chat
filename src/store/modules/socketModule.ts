@@ -34,15 +34,28 @@ import {
 
 export const SOCKETIO_PATH = 'http://localhost:3000'
 
+export interface Socket {
+  close: Function
+}
+
+export interface SocketState {
+  socket: Socket | null
+  reconnectAttempt: number
+  reconnectFailed: boolean
+  friendRequestList: []
+  friendList: []
+  groupList: []
+}
+
 export default {
-  state: {
+  state: (): SocketState => ({
     socket: null,
     reconnectAttempt: 0, // socket尝试重连次数
     reconnectFailed: false, // socket尝试重连失败
     friendRequestList: [],
     friendList: [], // 我的好友列表
     groupList: [], // 我的群列表
-  },
+  }),
 
   mutations: {
     [SET_SOCKET](state, payload) {

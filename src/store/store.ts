@@ -1,7 +1,9 @@
-import {createStore} from 'vuex'
-import loggedInUserModule from './modules/loggedInUserModule'
-import socketModule from './modules/socketModule'
-import talkModule from './modules/talkModule'
+import {createStore, Store, useStore as baseUseStore} from 'vuex'
+import loggedInUserModule, {
+  LoggedInUserState,
+} from './modules/loggedInUserModule'
+import socketModule, {SocketState} from './modules/socketModule'
+import talkModule, {TalkState} from './modules/talkModule'
 
 import {
   CONNECT_SOCKET_IO,
@@ -10,8 +12,17 @@ import {
   GET_LOGGEDINUSER_INFO,
 } from '@/store/types/action-types'
 import getters from './getters'
+import {InjectionKey} from 'vue'
 
-const store = createStore({
+export interface RootState {
+  loggedInUserModule: LoggedInUserState
+  socketModule: SocketState
+  talkModule: TalkState
+}
+
+export const key: InjectionKey<Store<RootState>> = Symbol()
+
+const store = createStore<RootState>({
   modules: {
     loggedInUserModule,
     socketModule,
@@ -29,6 +40,10 @@ if (store.getters.token) {
   })
 } else {
   console.log('没有token')
+}
+
+export function useStore() {
+  return baseUseStore(key)
 }
 
 // window.store = store

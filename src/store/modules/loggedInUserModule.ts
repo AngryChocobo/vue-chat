@@ -29,13 +29,13 @@ import {
 const encrypt = new JSEncrypt()
 encrypt.setPublicKey(process.env.VUE_APP_RSA_PUBLIC_KEY)
 
-interface State {
+export interface LoggedInUserState {
   loggedInUser: object
-  token: string
+  token: string | null
 }
 
 export default {
-  state: () => ({
+  state: (): LoggedInUserState => ({
     loggedInUser: {},
     token: window.localStorage.getItem('token'),
   }),

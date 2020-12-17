@@ -15,13 +15,20 @@ import {
   NOTIFICATION_GRANTED,
 } from '@/store/types/action-types'
 
+export interface TalkState {
+  allowNotification: boolean
+  talkList: []
+  messageLists: {}
+  groupMessageLists: {}
+}
+
 export default {
-  state: {
+  state: (): TalkState => ({
     allowNotification: false,
     talkList: [],
     messageLists: {},
     groupMessageLists: {},
-  },
+  }),
   mutations: {
     [ALLOW_NOTIFICATION](state) {
       state.allowNotification = true
