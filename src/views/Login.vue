@@ -38,13 +38,13 @@
 <script lang="ts">
 import {LOGIN, GUEST_LOGIN} from '@/store/types/action-types'
 import {useStore} from 'vuex'
-import {ref} from 'vue'
+import {reactive} from 'vue'
 export default {
   name: 'Login',
   setup() {
     const store = useStore()
 
-    const form = ref({
+    const form = reactive({
       username: '',
       password: '',
     })
