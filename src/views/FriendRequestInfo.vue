@@ -55,7 +55,7 @@ import UserAvatar from '@/components/user-avatar.vue'
 import {getFriendRequestInfo} from '@/api/user'
 import {AGREE_MAKE_FRIEND_REQUEST} from '@/store/types/action-types'
 import {useStore} from '@/store/store'
-import {onMounted, reactive, ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import {Toast} from 'vant'
 import {useRoute} from 'vue-router'
 

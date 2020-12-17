@@ -60,7 +60,6 @@
 </template>
 
 <script lang="ts">
-import {mapGetters} from 'vuex'
 import MyTabBar from '@/components/my-tab-bar.vue'
 import MyNavBar from '@/components/my-nav-bar.vue'
 import AvatarSelect from '@/components/avatar-select.vue'

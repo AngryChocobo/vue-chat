@@ -31,7 +31,7 @@ import {
   SEND_MESSAGE,
   CLEAR_UN_READ_MESSAGES,
 } from '@/store/types/action-types'
-import {computed, nextTick, onMounted, ref, watch, watchEffect} from 'vue'
+import {computed, nextTick, onMounted, ref, watch} from 'vue'
 import {useRoute} from 'vue-router'
 
 export default {
