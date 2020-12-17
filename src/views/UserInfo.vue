@@ -102,8 +102,7 @@ export default {
     },
     makeFriendRequest() {
       const store = useStore()
-
-      this.$store.dispatch(MAKE_FRIEND_REQUEST, {
+      store.dispatch(MAKE_FRIEND_REQUEST, {
         targetUserId: this.userInfo.id,
         say: this.say,
       })

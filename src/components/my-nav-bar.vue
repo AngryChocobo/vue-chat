@@ -50,7 +50,6 @@ export default {
     },
     onClickRight: {
       type: Function,
-      default: () => {},
     },
   },
   methods: {
