@@ -67,9 +67,13 @@ export default {
     const say = ref('')
     const loggedInUserId = store.getters.loggedInUserId
 
-    let userInfo = reactive({})
+    let userInfo = reactive({
+      id: 0,
+      makeFriendRecord: null,
+      friendRelation: false,
+    })
     const isMyFriend = computed(() => {
-      return userInfo.friendRelation
+      return userInfo && userInfo.friendRelation
     })
 
     const canMakeFriend = computed(() => {
@@ -91,7 +95,7 @@ export default {
         Toast('无效的用户id')
         return
       }
-      const result = await getUserInfoAndFriendRelation(userId)
+      const result: any = await getUserInfoAndFriendRelation(userId)
       userInfo = result
       say.value = (result.makeFriendRecord && result.makeFriendRecord.say) || ''
     }
