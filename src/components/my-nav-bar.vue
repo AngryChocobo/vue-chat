@@ -5,23 +5,24 @@
       :left-arrow="leftArrow"
       v-bind="$attrs"
     >
-      <slot name="left"></slot>
-      <slot name="title"></slot>
-      <slot name="right"></slot>
+      <template v-slot:left> <slot name="left"></slot> </template>
+      <template v-slot:title> <slot name="title"></slot></template>
+      <template v-slot:right> <slot name="right"></slot></template>
     </van-nav-bar>
   </div>
 </template>
 
 <script lang="ts">
+import {SetupContext} from 'vue'
 import {useRouter} from 'vue-router'
 export default {
   name: 'MyNavBar',
   props: {
     leftArrow: Boolean,
   },
-  setup(props) {
+  setup(props: any, context: SetupContext) {
     const router = useRouter()
-
+    console.log(context)
     function onClickLeft() {
       props.leftArrow && router.back()
     }

@@ -13,7 +13,12 @@ const service = axios.create({
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000, // request timeout
 })
+let toastId
 service.interceptors.request.use(config => {
+  toastId = Toast.loading({
+    message: '加载中',
+    duration: 0,
+  })
   const token = store.getters.token
   if (token) {
     config.headers.authorization = `Bearer ${token}`
@@ -23,9 +28,11 @@ service.interceptors.request.use(config => {
 
 service.interceptors.response.use(
   response => {
+    toastId.close()
     return response.data || {}
   },
   error => {
+    toastId.close()
     if (!error.response) {
       // Toast('服务器不想服务了', JSON.stringify(error))
       Toast('服务器不想服务了')
