@@ -42,7 +42,7 @@ export interface SocketState {
   socket: Socket | null
   reconnectAttempt: number
   reconnectFailed: boolean
-  friendRequestList: []
+  friendRequestList: any[]
   friendList: any[]
   groupList: any[]
 }

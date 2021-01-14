@@ -8,11 +8,11 @@ export default {
   loggedInUser: (state: RootState) => state.loggedInUserModule.loggedInUser,
   loggedInUserId: (state: RootState, getters) => getters.loggedInUser.id,
   token: (state: RootState) => state.loggedInUserModule.token,
-  friendRequestUnReadCount: state =>
+  friendRequestUnReadCount: (state: RootState) =>
     state.socketModule.friendRequestList.filter(v => !v.read).length,
-  totalUnReadMessage: state =>
+  totalUnReadMessage: (state: RootState) =>
     state.talkModule.talkList.filter(v => v.unReadCount),
-  totalUnReadMessageCount: (state, getters) =>
+  totalUnReadMessageCount: (state: RootState, getters) =>
     getters.totalUnReadMessage
       .map(v => v.unReadCount)
       .reduce((a, b) => a + b, 0),

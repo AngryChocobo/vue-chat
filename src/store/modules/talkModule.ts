@@ -17,7 +17,7 @@ import {
 
 export interface TalkState {
   allowNotification: boolean
-  talkList: []
+  talkList: any[]
   messageLists: {}
   groupMessageLists: {}
 }

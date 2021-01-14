@@ -11,7 +11,7 @@ import {
   GET_USER_GROUP_LIST,
   GET_LOGGEDINUSER_INFO,
 } from '@/store/types/action-types'
-import getters from './getters'
+import getters, {Getters} from './getters'
 import {InjectionKey} from 'vue'
 
 export interface RootState {
