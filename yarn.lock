@@ -5289,9 +5289,9 @@ flush-write-stream@^1.0.0:
     readable-stream "^2.3.6"
 
 follow-redirects@^1.0.0, follow-redirects@^1.10.0:
-  version "1.13.1"
-  resolved "http://47.92.98.61:8081/repository/npm-all/follow-redirects/-/follow-redirects-1.13.1.tgz#5f69b813376cee4fd0474a3aba835df04ab763b7"
-  integrity sha1-X2m4Ezds7k/QR0o6uoNd8Eq3Y7c=
+  version "1.14.7"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.7.tgz#2004c02eb9436eee9a21446a6477debf17e81685"
+  integrity sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==
 
 for-each@^0.3.3:
   version "0.3.3"
@@ -11246,14 +11246,6 @@ vue-cli-plugin-element@^1.0.1:
   resolved "http://47.92.98.61:8081/repository/npm-all/vue-cli-plugin-element/-/vue-cli-plugin-element-1.0.1.tgz#34e58fb65b36cf59afaf14f503288e5e578b1554"
   integrity sha1-NOWPtls2z1mvrxT1AyiOXleLFVQ=
 
-vue-cli-plugin-vue-next@~0.1.4:
-  version "0.1.4"
-  resolved "http://47.92.98.61:8081/repository/npm-all/vue-cli-plugin-vue-next/-/vue-cli-plugin-vue-next-0.1.4.tgz#8173186aedb65a7e9fe80889a9c44b023544dd9f"
-  integrity sha1-gXMYau22Wn6f6AiJqcRLAjVE3Z8=
-  dependencies:
-    chalk "^4.1.0"
-    vue-loader "^16.0.0-alpha.3"
-
 vue-eslint-parser@^7.0.0, vue-eslint-parser@^7.3.0:
   version "7.3.0"
   resolved "http://47.92.98.61:8081/repository/npm-all/vue-eslint-parser/-/vue-eslint-parser-7.3.0.tgz#894085839d99d81296fa081d19643733f23d7559"
@@ -11299,8 +11291,7 @@ vue-jest@^5.0.0-0:
     extract-from-css "^0.4.4"
     ts-jest "^24.0.0"
 
-"vue-loader-v16@npm:vue-loader@^16.1.0", vue-loader@^16.0.0-alpha.3:
-  name vue-loader-v16
+"vue-loader-v16@npm:vue-loader@^16.1.0":
   version "16.1.2"
   resolved "http://47.92.98.61:8081/repository/npm-all/vue-loader/-/vue-loader-16.1.2.tgz#5c03b6c50d2a5f983c7ceba15c50d78ca2b298f4"
   integrity sha1-XAO2xQ0qX5g8fOuhXFDXjKKymPQ=
